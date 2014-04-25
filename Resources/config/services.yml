@@ -1,7 +1,25 @@
 parameters:
-#    wk_dhl_api.example.class: Wk\DhlApiBundle\Example
+    wk_dhl_api.b2b.params:
+        ekp:                "%wk_dhl_api.b2b.ekp%"
+        attendance:         "%wk_dhl_api.b2b.attendance%"
+        wsdl_uri:           "%wk_dhl_api.b2b.wsdl_uri%"
+        cis_base_uri:       "%wk_dhl_api.b2b.cis_base_uri%"
+        intraship:
+            user:           "%wk_dhl_api.b2b.intraship.user%"
+            password:       "%wk_dhl_api.b2b.intraship.password%"
+        cig:
+            user:           "%wk_dhl_api.b2b.cig.user%"
+            password:       "%wk_dhl_api.b2b.cig.password%"
+            end_point_uri:  "%wk_dhl_api.b2b.cig.end_point_uri%"
 
 services:
-#    wk_dhl_api.example:
-#        class: %wk_dhl_api.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    wk_dhl_api.b2b.connection:
+        class: Wk\DhlApiBundle\Lib\B2b\Connection
+        calls:
+            - [setParams, ["%wk_dhl_api.b2b.params%"]]
+            - [setLogger, ["@logger"]]
+
+    wk_dhl_api.b2b.converter.pickup_booking_information:
+        class: Wk\DhlApiBundle\Lib\B2b\Converter\PickupBookingInformationConverter
+        tags:
+            - { name: request.param_converter, priority: -2, converter: wk_dhl_api.b2b.converter.pickup_booking_information }

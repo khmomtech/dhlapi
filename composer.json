@@ -1,0 +1,29 @@
+{
+    "name": "asgoodasnu/dhlapi",
+    "type": "symfony-bundle",
+    "description": "DHL API for Symfony2",
+    "keywords":     ["dhl", "api"],
+    "homepage": "https://github.com/asgoodasnu/dhlapi",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thomas Stägemann",
+            "email": "thomas@wirkaufens.de",
+            "homepage": "http://wirkaufens.de"
+        },
+        {
+            "name": "Github Community",
+            "homepage": "https://github.com/asgoodasnu/dhlapi/contributors"
+        }
+    ],
+    "require": {
+	    "monolog/monolog": "~1.7",
+        "sensio/framework-extra-bundle": "~3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+    },
+    "autoload": {
+        "psr-4": { "Wk\\DhlApi\\": "" }
+    }
+}

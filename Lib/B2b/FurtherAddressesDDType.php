@@ -1,0 +1,25 @@
+<?php
+
+namespace Wk\DhlApiBundle\Lib\B2b;
+
+class FurtherAddressesDDType
+{
+
+  /**
+   * 
+   * @var DeliveryAdress $DeliveryAdress
+   * @access public
+   */
+  public $DeliveryAdress = null;
+
+  /**
+   * 
+   * @param DeliveryAdress $DeliveryAdress
+   * @access public
+   */
+  public function __construct($DeliveryAdress)
+  {
+    $this->DeliveryAdress = $DeliveryAdress;
+  }
+
+}
