@@ -22,6 +22,8 @@ Enable in your AppKernel.php:
         $bundles = array(
             // ...
             new Wk\DhlApiBundle\WkDhlApiBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
         );
     }
 

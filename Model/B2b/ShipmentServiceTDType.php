@@ -1,0 +1,48 @@
+<?php
+
+namespace Wk\DhlApiBundle\Model\B2b;
+
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\XmlRoot;
+use JMS\Serializer\Annotation\XmlAttribute;
+use JMS\Serializer\Annotation\SerializedName;
+
+/**
+ * Class ShipmentServiceTDType
+ * @package Wk\DhlApiBundle\Model\B2b
+ * @XmlRoot("service")
+ */
+class ShipmentServiceTDType
+{
+
+  /**
+   * 
+   * @var ServiceGroupDateTimeOptionTDType $ServiceGroupDateTimeOption
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ServiceGroupDateTimeOptionTDType")
+   * @SerializedName("time")
+   */
+  public $ServiceGroupDateTimeOption = null;
+
+  /**
+   * 
+   * @var ServiceGroupOtherTDType $ServiceGroupOther
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ServiceGroupOtherTDType")
+   * @SerializedName("other")
+   */
+  public $ServiceGroupOther = null;
+
+  /**
+   * 
+   * @param ServiceGroupDateTimeOptionTDType $ServiceGroupDateTimeOption
+   * @param ServiceGroupOtherTDType $ServiceGroupOther
+   * @access public
+   */
+  public function __construct($ServiceGroupDateTimeOption, $ServiceGroupOther)
+  {
+    $this->ServiceGroupDateTimeOption = $ServiceGroupDateTimeOption;
+    $this->ServiceGroupOther = $ServiceGroupOther;
+  }
+
+}

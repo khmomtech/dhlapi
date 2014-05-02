@@ -1,0 +1,62 @@
+<?php
+
+namespace Wk\DhlApiBundle\Model\B2b;
+
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\XmlRoot;
+use JMS\Serializer\Annotation\XmlAttribute;
+use JMS\Serializer\Annotation\SerializedName;
+
+/**
+ * Class Version
+ * @package Wk\DhlApiBundle\Model\B2b
+ * @XmlRoot("version")
+ */
+class Version
+{
+
+  /**
+   *
+   * @var int $majorRelease
+   * @access public
+   * @Type("integer")
+   * @SerializedName("major_release")
+   * @XmlAttribute
+   */
+  public $majorRelease = null;
+
+  /**
+   *
+   * @var int $minorRelease
+   * @access public
+   * @Type("integer")
+   * @SerializedName("minor_release")
+   * @XmlAttribute
+   */
+  public $minorRelease = null;
+
+  /**
+   *
+   * @var double $build
+   * @access public
+   * @Type("double")
+   * @SerializedName("build")
+   * @XmlAttribute
+   */
+  public $build = null;
+
+  /**
+   *
+   * @param int $majorRelease
+   * @param int $minorRelease
+   * @param double $build
+   * @access public
+   */
+  public function __construct($majorRelease, $minorRelease, $build = null)
+  {
+    $this->majorRelease = $majorRelease;
+    $this->minorRelease = $minorRelease;
+    $this->build = $build;
+  }
+
+}

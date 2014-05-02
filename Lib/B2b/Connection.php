@@ -11,6 +11,42 @@ use Monolog\Logger;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+use Wk\DhlApiBundle\Model\B2b\Version;
+use Wk\DhlApiBundle\Model\B2b\AuthentificationType;
+
+use Wk\DhlApiBundle\Model\B2b\ShipmentNumberType;
+use Wk\DhlApiBundle\Model\B2b\ShipmentOrderDDType;
+use Wk\DhlApiBundle\Model\B2b\ShipmentOrderTDType;
+
+use Wk\DhlApiBundle\Model\B2b\PickupAddressType;
+use Wk\DhlApiBundle\Model\B2b\PickupOrdererType;
+use Wk\DhlApiBundle\Model\B2b\PickupBookingInformationType;
+
+use Wk\DhlApiBundle\Model\B2b\Request\BookPickupRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\CancelPickupRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\GetManifestDDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\DoManifestDDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\DoManifestTDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\GetExportDocDDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\GetExportDocTDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\GetLabelDDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\GetLabelTDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\CreateShipmentDDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\CreateShipmentTDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\DeleteShipmentDDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\DeleteShipmentTDRequest;
+use Wk\DhlApiBundle\Model\B2b\Request\UpdateShipmentDDRequest;
+
+use Wk\DhlApiBundle\Model\B2b\Response\BookPickupResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\CancelPickupResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\GetManifestDDResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\DoManifestResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\GetExportDocResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\GetLabelResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\CreateShipmentResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\DeleteShipmentResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\UpdateShipmentResponse;
+
 /**
  * Class Connection
  * Implements the Singleton pattern
@@ -99,6 +135,16 @@ class Connection
         }
 
         return $this->client;
+    }
+
+    /**
+     * Setter for the client to provide the capability to set a mock client during unit testing
+     *
+     * @param SoapClient $client
+     */
+    public function setClient(SoapClient $client)
+    {
+        $this->client = $client;
     }
 
     /**
@@ -293,12 +339,11 @@ class Connection
      *
      * @param DateTime $fromDate
      * @param DateTime $toDate
-     * @return GetManifestResponse
+     * @return GetManifestDDResponse
      */
     public function getManifestDD(DateTime $fromDate, DateTime $toDate)
     {
-        $range   = new ManifestDateRange($fromDate->format('Y-m-d'), $toDate->format('Y-m-d'));
-        $request = new GetManifestDDRequest($this->getVersion(), $fromDate->format('Y-m-d'), $range);
+        $request = new GetManifestDDRequest($this->getVersion(), $fromDate, $toDate);
 
         return $this->executeCommand('GetManifestDD', $request);
     }
@@ -317,16 +362,15 @@ class Connection
 
         try {
             $response = $client->__soapCall($commandName, array($request));
-        } catch (SoapFault $soapException) {
-            $this->logger->debug($e->getMessage());
+            if($response->Status->StatusCode !== 0) {
+                throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+            }
+        } catch (Exception $exception) {
+            $this->logger->debug($exception->getMessage());
             $this->logger->info($client->__getLastRequest());
             $this->logger->info($client->__getLastResponse());
 
-            throw $soapException;
-        }
-
-        if(@$response->Status->StatusCode !== 0) {
-            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+            throw $exception;
         }
 
         return $response;
@@ -348,7 +392,7 @@ class Connection
             'location'      => $this->cigEndPoint,
         );
 
-        $auth   = new AuthentificationType($this->isUser, $this->isPassword, $this->ekp);
+        $auth   = new AuthentificationType($this->isUser, $this->isPassword);
         $header = new SoapHeader($this->cisBase, 'Authentification', $auth);
 
         try {

@@ -18,8 +18,3 @@ services:
         calls:
             - [setParams, ["%wk_dhl_api.b2b.params%"]]
             - [setLogger, ["@logger"]]
-
-    wk_dhl_api.b2b.converter.pickup_booking_information:
-        class: Wk\DhlApiBundle\Lib\B2b\Converter\PickupBookingInformationConverter
-        tags:
-            - { name: request.param_converter, priority: -2, converter: wk_dhl_api.b2b.converter.pickup_booking_information }

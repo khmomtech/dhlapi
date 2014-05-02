@@ -3,12 +3,10 @@
 namespace Wk\DhlApiBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use JMS\SerializerBundle\Serializer;
 
 /**
  * Base class for all controller using object serialization
@@ -18,22 +16,25 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
  */
 class SerializerController extends Controller
 {
-
-    // @var Serializer for class
+    /**
+     * @var Serializer
+     */
     protected $serializer;
 
     /**
-     * Class constructor
-     * Initializes the class serializer
+     * Overwritten to ensure to have a service container
+     *
+     * @param ContainerInterface $container
      */
-    public function __construct()
+    public function setContainer(ContainerInterface $container = null)
     {
-        $encoders = array(
-            'xml'  => new XmlEncoder(),
-            'json' => new JsonEncoder()
-        );
-        $normalizers = array(new GetSetMethodNormalizer());
-        $this->serializer = new Serializer($normalizers, $encoders);
+        parent::setContainer($container);
+
+        if(is_null($container)) {
+            $this->serializer = null;
+        } else {
+            $this->serializer = $this->get('jms_serializer');
+        }
     }
 
     /**
@@ -45,7 +46,7 @@ class SerializerController extends Controller
     public function generateResponse($response)
     {
         return new Response(
-            $this->serializer->encode(
+            $this->serializer->serialize(
                 $response,
                 $this->getRequest()->get('_format')
             )
