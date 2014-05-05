@@ -49,7 +49,6 @@ Required settings for production environment:
 Optional settings for production environment:
 
     dhl_api_b2b_attendance: '01'
-    dhl_api_b2b_product_id: 'DDN' (alternative value: 'TDN')
 
 For dev and test environment use your developer account to authenticate with:
 
