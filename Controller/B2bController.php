@@ -123,8 +123,6 @@ class B2bController extends SerializerController
             'Wk\DhlApiBundle\Model\B2b\ShipmentOrderDDType',
             'json'
         );
-        print_r($shipmentOrder);
-        print_r($this->serializer->serialize($shipmentOrder, 'xml'));
 
         $result = $this->connection->createShipmentDD($shipmentOrder);
 

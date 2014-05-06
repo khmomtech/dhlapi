@@ -71,18 +71,9 @@ class Connection
     protected $cisBase;
     protected $isUser;
     protected $isPassword;
-    protected $ekp;
-    protected $attendance;
     protected $cigUser;
     protected $cigPassword;
     protected $cigEndPoint;
-
-    /**
-     * Constructor for the class
-     */
-    public function __construct()
-    {
-    }
 
     /**
      * @param Logger $logger
@@ -99,8 +90,6 @@ class Connection
      */
     public function setParams (array $params)
     {
-        $this->ekp          = $params['ekp'];
-        $this->attendance   = $params['attendance'];
         $this->wsdl         = $params['wsdl_uri'];
         $this->cisBase      = $params['cis_base_uri'];
         $this->isUser       = $params['intraship']['user'];

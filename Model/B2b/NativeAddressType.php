@@ -138,7 +138,7 @@ class NativeAddressType
    * @param string $note
    * @access public
    */
-  public function __construct($streetName, $streetNumber, $careOfName, $Zip, $city, $district, $Origin, $floorNumber, $roomNumber, $languageCodeISO, $note)
+  public function __construct($streetName, $streetNumber, $careOfName, $Zip, $city, $district, $Origin, $floorNumber = null, $roomNumber = null, $languageCodeISO = 'DE', $note = null)
   {
     $this->streetName = $streetName;
     $this->streetNumber = $streetNumber;

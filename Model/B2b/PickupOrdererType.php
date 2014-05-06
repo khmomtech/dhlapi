@@ -32,7 +32,7 @@ class PickupOrdererType extends PickupAddressType
      * @param string $Name3
      * @access public
      */
-    public function __construct(NameType $Company, NativeAddressType $Address, CommunicationType $Communication, $Name3)
+    public function __construct(NameType $Company, NativeAddressType $Address, CommunicationType $Communication, $Name3 = null)
     {
         parent::__construct($Company, $Address, $Communication);
 

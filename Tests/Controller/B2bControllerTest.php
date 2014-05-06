@@ -74,7 +74,7 @@ class B2bControllerTest extends WebTestCase
         $this->assertTrue(
             $client->getResponse()->isSuccessful(),
             sprintf(
-                'Status code is %s instead of 2XX',
+                "Status code is %s instead of 2XX",
                 $client->getResponse()->getStatusCode()
             )
         );
