@@ -338,11 +338,10 @@ class Connection
     }
 
     /**
-     * @param string    $commandName
-     * @param object    $request
+     * @param string $commandName
+     * @param object $request
      * @return mixed
-     * @throws SoapFault
-     * @throws BadRequestHttpException
+     * @throws \Exception
      */
     private function executeCommand ($commandName, $request)
     {

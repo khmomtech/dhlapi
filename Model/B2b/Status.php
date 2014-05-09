@@ -7,27 +7,27 @@ class Status
 
   /**
    * 
-   * @var statuscode $statuscode
+   * @var int $statuscode
    * @access public
    */
   public $statuscode = null;
 
   /**
    * 
-   * @var statusDescription $statusDescription
+   * @var string $statusDescription
    * @access public
    */
   public $statusDescription = null;
 
   /**
    * 
-   * @param statuscode $statuscode
-   * @param statusDescription $statusDescription
+   * @param int $statusCode
+   * @param string $statusDescription
    * @access public
    */
-  public function __construct($statuscode, $statusDescription)
+  public function __construct($statusCode, $statusDescription)
   {
-    $this->statuscode = $statuscode;
+    $this->statuscode = $statusCode;
     $this->statusDescription = $statusDescription;
   }
 
