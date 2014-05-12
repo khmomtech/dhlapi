@@ -6,6 +6,8 @@ use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\XmlRoot;
 use JMS\Serializer\Annotation\XmlAttribute;
 use JMS\Serializer\Annotation\SerializedName;
+use Wk\DhlApiBundle\Model\B2b\CountryType;
+use Wk\DhlApiBundle\Model\B2b\ZipType;
 
 /**
  * Class NativeAddressType
@@ -138,7 +140,7 @@ class NativeAddressType
    * @param string $note
    * @access public
    */
-  public function __construct($streetName, $streetNumber, $careOfName, $Zip, $city, $district, $Origin, $floorNumber = null, $roomNumber = null, $languageCodeISO = 'DE', $note = null)
+  public function __construct($streetName, $streetNumber, $careOfName, ZipType $Zip, $city, $district, CountryType $Origin, $floorNumber = null, $roomNumber = null, $languageCodeISO = 'DE', $note = null)
   {
     $this->streetName = $streetName;
     $this->streetNumber = $streetNumber;

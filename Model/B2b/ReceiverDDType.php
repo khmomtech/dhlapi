@@ -25,16 +25,16 @@ class ReceiverDDType extends ReceiverType
     /**
      * @param NameType $Company
      * @param NativeAddressType $Address
-     * @param PackstationType $Packstation
-     * @param PostfilialeType $Postfiliale
      * @param CommunicationType $Communication
      * @param string $VAT
+     * @param PackstationType $Packstation
+     * @param PostfilialeType $Postfiliale
      * @param string $CompanyName3
      * @access public
      */
-    public function __construct($Company, $Address, $Packstation, $Postfiliale, $Communication, $VAT, $CompanyName3)
+    public function __construct($Company, $Address, $Communication, $VAT = null, $Packstation = null, $Postfiliale = null, $CompanyName3 = null)
     {
-        parent::__construct($Company, $Address, $Packstation, $Postfiliale, $Communication, $VAT);
+        parent::__construct($Company, $Address, $Communication, $VAT, $Packstation, $Postfiliale);
 
         $this->CompanyName3 = $CompanyName3;
     }

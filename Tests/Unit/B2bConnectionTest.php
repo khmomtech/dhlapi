@@ -6,6 +6,7 @@ use DateTime;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Wk\DhlApiBundle\Lib\B2b\Connection;
+use Wk\DhlApiBundle\Model\B2b\Attendance;
 use Wk\DhlApiBundle\Model\B2b\CommunicationType;
 use Wk\DhlApiBundle\Model\B2b\Company;
 use Wk\DhlApiBundle\Model\B2b\CountryType;
@@ -15,9 +16,15 @@ use Wk\DhlApiBundle\Model\B2b\Person;
 use Wk\DhlApiBundle\Model\B2b\PickupAddressType;
 use Wk\DhlApiBundle\Model\B2b\PickupBookingInformationType;
 use Wk\DhlApiBundle\Model\B2b\PickupOrdererType;
+use Wk\DhlApiBundle\Model\B2b\ReceiverDDType;
+use Wk\DhlApiBundle\Model\B2b\Response\CreateShipmentResponse;
+use Wk\DhlApiBundle\Model\B2b\ShipmentDDType;
+use Wk\DhlApiBundle\Model\B2b\ShipmentDetailsDDType;
+use Wk\DhlApiBundle\Model\B2b\ShipmentItemDDType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentNumberType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentOrderDDType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentOrderTDType;
+use Wk\DhlApiBundle\Model\B2b\ShipperDDType;
 use Wk\DhlApiBundle\Model\B2b\ZipType;
 
 /**
@@ -336,7 +343,7 @@ class B2bConnectionTest extends \PHPUnit_Framework_TestCase
      * @param int $expectedStatusCode
      * @dataProvider provideDoManifestDDData
      */
-    public function testGetManifestDD(ShipmentNumberType $shipmentNumber, $responseClass, $expectedStatusCode)
+    public function testDoManifestDD(ShipmentNumberType $shipmentNumber, $responseClass, $expectedStatusCode)
     {
         $response = $this->connection->doManifestDD($shipmentNumber);
 
@@ -358,7 +365,7 @@ class B2bConnectionTest extends \PHPUnit_Framework_TestCase
      * @param int $expectedStatusCode
      * @dataProvider provideDoManifestTDData
      */
-    public function testGetManifestTD(ShipmentNumberType $shipmentNumber, $responseClass, $expectedStatusCode)
+    public function testDoManifestTD(ShipmentNumberType $shipmentNumber, $responseClass, $expectedStatusCode)
     {
         $response = $this->connection->doManifestTD($shipmentNumber);
 
@@ -379,8 +386,33 @@ class B2bConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function provideCreateShipmentDDData()
     {
-        // TODO
+        $attendance = new Attendance('01');
+        $zip        = new ZipType('08150');
+        $tomorrow   = new DateTime('tomorrow');
+        $yesterday  = new DateTime('yesterday');
+
+        // Create objects for valid requests
+        $validItem      = new ShipmentItemDDType(10, 50, 30, 15);
+        $validPerson    = new Person(null, 'Herr', 'Max', 'Moritz', 'Mustermann');
+        $validCompany   = new Company('Musterfirma GmbH', null);
+        $validName      = new NameType($validPerson, $validCompany);
+        $validCountry   = new CountryType('Germany', 'DE', null);
+        $validAddress   = new NativeAddressType('Musterstraße', '1', null, $zip, 'Musterhausen', null, $validCountry);
+        $validComm      = new CommunicationType('+493012345678', 'max@example.org', null, null, 'example.org', null);
+        $validShipper   = new ShipperDDType($validName, $validAddress, $validComm, '19');
+        $validDetails   = new ShipmentDetailsDDType('EPN', $tomorrow, '5000000000', $attendance, $validItem, 300, 'EUR', '1234567890');
+        $validReceiver  = new ReceiverDDType($validCompany, $validShipper, $validComm);
+        $validShipment  = new ShipmentDDType($validDetails, $validShipper, $validReceiver);
+        $validOrder     = new ShipmentOrderDDType(1, $validShipment);
+
+        // Create objects for invalid requests
+        $invalidDetails     = new ShipmentDetailsDDType('EPN', $yesterday, '5000000000', $attendance, $validItem, 300, 'EUR', '1234567890');
+        $invalidShipment    = new ShipmentDDType($invalidDetails, $validShipper, $validReceiver);
+        $invalidOrder       = new ShipmentOrderDDType(1, $invalidShipment);
+
         return array(
+            array($validOrder,      'CreateShipmentResponse', 200),
+            array($invalidOrder,    'CreateShipmentResponse', 400),
         );
     }
 
@@ -392,24 +424,34 @@ class B2bConnectionTest extends \PHPUnit_Framework_TestCase
     public function provideBookPickupData()
     {
         // Set up the booking information
-        $earliestPickup = new DateTime('tomorrow 09:00');
-        $latestPickup   = new DateTime('tomorrow 16:00');
-        $information    = new PickupBookingInformationType('TDN', '5000000000', '01', $earliestPickup, $latestPickup, null, 'Hauptgebäude', 2, 0, 5, 2, 10, 15, 30, 5);
+        $earliestPickup     = new DateTime('tomorrow 09:00');
+        $latestPickup       = new DateTime('tomorrow 16:00');
+        $validInformation   = new PickupBookingInformationType('TDN', '5000000000', '01', $earliestPickup, $latestPickup, null, 'Hauptgebäude', 2, 0, 5, 2, 10, 15, 30, 5);
+        $invalidInformation = new PickupBookingInformationType('TDN', '5000000000', '01', $earliestPickup, $latestPickup, null, 'Hauptgebäude', 2, 0, 5, 2, 10, 15, 30, 5);
 
         // Set the addresses where to pick up and of the orderer
-        $person         = new Person(null, 'Herr', 'Max', 'Moritz', 'Mustermann');
+        $validPerson    = new Person(null, 'Herr', 'Max', 'Moritz', 'Mustermann');
+        $invalidPerson  = new Person(null, 'Herr', null, 'Moritz', null);
         $company        = new Company('Musterfirma GmbH', null);
-        $name           = new NameType($person, $company);
+        $validName      = new NameType($validPerson, $company);
+        $invalidName    = new NameType($invalidPerson, $company);
         $country        = new CountryType('Germany', 'DE', null);
         $zip            = new ZipType('08150');
         $communication  = new CommunicationType('+493012345678', 'max@example.org', null, null, 'example.org', null);
-        $address        = new NativeAddressType('Musterstraße', 1, null, $zip, 'Musterhausen', null, $country);
-        $pickupAddress  = new PickupAddressType($name, $address, $communication);
-        $ordererAddress = new PickupOrdererType($name, $address, $communication);
+        $validAddress   = new NativeAddressType('Musterstraße', '1', null, $zip, 'Musterhausen', null, $country);
+        $invalidAddress = new NativeAddressType(null, '1', null, $zip, 'Musterhausen', null, $country);
+        $pickupAddress  = new PickupAddressType($validName, $validAddress, $communication);
+        $invalidPickup  = new PickupAddressType($invalidName, $validAddress, $communication);
+        $ordererAddress = new PickupOrdererType($validName, $validAddress, $communication);
+        $invalidOrderer = new PickupOrdererType($validName, $invalidAddress, $communication);
 
         return array(
-            array($information, $pickupAddress, null,            'BookPickupResponse'),
-            array($information, $pickupAddress, $ordererAddress, 'BookPickupResponse'),
+            array($validInformation,    $pickupAddress, null,            'BookPickupResponse', 200),
+            array($validInformation,    $pickupAddress, $ordererAddress, 'BookPickupResponse', 200),
+            array($validInformation,    null,           $ordererAddress, 'stdClass', 400),
+            array($invalidInformation,  $pickupAddress, $ordererAddress, 'stdClass', 400),
+            array($validInformation,    $invalidPickup, $ordererAddress, 'stdClass', 400),
+            array($validInformation,    $invalidPickup, $invalidOrderer, 'stdClass', 400),
         );
     }
 }

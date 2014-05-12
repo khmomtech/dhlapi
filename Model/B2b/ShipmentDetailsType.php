@@ -81,7 +81,7 @@ class ShipmentDetailsType
      * @param string $NotificationEmailText
      * @access public
      */
-    public function __construct($ProductCode = 'EPN', DateTime $ShipmentDate, $DeclaredValueOfGoods, $DeclaredValueOfGoodsCurrency = 'EUR', ShipmentNotificationType $Notification, $NotificationEmailText)
+    public function __construct($ProductCode = 'EPN', DateTime $ShipmentDate, $DeclaredValueOfGoods, $DeclaredValueOfGoodsCurrency = 'EUR', ShipmentNotificationType $Notification = null, $NotificationEmailText = null)
     {
         $this->ProductCode = $ProductCode;
         $this->ShipmentDate = $ShipmentDate->format('Y-m-d');

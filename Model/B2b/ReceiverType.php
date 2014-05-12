@@ -73,13 +73,13 @@ class ReceiverType
      *
      * @param NameType $Company
      * @param NativeAddressType $Address
-     * @param PackstationType $Packstation
-     * @param PostfilialeType $Postfiliale
      * @param CommunicationType $Communication
      * @param string $VAT
+     * @param PackstationType $Packstation
+     * @param PostfilialeType $Postfiliale
      * @access public
      */
-    public function __construct($Company, $Address, $Packstation, $Postfiliale, $Communication, $VAT)
+    public function __construct($Company, $Address, $Communication, $VAT = null, $Packstation = null, $Postfiliale = null)
     {
         $this->Company = $Company;
         $this->Address = $Address;

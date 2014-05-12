@@ -38,7 +38,7 @@ class NameType
    * @param Company $Company
    * @access public
    */
-  public function __construct($Person, $Company)
+  public function __construct(Person $Person, Company $Company)
   {
     $this->Person = $Person;
     $this->Company = $Company;

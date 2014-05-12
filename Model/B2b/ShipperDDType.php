@@ -30,7 +30,7 @@ class ShipperDDType extends ShipperType
      * @param string $Remark
      * @access public
      */
-    public function __construct($Company, $Address, $Communication, $VAT, $Remark)
+    public function __construct($Company, $Address, $Communication, $VAT = null, $Remark = null)
     {
         parent::__construct($Company, $Address, $Communication, $VAT);
 

@@ -79,7 +79,7 @@ class ShipmentDDType
    * @param FurtherAddressesDDType $FurtherAddresses
    * @access public
    */
-  public function __construct(ShipmentDetailsDDType $ShipmentDetails, ShipperDDType $Shipper, ReceiverDDType $Receiver, ExportDocumentDDType $ExportDocument, IdentityType $Identity, FurtherAddressesDDType $FurtherAddresses)
+  public function __construct(ShipmentDetailsDDType $ShipmentDetails, ShipperDDType $Shipper, ReceiverDDType $Receiver, ExportDocumentDDType $ExportDocument = null, IdentityType $Identity = null, FurtherAddressesDDType $FurtherAddresses = null)
   {
     $this->ShipmentDetails = $ShipmentDetails;
     $this->Shipper = $Shipper;

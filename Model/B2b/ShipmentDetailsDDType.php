@@ -94,21 +94,21 @@ class ShipmentDetailsDDType extends ShipmentDetailsType
      *
      * @param string $ProductCode
      * @param DateTime $ShipmentDate
-     * @param float $DeclaredValueOfGood
-     * @param string $DeclaredValueOfGoodsCurrency
      * @param string $EKP
      * @param Attendance $Attendance
+     * @param ShipmentItemDDType $ShipmentItem
+     * @param float $DeclaredValueOfGood
+     * @param string $DeclaredValueOfGoodsCurrency
      * @param string $CustomerReference
      * @param string $Description
      * @param string $DeliveryRemarks
-     * @param ShipmentItemDDType $ShipmentItem
      * @param ShipmentServiceDDType $Service
      * @param ShipmentNotificationType $Notification
      * @param string $NotificationEmailText
      * @param BankType $BankData
      * @access public
      */
-    public function __construct($ProductCode, DateTime $ShipmentDate, $DeclaredValueOfGood, $DeclaredValueOfGoodsCurrency, $EKP, $Attendance, $CustomerReference, $Description, $DeliveryRemarks, ShipmentItemDDType $ShipmentItem, ShipmentServiceDDType $Service = null, ShipmentNotificationType $Notification = null, $NotificationEmailText = null, BankType $BankData = null)
+    public function __construct($ProductCode, DateTime $ShipmentDate, $EKP, Attendance $Attendance, ShipmentItemDDType $ShipmentItem, $DeclaredValueOfGood, $DeclaredValueOfGoodsCurrency, $CustomerReference, $Description = null, $DeliveryRemarks = null, ShipmentServiceDDType $Service = null, ShipmentNotificationType $Notification = null, $NotificationEmailText = null, BankType $BankData = null)
     {
         parent::__construct($ProductCode, $ShipmentDate, $DeclaredValueOfGood, $DeclaredValueOfGoodsCurrency, $Notification, $NotificationEmailText);
 
