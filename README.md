@@ -39,16 +39,11 @@ to "talk" with DHL you'll need to set following parameters in your parameters.ym
 
 Required settings for production environment:
 
-    dhl_api_b2b_ekp: [YOUR_EKP_NUMBER]
     dhl_api_b2b_is_user: [YOUR_INTRASHIP_USER]
     dhl_api_b2b_is_password: [YOUR_INTRASHIP_PASSWORD]
     dhl_api_b2b_cig_user: [YOUR_APPLICATION_ID]
     dhl_api_b2b_cig_password: [YOUR_APPLICATION_TOKEN]
     dhl_api_b2b_cig_endpoint_uri: 'https://cig.dhl.de/services/production/soap'
-
-Optional settings for production environment:
-
-    dhl_api_b2b_attendance: '01'
 
 For dev and test environment use your developer account to authenticate with:
 
