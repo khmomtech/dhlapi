@@ -158,7 +158,7 @@ class Connection
      * @param PickupOrdererType $orderer
      * @return BookPickupResponse
      */
-    public function bookPickup(PickupBookingInformationType $bookingInformation, PickupAddressType $address, PickupOrdererType $orderer)
+    public function bookPickup(PickupBookingInformationType $bookingInformation, PickupAddressType $address, PickupOrdererType $orderer = null)
     {
         $request = new BookPickupRequest($this->getVersion(), $bookingInformation, $address, $orderer);
 

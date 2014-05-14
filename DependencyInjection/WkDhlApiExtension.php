@@ -36,6 +36,7 @@ class WkDhlApiExtension extends Extension
      */
     private function setParams($path, array $config, ContainerBuilder $container)
     {
+        $container->setParameter($path, $config);
         foreach ($config as $key => $conf) {
             if(is_array($conf)) {
                 $this->setParams("$path.$key", $conf, $container);

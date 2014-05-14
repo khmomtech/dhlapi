@@ -6,7 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use JMS\SerializerBundle\Serializer;
+use Wk\DhlApiBundle\Model\B2b\Response\ErrorResponse;
+use JMS\Serializer\Serializer;
 
 /**
  * Base class for all controller using object serialization
@@ -41,15 +42,30 @@ class SerializerController extends Controller
      * Convenience method to return simple responses
      *
      * @param mixed $response
+     * @param int $statusCode
      * @return Response
      */
-    public function generateResponse($response)
+    public function generateResponse($response, $statusCode = 200)
     {
         return new Response(
             $this->serializer->serialize(
                 $response,
                 $this->getRequest()->get('_format')
-            )
+            ),
+            $statusCode
         );
+    }
+
+    /**
+     * @param string $errorMessage
+     * @param int $errorCode
+     * @param int $statusCode
+     * @return Response
+     */
+    public function generateError($errorMessage, $errorCode, $statusCode = 500)
+    {
+        $error = new ErrorResponse($errorCode, $errorMessage);
+
+        return $this->generateResponse($error, $statusCode);
     }
 }

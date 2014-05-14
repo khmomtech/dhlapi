@@ -1,20 +1,10 @@
-parameters:
-    wk_dhl_api.b2b.params:
-        ekp:                "%wk_dhl_api.b2b.ekp%"
-        attendance:         "%wk_dhl_api.b2b.attendance%"
-        wsdl_uri:           "%wk_dhl_api.b2b.wsdl_uri%"
-        cis_base_uri:       "%wk_dhl_api.b2b.cis_base_uri%"
-        intraship:
-            user:           "%wk_dhl_api.b2b.intraship.user%"
-            password:       "%wk_dhl_api.b2b.intraship.password%"
-        cig:
-            user:           "%wk_dhl_api.b2b.cig.user%"
-            password:       "%wk_dhl_api.b2b.cig.password%"
-            end_point_uri:  "%wk_dhl_api.b2b.cig.end_point_uri%"
-
 services:
     wk_dhl_api.b2b.connection:
         class: Wk\DhlApiBundle\Lib\B2b\Connection
         calls:
-            - [setParams, ["%wk_dhl_api.b2b.params%"]]
+            - [setParams, ["%wk_dhl_api.b2b.connection%"]]
             - [setLogger, ["@logger"]]
+    wk_dhl_api.b2b.ident_code:
+        class: Wk\DhlApiBundle\Lib\B2b\IdentCode
+        calls:
+            - [setAccounts, ["%wk_dhl_api.b2b.accounts%"]]

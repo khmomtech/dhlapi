@@ -1,11 +1,12 @@
 <?php
 
-namespace Wk\DhlApiBundle\Tests\Unit;
+namespace Wk\DhlApiBundle\Tests\Unit\B2b;
 
 use DateTime;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Wk\DhlApiBundle\Lib\B2b\Connection;
+use Wk\DhlApiBundle\Lib\B2b\IdentCode;
 use Wk\DhlApiBundle\Model\B2b\Attendance;
 use Wk\DhlApiBundle\Model\B2b\CommunicationType;
 use Wk\DhlApiBundle\Model\B2b\Company;
@@ -28,10 +29,10 @@ use Wk\DhlApiBundle\Model\B2b\ShipperDDType;
 use Wk\DhlApiBundle\Model\B2b\ZipType;
 
 /**
- * Class B2bConnectionTest
- * @package Wk\DhlApiBundle\Tests\Lib
+ * Class ConnectionTest
+ * @package Wk\DhlApiBundle\Tests\Unit\B2b
  */
-class B2bConnectionTest extends \PHPUnit_Framework_TestCase
+class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Connection
@@ -39,9 +40,9 @@ class B2bConnectionTest extends \PHPUnit_Framework_TestCase
     private $connection;
 
     /**
-     * @var ContainerInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    private $container;
+    private $client;
 
     /**
      * Set up

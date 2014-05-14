@@ -56,7 +56,7 @@ class BookPickupRequest
      * @param PickupOrdererType $ContactOrderer
      * @access public
      */
-    public function __construct(Version $Version, PickupBookingInformationType $BookingInformation, PickupAddressType $PickupAddress, PickupOrdererType $ContactOrderer)
+    public function __construct(Version $Version, PickupBookingInformationType $BookingInformation, PickupAddressType $PickupAddress, PickupOrdererType $ContactOrderer = null)
     {
         $this->Version = $Version;
         $this->BookingInformation = $BookingInformation;

@@ -8,7 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Wk\DhlApiBundle\Lib\B2b\IdentCode;
 use Wk\DhlApiBundle\Lib\B2b\Connection;
+use Wk\DhlApiBundle\Model\B2b\Response\IdentCodeResponse;
 use Wk\DhlApiBundle\Model\B2b\ShipmentNumberType;
 
 /**
@@ -38,6 +40,46 @@ class B2bController extends SerializerController
     }
 
     /**
+     * Returns an ident code of the given type (see config)
+     *
+     * @Method ("GET")
+     * @Route (
+     *      "/identcode/{account}/{id}.{_format}",
+     *      name="wk_dhl_api_b2b_ident_code",
+     *      requirements={
+     *          "id"="\d+",
+     *          "type"="\w+",
+     *          "_format"="(xml|json)"
+     *      },
+     *      defaults={
+     *          "_format"="json"
+     *      }
+     * )
+     * @param Request $request
+     * @return Response
+     */
+    public function getIdentCodeAction(Request $request)
+    {
+        try {
+            $serial  = intval($request->attributes->get('id'));
+            $account = strval($request->attributes->get('account'));
+
+            $identCode = $this->get('wk_dhl_api.b2b.ident_code');
+            $identCode->setSerial($serial);
+
+            $code = $identCode->get($account);
+
+            $response = new IdentCodeResponse($code, IdentCode::format($code));
+
+            return $this->generateResponse($response);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
+    }
+
+    /**
      * Book pickup action
      *
      * @Method ("POST")
@@ -57,19 +99,25 @@ class B2bController extends SerializerController
      */
     public function bookPickupAction(Request $request)
     {
-        $pickupRequest = $this->serializer->deserialize(
-            $request->getContent(),
-            'Wk\DhlApiBundle\Model\B2b\Request\BookPickupRequest',
-            'json'
-        );
+        try {
+            $pickupRequest = $this->serializer->deserialize(
+                $request->getContent(),
+                'Wk\DhlApiBundle\Model\B2b\Request\BookPickupRequest',
+                'json'
+            );
 
-        $result = $this->connection->bookPickup(
-            $pickupRequest->BookingInformation,
-            $pickupRequest->PickupAddress,
-            $pickupRequest->ContactOrderer
-        );
+            $result = $this->connection->bookPickup(
+                $pickupRequest->BookingInformation,
+                $pickupRequest->PickupAddress,
+                $pickupRequest->ContactOrderer
+            );
 
-        return $this->generateResponse($result);
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
     }
 
     /**
@@ -93,9 +141,15 @@ class B2bController extends SerializerController
      */
     public function cancelPickupAction(Request $request)
     {
-        $result = $this->connection->cancelPickup($request->query->get('id'));
+        try {
+            $result = $this->connection->cancelPickup($request->query->get('id'));
 
-        return $this->generateResponse($result);
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
     }
 
     /**
@@ -118,15 +172,21 @@ class B2bController extends SerializerController
      */
     public function createShipmentDDAction(Request $request)
     {
-        $shipmentOrder = $this->serializer->deserialize(
-            $request->getContent(),
-            'Wk\DhlApiBundle\Model\B2b\ShipmentOrderDDType',
-            'json'
-        );
+        try {
+            $shipmentOrder = $this->serializer->deserialize(
+                $request->getContent(),
+                'Wk\DhlApiBundle\Model\B2b\ShipmentOrderDDType',
+                'json'
+            );
 
-        $result = $this->connection->createShipmentDD($shipmentOrder);
+            $result = $this->connection->createShipmentDD($shipmentOrder);
 
-        return $this->generateResponse($result);
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
     }
 
     /**
@@ -150,10 +210,16 @@ class B2bController extends SerializerController
      */
     public function deleteShipmentDDAction(Request $request)
     {
-        $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
-        $result = $this->connection->deleteShipmentDD($shipmentNumber);
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $result = $this->connection->deleteShipmentDD($shipmentNumber);
 
-        return $this->generateResponse($result);
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
     }
 
     /**
@@ -177,16 +243,22 @@ class B2bController extends SerializerController
      */
     public function updateShipmentDDAction(Request $request)
     {
-        $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
-        $shipmentOrder  = $this->serializer->deserialize(
-            $request->getContent(),
-            'Wk\DhlApiBundle\Model\B2b\ShipmentOrderDDType',
-            'json'
-        );
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $shipmentOrder  = $this->serializer->deserialize(
+                $request->getContent(),
+                'Wk\DhlApiBundle\Model\B2b\ShipmentOrderDDType',
+                'json'
+            );
 
-        $result = $this->connection->updateShipmentDD($shipmentNumber, $shipmentOrder);
+            $result = $this->connection->updateShipmentDD($shipmentNumber, $shipmentOrder);
 
-        return $this->generateResponse($result);
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
     }
 
     /**
@@ -210,10 +282,16 @@ class B2bController extends SerializerController
      */
     public function getLabelDDAction(Request $request)
     {
-        $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
-        $result = $this->connection->getLabelDD($shipmentNumber);
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $result = $this->connection->getLabelDD($shipmentNumber);
 
-        return $this->generateResponse($result);
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
     }
 
     /**
@@ -237,18 +315,24 @@ class B2bController extends SerializerController
      */
     public function getExportDocDDAction(Request $request)
     {
-        $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
-        $result = $this->connection->getExportDocDD($shipmentNumber, 'PDF');
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $result = $this->connection->getExportDocDD($shipmentNumber, 'PDF');
 
-        if($request->query->get('_format') == 'pdf') {
-            return new Response(
-                base64_decode($result->ExportDocData->ExportDocPDFData),
-                Response::HTTP_OK,
-                array('content-type' => 'application/pdf')
-            );
+            if($request->query->get('_format') == 'pdf') {
+                return new Response(
+                    base64_decode($result->ExportDocData->ExportDocPDFData),
+                    Response::HTTP_OK,
+                    array('content-type' => 'application/pdf')
+                );
+            }
+
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
         }
-
-        return $this->generateResponse($result);
     }
 
     /**
@@ -271,15 +355,21 @@ class B2bController extends SerializerController
      */
     public function createShipmentTDAction(Request $request)
     {
-        $shipmentOrder = $this->serializer->deserialize(
-            $request->getContent(),
-            'Wk\DhlApiBundle\Model\B2b\ShipmentOrderTDType',
-            'json'
-        );
+        try {
+            $shipmentOrder = $this->serializer->deserialize(
+                $request->getContent(),
+                'Wk\DhlApiBundle\Model\B2b\ShipmentOrderTDType',
+                'json'
+            );
 
-        $result = $this->connection->createShipmentTD($shipmentOrder);
+            $result = $this->connection->createShipmentTD($shipmentOrder);
 
-        return $this->generateResponse($result);
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
     }
 
     /**
@@ -303,10 +393,16 @@ class B2bController extends SerializerController
      */
     public function deleteShipmentTDAction(Request $request)
     {
-        $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
-        $result = $this->connection->deleteShipmentTD($shipmentNumber);
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $result = $this->connection->deleteShipmentTD($shipmentNumber);
 
-        return $this->generateResponse($result);
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
     }
 
     /**
@@ -330,10 +426,16 @@ class B2bController extends SerializerController
      */
     public function getLabelTDAction(Request $request)
     {
-        $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
-        $result = $this->connection->getLabelTD($shipmentNumber);
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $result = $this->connection->getLabelTD($shipmentNumber);
 
-        return $this->generateResponse($result);
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
     }
 
     /**
@@ -357,17 +459,23 @@ class B2bController extends SerializerController
      */
     public function getExportDocTDAction(Request $request)
     {
-        $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
-        $result = $this->connection->getExportDocTD($shipmentNumber, 'PDF');
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $result = $this->connection->getExportDocTD($shipmentNumber, 'PDF');
 
-        if($request->query->get('_format') == 'pdf') {
-            return new Response(
-                base64_decode($result->ExportDocData->ExportDocPDFData),
-                Response::HTTP_OK,
-                array('content-type' => 'application/pdf')
-            );
+            if($request->query->get('_format') == 'pdf') {
+                return new Response(
+                    base64_decode($result->ExportDocData->ExportDocPDFData),
+                    Response::HTTP_OK,
+                    array('content-type' => 'application/pdf')
+                );
+            }
+
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
         }
-
-        return $this->generateResponse($result);
     }
 }
