@@ -243,6 +243,10 @@ class B2bControllerTest extends WebTestCase
         );
 
         $validPickup = array(
+            'product'   => 'DDN',
+            'account'   => '5000000000',
+            'attendance'=> '01',
+            'date'      => date('Y-m-d', strtotime('tomorrow')),
             'location'  => 'Hauptgebäude',
             'count'     => 1,
             'time'      => array(

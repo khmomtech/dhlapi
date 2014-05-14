@@ -12,14 +12,15 @@ use Wk\DhlApiBundle\Model\B2b\Attendance;
 use Wk\DhlApiBundle\Model\B2b\CommunicationType;
 use Wk\DhlApiBundle\Model\B2b\Company;
 use Wk\DhlApiBundle\Model\B2b\CountryType;
+use Wk\DhlApiBundle\Model\B2b\CreationState;
 use Wk\DhlApiBundle\Model\B2b\NameType;
 use Wk\DhlApiBundle\Model\B2b\NativeAddressType;
 use Wk\DhlApiBundle\Model\B2b\Person;
 use Wk\DhlApiBundle\Model\B2b\PickupAddressType;
 use Wk\DhlApiBundle\Model\B2b\PickupBookingInformationType;
 use Wk\DhlApiBundle\Model\B2b\PickupOrdererType;
+use Wk\DhlApiBundle\Model\B2b\PieceInformation;
 use Wk\DhlApiBundle\Model\B2b\ReceiverDDType;
-use Wk\DhlApiBundle\Model\B2b\Response\CreateShipmentResponse;
 use Wk\DhlApiBundle\Model\B2b\ShipmentDDType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentDetailsDDType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentItemDDType;
@@ -27,7 +28,11 @@ use Wk\DhlApiBundle\Model\B2b\ShipmentNumberType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentOrderDDType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentOrderTDType;
 use Wk\DhlApiBundle\Model\B2b\ShipperDDType;
+use Wk\DhlApiBundle\Model\B2b\StatusInformation;
+use Wk\DhlApiBundle\Model\B2b\Version;
 use Wk\DhlApiBundle\Model\B2b\ZipType;
+use Wk\DhlApiBundle\Model\B2b\Response\CreateShipmentResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\BookPickupResponse;
 
 /**
  * Class ConnectionTest
@@ -46,7 +51,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     private $client;
 
     /**
-     * Set up
+     * Set up before each test
      */
     public function setUp ()
     {
@@ -67,7 +72,6 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $logger = new Logger('DhlApi');
 
         $this->connection = new Connection();
-        $this->connection->setClient($this->client);
         $this->connection->setLogger($logger);
     }
 
@@ -75,16 +79,19 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      * Tests creating a shipment (DD)
      *
      * @param ShipmentOrderDDType $shipmentOrder
-     * @param string $responseClass
+     * @param CreateShipmentResponse $expectedResponse
      * @param int $expectedStatusCode
      * @dataProvider provideCreateShipmentDDData
      */
-    public function testCreateShipmentDD(ShipmentOrderDDType $shipmentOrder, $responseClass, $expectedStatusCode)
+    public function testCreateShipmentDD(ShipmentOrderDDType $shipmentOrder, CreateShipmentResponse $expectedResponse, $expectedStatusCode)
     {
-        $response = $this->connection->createShipmentDD($shipmentOrder);
+        $this->client->expects($this->any())
+            ->method('__soapCall')
+            ->with('CreateShipmentDD', array($shipmentOrder))
+            ->will($this->returnValue($expectedResponse));
 
-        // check if it's the expected response class
-        $this->assertInstanceOf($responseClass, $response);
+        $this->connection->setClient($this->client);
+        $response = $this->connection->createShipmentDD($shipmentOrder);
 
         // check if the response has a status information with the expected status code
         $this->assertObjectHasAttribute('Status', $response);
@@ -229,25 +236,27 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests booking a pickup
      *
+     * @param BookPickupResponse  $expectedResponse
      * @param PickupBookingInformationType $bookingInformation
      * @param PickupAddressType $senderAddress
      * @param PickupOrdererType $ordererAddress
-     * @param string $responseClass
-     * @param int $expectedStatusCode
      * @dataProvider provideBookPickupData
      */
-    public function testBookPickup(PickupBookingInformationType $bookingInformation, PickupAddressType $senderAddress, PickupOrdererType $ordererAddress, $responseClass, $expectedStatusCode)
+    public function testBookPickup(BookPickupResponse $expectedResponse, PickupBookingInformationType $bookingInformation, PickupAddressType $senderAddress, PickupOrdererType $ordererAddress = null)
     {
-        $response = $this->connection->bookPickup($bookingInformation, $senderAddress, $ordererAddress);
+        $this->client->expects($this->any())
+            ->method('__soapCall')
+            ->with('BookPickup', array($bookingInformation, $senderAddress, $ordererAddress))
+            ->will($this->returnValue($expectedResponse));
 
-        // check if it's the expected response class
-        $this->assertInstanceOf($responseClass, $response);
+        $this->connection->setClient($this->client);
+        $response = $this->connection->bookPickup($bookingInformation, $senderAddress, $ordererAddress);
 
         // check if the response has a status information with the expected status code
         $this->assertObjectHasAttribute('Status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'Status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->Status);
-        $this->assertSame($expectedStatusCode, $response->Status->StatusCode);
+        $this->assertSame($expectedResponse->Status->StatusCode, $response->Status->StatusCode);
     }
 
     /**
@@ -391,6 +400,8 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function provideCreateShipmentDDData()
     {
+        // Create misc
+        $version    = new Version(1, 0);
         $attendance = new Attendance('01');
         $zip        = new ZipType('08150');
         $tomorrow   = new DateTime('tomorrow');
@@ -415,9 +426,24 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $invalidShipment    = new ShipmentDDType($invalidDetails, $validShipper, $validReceiver);
         $invalidOrder       = new ShipmentOrderDDType(1, $invalidShipment);
 
+        /// Create response for success case
+        $successNumber = new ShipmentNumberType('1234567890987654321');
+        $successResponse = new CreateShipmentResponse(
+            $version,
+            new StatusInformation(0, 'ok'),
+            new CreationState(0, 'ok', $validOrder->SequenceNumber, $successNumber, new PieceInformation($successNumber))
+        );
+
+        // Create response for error cases
+        $errorResponse = new CreateShipmentResponse(
+            $version,
+            new StatusInformation(1000, 'General error'),
+            null
+        );
+
         return array(
-            array($validOrder,      'CreateShipmentResponse', 200),
-            array($invalidOrder,    'CreateShipmentResponse', 400),
+            array($validOrder,   $successResponse, 200),
+            array($invalidOrder, $errorResponse,   400),
         );
     }
 
@@ -428,6 +454,9 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function provideBookPickupData()
     {
+        // Misc
+        $version = new Version(1, 0);
+
         // Set up the booking information
         $earliestPickup     = new DateTime('tomorrow 09:00');
         $latestPickup       = new DateTime('tomorrow 16:00');
@@ -450,13 +479,18 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $ordererAddress = new PickupOrdererType($validName, $validAddress, $communication);
         $invalidOrderer = new PickupOrdererType($validName, $invalidAddress, $communication);
 
+        // Create response for success case
+        $successResponse = new BookPickupResponse($version, new StatusInformation(0, 'ok'), '1234567890987654321');
+
+        // Create responses for the error cases
+        $errorResponse = new BookPickupResponse($version, new StatusInformation(1000, 'General error'));
+
         return array(
-            array($validInformation,    $pickupAddress, null,            'BookPickupResponse', 200),
-            array($validInformation,    $pickupAddress, $ordererAddress, 'BookPickupResponse', 200),
-            array($validInformation,    null,           $ordererAddress, 'stdClass', 400),
-            array($invalidInformation,  $pickupAddress, $ordererAddress, 'stdClass', 400),
-            array($validInformation,    $invalidPickup, $ordererAddress, 'stdClass', 400),
-            array($validInformation,    $invalidPickup, $invalidOrderer, 'stdClass', 400),
+            array($successResponse, $validInformation,   $pickupAddress, null),
+            array($successResponse, $validInformation,   $pickupAddress, $ordererAddress),
+            array($errorResponse,   $invalidInformation, $pickupAddress, $ordererAddress),
+            array($errorResponse,   $validInformation,   $invalidPickup, $ordererAddress),
+            array($errorResponse,   $validInformation,   $invalidPickup, $invalidOrderer),
         );
     }
 }

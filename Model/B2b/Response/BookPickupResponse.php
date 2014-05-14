@@ -42,7 +42,7 @@ class BookPickupResponse extends CancelPickupResponse
      * @param string $ShipmentNumber
      * @access public
      */
-    public function __construct(Version $Version, StatusInformation $Status, $ConfirmationNumber, $ShipmentNumber)
+    public function __construct(Version $Version, StatusInformation $Status, $ConfirmationNumber = null, $ShipmentNumber = null)
     {
         parent::__construct($Version, $Status);
 

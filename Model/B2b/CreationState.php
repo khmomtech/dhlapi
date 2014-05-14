@@ -32,7 +32,6 @@ class CreationState
      * @access public
      * @Type("string")
      */
-     */
     public $SequenceNumber = null;
 
     /**
@@ -57,7 +56,6 @@ class CreationState
      * @access public
      * @Type("string")
      */
-     */
     public $Labelurl = null;
 
     /**
@@ -66,7 +64,6 @@ class CreationState
      * @access public
      * @Type("string")
      */
-     */
     public $XMLLabel = null;
 
     /**
@@ -74,7 +71,6 @@ class CreationState
      * @var string $PickupConfirmationNumber
      * @access public
      * @Type("string")
-     */
      */
     public $PickupConfirmationNumber = null;
 
@@ -90,7 +86,7 @@ class CreationState
      * @param string $PickupConfirmationNumber
      * @access public
      */
-    public function __construct($StatusCode, $StatusMessage, $SequenceNumber, ShipmentNumberType $ShipmentNumber, PieceInformation $PieceInformation, $Labelurl, $XMLLabel, $PickupConfirmationNumber)
+    public function __construct($StatusCode, $StatusMessage, $SequenceNumber, ShipmentNumberType $ShipmentNumber = null, PieceInformation $PieceInformation = null, $Labelurl = null, $XMLLabel = null, $PickupConfirmationNumber = null)
     {
         $this->StatusCode = $StatusCode;
         $this->StatusMessage = $StatusMessage;
