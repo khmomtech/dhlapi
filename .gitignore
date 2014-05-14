@@ -1,2 +1,4 @@
 atlassian-ide-plugin.xml
 .idea/*
+vendor
+.DS_Store

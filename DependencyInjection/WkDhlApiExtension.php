@@ -5,7 +5,7 @@ namespace Wk\DhlApiBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -22,7 +22,28 @@ class WkDhlApiExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        // Put parameters into container to have all values including the default values
+        $this->setParams('wk_dhl_api', $config, $container);
+
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+    }
+
+    /**
+     * @param string $path
+     * @param array $config
+     * @param ContainerBuilder $container
+     */
+    private function setParams($path, array $config, ContainerBuilder $container)
+    {
+        $container->setParameter($path, $config);
+        foreach ($config as $key => $conf) {
+            if(is_array($conf)) {
+                $this->setParams("$path.$key", $conf, $container);
+                continue;
+            }
+
+            $container->setParameter("$path.$key", $conf);
+        }
     }
 }

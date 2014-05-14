@@ -1,7 +1,10 @@
-parameters:
-#    wk_dhl_api.example.class: Wk\DhlApiBundle\Example
-
 services:
-#    wk_dhl_api.example:
-#        class: %wk_dhl_api.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    wk_dhl_api.b2b.connection:
+        class: Wk\DhlApiBundle\Lib\B2b\Connection
+        calls:
+            - [setParams, ["%wk_dhl_api.b2b.connection%"]]
+            - [setLogger, ["@logger"]]
+    wk_dhl_api.b2b.ident_code:
+        class: Wk\DhlApiBundle\Lib\B2b\IdentCode
+        calls:
+            - [setAccounts, ["%wk_dhl_api.b2b.accounts%"]]

@@ -1,0 +1,70 @@
+<?php
+
+namespace Wk\DhlApiBundle\Model\B2b;
+
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\XmlRoot;
+use JMS\Serializer\Annotation\XmlAttribute;
+use JMS\Serializer\Annotation\SerializedName;
+
+/**
+ * Class ShipmentTDType
+ * @package Wk\DhlApiBundle\Model\B2b
+ * @XmlRoot("shipment")
+ */
+class ShipmentTDType
+{
+
+  /**
+   * 
+   * @var ShipmentDetailsTDType $ShipmentDetails
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ShipmentDetailsTDType")
+   * @SerializedName("details")
+   */
+  public $ShipmentDetails = null;
+
+  /**
+   * 
+   * @var ShipperTDType $Shipper
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ShipperTDType")
+   * @SerializedName("shipper")
+   */
+  public $Shipper = null;
+
+  /**
+   * 
+   * @var ReceiverTDType $Receiver
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ReceiverTDType")
+   * @SerializedName("receiver")
+   */
+  public $Receiver = null;
+
+  /**
+   * 
+   * @var ExportDocumentTDType $ExportDocument
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\TD\ExportDocumentTDType")
+   * @SerializedName("export")
+   */
+  public $ExportDocument = null;
+
+  /**
+   *
+   * @param ShipmentDetailsTDType $ShipmentDetails
+   * @param ShipperTDType $Shipper
+   * @param ReceiverTDType $Receiver
+   * @param ExportDocumentTDType $ExportDocument
+   * @access public
+   */
+  public function __construct(ShipmentDetailsTDType $ShipmentDetails, ShipperTDType $Shipper, ReceiverTDType $Receiver, ExportDocumentTDType $ExportDocument)
+  {
+    $this->ShipmentDetails = $ShipmentDetails;
+    $this->Shipper = $Shipper;
+    $this->Receiver = $Receiver;
+    $this->ExportDocument = $ExportDocument;
+  }
+
+}

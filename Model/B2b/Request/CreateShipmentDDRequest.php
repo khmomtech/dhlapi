@@ -1,0 +1,37 @@
+<?php
+
+namespace Wk\DhlApiBundle\Model\B2b\Request;
+
+use Wk\DhlApiBundle\Model\B2b\ShipmentOrderDDType;
+use Wk\DhlApiBundle\Model\B2b\Version;
+
+class CreateShipmentDDRequest
+{
+
+  /**
+   * 
+   * @var Version $Version
+   * @access public
+   */
+  public $Version = null;
+
+  /**
+   * 
+   * @var ShipmentOrderDDType $ShipmentOrder
+   * @access public
+   */
+  public $ShipmentOrder = null;
+
+  /**
+   * 
+   * @param Version $Version
+   * @param ShipmentOrderDDType $ShipmentOrder
+   * @access public
+   */
+  public function __construct(Version $Version, ShipmentOrderDDType $ShipmentOrder)
+  {
+    $this->Version = $Version;
+    $this->ShipmentOrder = $ShipmentOrder;
+  }
+
+}
