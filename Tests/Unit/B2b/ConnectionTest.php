@@ -3,6 +3,7 @@
 namespace Wk\DhlApiBundle\Tests\Unit\B2b;
 
 use DateTime;
+use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Wk\DhlApiBundle\Lib\B2b\Connection;
@@ -60,11 +61,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         // Create mock client from local WSDL file
-        $wsdlFile = realpath(__DIR__ . '/../Resources/geschaeftskundenversand-api-1.0.wsdl');
-        $this->client = $this->getMockFromWsdl($wsdlFile, 'SoapClient', '', array(), true, $options);
+        $wsdlFile = realpath(__DIR__ . '/../../Resources/geschaeftskundenversand-api-1.0.wsdl');
+        $this->client = $this->getMockFromWsdl($wsdlFile, 'DhlApi', '', array(), true, $options);
+
+        $logger = new Logger('DhlApi');
 
         $this->connection = new Connection();
         $this->connection->setClient($this->client);
+        $this->connection->setLogger($logger);
     }
 
     /**
