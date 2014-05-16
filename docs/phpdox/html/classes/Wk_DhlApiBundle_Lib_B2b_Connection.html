@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:pdxf="http://xml.phpdox.net/functions" xmlns:pu="http://schema.phpunit.de/coverage/1.0" lang="en">
+  <head xmlns:git="http://xml.phpdox.net/gitlog#">
+    <title>phpDox - Wk\DhlApiBundle\Lib\B2b\Connection</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav xmlns:git="http://xml.phpdox.net/gitlog#" class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.html">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.html">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.html">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../reports/index.html">Reports</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.html">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.html">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.html#Wk_DhlApiBundle_Lib_B2b">Wk\DhlApiBundle\Lib\B2b</a>
+          </li>
+          <li class="separator">Connection</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Wk\DhlApiBundle\Lib\B2b\</small>Connection</h1>
+        <h4>Class Connection</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class Connection
+            {<br/><ul class="none"><li>// members</li><li>protected <span title="Wk\DhlApiBundle\Lib\B2b\Connection">Connection</span> <a href="#members">$instance</a>;
+                    </li><li>private <span title="\Monolog\Logger">Logger</span> <a href="#members">$logger</a>;
+                    </li><li>protected <span title="SoapClient">SoapClient</span> <a href="#members">$client</a>;
+                    </li><li>protected <span title="Wk\DhlApiBundle\Model\B2b\Version">Version</span> <a href="#members">$version</a>;
+                    </li><li>protected string <a href="#members">$wsdl</a>;
+                    </li><li>protected string <a href="#members">$cisBase</a>;
+                    </li><li>protected string <a href="#members">$isUser</a>;
+                    </li><li>protected string <a href="#members">$isPassword</a>;
+                    </li><li>protected string <a href="#members">$cigUser</a>;
+                    </li><li>protected string <a href="#members">$cigPassword</a>;
+                    </li><li>protected string <a href="#members">$cigEndPoint</a>;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/setLogger.html">setLogger</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/setParams.html">setParams</a>()
+                    </li><li>public static Connection <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getInstance.html">getInstance</a>()
+                    </li><li>public static Version <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getVersion.html">getVersion</a>()
+                    </li><li>public SoapClient <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getClient.html">getClient</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/setClient.html">setClient</a>()
+                    </li><li>public BookPickupResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/bookPickup.html">bookPickup</a>()
+                    </li><li>public CancelPickupResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/cancelPickup.html">cancelPickup</a>()
+                    </li><li>public CreateShipmentResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/createShipmentDD.html">createShipmentDD</a>()
+                    </li><li>public CreateShipmentResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/createShipmentTD.html">createShipmentTD</a>()
+                    </li><li>public DeleteShipmentResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/deleteShipmentDD.html">deleteShipmentDD</a>()
+                    </li><li>public DeleteShipmentResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/deleteShipmentTD.html">deleteShipmentTD</a>()
+                    </li><li>public UpdateShipmentResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/updateShipmentDD.html">updateShipmentDD</a>()
+                    </li><li>public GetLabelResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getLabelDD.html">getLabelDD</a>()
+                    </li><li>public GetLabelResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getLabelTD.html">getLabelTD</a>()
+                    </li><li>public GetExportDocResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getExportDocDD.html">getExportDocDD</a>()
+                    </li><li>public GetExportDocResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getExportDocTD.html">getExportDocTD</a>()
+                    </li><li>public DoManifestResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/doManifestDD.html">doManifestDD</a>()
+                    </li><li>public DoManifestResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/doManifestTD.html">doManifestTD</a>()
+                    </li><li>public GetManifestDDResponse <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getManifestDD.html">getManifestDD</a>()
+                    </li><li>private mixed <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/executeCommand.html">executeCommand</a>()
+                    </li><li>private null|SoapClient <a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/initClient.html">initClient</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="members">Members</h2>
+        <div xmlns:git="http://xml.phpdox.net/gitlog#" class="styled members">
+          <h4>private</h4>
+          <ul class="members">
+            <li id="logger"><strong>$logger</strong>
+                —
+                <a href="#">\Monolog\Logger</a><br/><span class="indent">Logger</span></li>
+          </ul>
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="cigEndPoint"><strong>$cigEndPoint</strong>
+                —
+                string<br/><span class="indent">URI of the end point</span></li>
+            <li id="cigPassword"><strong>$cigPassword</strong>
+                —
+                string<br/><span class="indent">Password of HTTP auth user</span></li>
+            <li id="cigUser"><strong>$cigUser</strong>
+                —
+                string<br/><span class="indent">Name of HTTP auth user</span></li>
+            <li id="cisBase"><strong>$cisBase</strong>
+                —
+                string<br/><span class="indent">URI of cis base file</span></li>
+            <li id="client"><strong>$client</strong>
+                —
+                <a href="#">SoapClient</a><br/><span class="indent">SOAP client</span></li>
+            <li id="instance"><strong>$instance</strong>
+                —
+                <a href="#">Wk\DhlApiBundle\Lib\B2b\Connection</a><br/><span class="indent">Service singleton</span></li>
+            <li id="isPassword"><strong>$isPassword</strong>
+                —
+                string<br/><span class="indent">Password of Intraship user</span></li>
+            <li id="isUser"><strong>$isUser</strong>
+                —
+                string<br/><span class="indent">Name of Intraship user</span></li>
+            <li id="version"><strong>$version</strong>
+                —
+                <a href="#">Wk\DhlApiBundle\Model\B2b\Version</a><br/><span class="indent">DHL API version</span></li>
+            <li id="wsdl"><strong>$wsdl</strong>
+                —
+                string<br/><span class="indent">URI of WSDL file</span></li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div xmlns:git="http://xml.phpdox.net/gitlog#" class="styled">
+          <h4>private</h4>
+          <ul>
+            <li id="executeCommand"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/executeCommand.html">executeCommand()</a>
+                — Main method to execute the command It's used by all public convenience methods for the specific actions</li>
+            <li id="initClient"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/initClient.html">initClient()</a>
+                — Initialize the SOAP client to perform the different calls</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="bookPickup"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/bookPickup.html">bookPickup()</a>
+                — Convenience method to book a pickup, wraps executeCommand</li>
+            <li id="cancelPickup"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/cancelPickup.html">cancelPickup()</a>
+                — Convenience method to cancel a pickup, wraps executeCommand</li>
+            <li id="createShipmentDD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/createShipmentDD.html">createShipmentDD()</a>
+                — Convenience method to create a national shipment, wraps executeCommand</li>
+            <li id="createShipmentTD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/createShipmentTD.html">createShipmentTD()</a>
+                — Convenience method to create a international shipment, wraps executeCommand</li>
+            <li id="deleteShipmentDD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/deleteShipmentDD.html">deleteShipmentDD()</a>
+                — Convenience method to delete a national shipment, wraps executeCommand</li>
+            <li id="deleteShipmentTD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/deleteShipmentTD.html">deleteShipmentTD()</a>
+                — Convenience method to delete a international shipment, wraps executeCommand</li>
+            <li id="doManifestDD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/doManifestDD.html">doManifestDD()</a>
+                — Convenience method to do a national manifest, wraps executeCommand</li>
+            <li id="doManifestTD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/doManifestTD.html">doManifestTD()</a>
+                — Convenience method to do a international manifest, wraps executeCommand</li>
+            <li id="getClient"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getClient.html">getClient()</a>
+                — Getter for the client</li>
+            <li id="getExportDocDD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getExportDocDD.html">getExportDocDD()</a>
+                — Convenience method to get a national export document, wraps executeCommand</li>
+            <li id="getExportDocTD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getExportDocTD.html">getExportDocTD()</a>
+                — Convenience method to get a international export document, wraps executeCommand</li>
+            <li id="getInstance"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getInstance.html">getInstance()</a>
+                — Instance of the Connection needed for service</li>
+            <li id="getLabelDD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getLabelDD.html">getLabelDD()</a>
+                — Convenience method to get a national label, wraps executeCommand</li>
+            <li id="getLabelTD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getLabelTD.html">getLabelTD()</a>
+                — Convenience method to get a international label, wraps executeCommand</li>
+            <li id="getManifestDD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getManifestDD.html">getManifestDD()</a>
+                — Convenience method to get a national manifest, wraps executeCommand</li>
+            <li id="getVersion"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/getVersion.html">getVersion()</a>
+                — Static getter for the version because a version will not change dynamically</li>
+            <li id="setClient"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/setClient.html">setClient()</a>
+                — Setter for the client to provide the capability to set a mock client during unit testing</li>
+            <li id="setLogger"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/setLogger.html">setLogger()</a>
+                — Setter for logger</li>
+            <li id="setParams"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/setParams.html">setParams()</a>
+                — Method to set the parameters for DHL B2B</li>
+            <li id="updateShipmentDD"><a title="Wk\DhlApiBundle\Lib\B2b\Connection" href="../classes/Wk_DhlApiBundle_Lib_B2b_Connection/updateShipmentDD.html">updateShipmentDD()</a>
+                — Convenience method to update a national shipment, wraps executeCommand</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer xmlns:git="http://xml.phpdox.net/gitlog#">
+      <span>Generated using phpDox 0.6.6 - Copyright (C) 2010 - 2014 by Arne Blankerts</span>
+    </footer>
+  </body>
+</html>

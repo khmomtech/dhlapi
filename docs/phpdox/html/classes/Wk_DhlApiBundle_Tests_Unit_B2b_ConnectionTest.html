@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:pdxf="http://xml.phpdox.net/functions" xmlns:pu="http://schema.phpunit.de/coverage/1.0" lang="en">
+  <head xmlns:git="http://xml.phpdox.net/gitlog#">
+    <title>phpDox - Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav xmlns:git="http://xml.phpdox.net/gitlog#" class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.html">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.html">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.html">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../reports/index.html">Reports</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.html">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.html">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.html#Wk_DhlApiBundle_Tests_Unit_B2b">Wk\DhlApiBundle\Tests\Unit\B2b</a>
+          </li>
+          <li class="separator">ConnectionTest</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>Wk\DhlApiBundle\Tests\Unit\B2b\</small>ConnectionTest</h1>
+        <h4>Class ConnectionTest</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class ConnectionTest
+                extends <a title="PHPUnit_Framework_TestCase" href="../classes/PHPUnit_Framework_TestCase.html">PHPUnit_Framework_TestCase</a>
+            {<br/><ul class="none"><li>// members</li><li>private <span title="Wk\DhlApiBundle\Lib\B2b\Connection">Connection</span> <a href="#members">$connection</a>;
+                    </li><li>private <span title="\PHPUnit_Framework_MockObject_MockObject">PHPUnit_Framework_MockObject_MockObject</span> <a href="#members">$client</a>;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/setUp.html">setUp</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testCreateShipmentDD.html">testCreateShipmentDD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testCreateShipmentTD.html">testCreateShipmentTD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testUpdateShipmentDD.html">testUpdateShipmentDD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testDeleteShipmentDD.html">testDeleteShipmentDD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testDeleteShipmentTD.html">testDeleteShipmentTD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testGetLabelDD.html">testGetLabelDD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testGetLabelTD.html">testGetLabelTD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testBookPickup.html">testBookPickup</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testCancelPickup.html">testCancelPickup</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testGetExportDocDD.html">testGetExportDocDD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testGetExportDocTD.html">testGetExportDocTD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testGetManifestDD.html">testGetManifestDD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testDoManifestDD.html">testDoManifestDD</a>()
+                    </li><li>public void <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testDoManifestTD.html">testDoManifestTD</a>()
+                    </li><li>public array <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/provideCreateShipmentDDData.html">provideCreateShipmentDDData</a>()
+                    </li><li>public array <a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/provideBookPickupData.html">provideBookPickupData</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div xmlns:git="http://xml.phpdox.net/gitlog#" class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>
+              <a href="../classes/PHPUnit_Framework_TestCase.html">PHPUnit_Framework_TestCase</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="members">Members</h2>
+        <div xmlns:git="http://xml.phpdox.net/gitlog#" class="styled members">
+          <h4>private</h4>
+          <ul class="members">
+            <li id="client"><strong>$client</strong>
+                —
+                <a href="#">\PHPUnit_Framework_MockObject_MockObject</a></li>
+            <li id="connection"><strong>$connection</strong>
+                —
+                <a href="#">Wk\DhlApiBundle\Lib\B2b\Connection</a></li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div xmlns:git="http://xml.phpdox.net/gitlog#" class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="provideBookPickupData"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/provideBookPickupData.html">provideBookPickupData()</a>
+                — Data provider to provide booking information, sender address, orderer address and the expected response for a pickup booking</li>
+            <li id="provideCreateShipmentDDData"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/provideCreateShipmentDDData.html">provideCreateShipmentDDData()</a>
+                — Data provider to provide shipment order and the expected response for a shipment creation</li>
+            <li id="setUp"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/setUp.html">setUp()</a>
+                — Set up before each test</li>
+            <li id="testBookPickup"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testBookPickup.html">testBookPickup()</a>
+                — Tests booking a pickup</li>
+            <li id="testCancelPickup"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testCancelPickup.html">testCancelPickup()</a>
+                — Tests canceling a pickup</li>
+            <li id="testCreateShipmentDD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testCreateShipmentDD.html">testCreateShipmentDD()</a>
+                — Tests creating a shipment (DD)</li>
+            <li id="testCreateShipmentTD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testCreateShipmentTD.html">testCreateShipmentTD()</a>
+                — Tests creating a shipment (TD)</li>
+            <li id="testDeleteShipmentDD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testDeleteShipmentDD.html">testDeleteShipmentDD()</a>
+                — Tests deleting a shipment (DD)</li>
+            <li id="testDeleteShipmentTD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testDeleteShipmentTD.html">testDeleteShipmentTD()</a>
+                — Tests deleting a shipment (TD)</li>
+            <li id="testDoManifestDD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testDoManifestDD.html">testDoManifestDD()</a>
+                — Tests doing a manifest (DD)</li>
+            <li id="testDoManifestTD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testDoManifestTD.html">testDoManifestTD()</a>
+                — Tests doing a manifest (TD)</li>
+            <li id="testGetExportDocDD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testGetExportDocDD.html">testGetExportDocDD()</a>
+                — Tests getting an export document (DD)</li>
+            <li id="testGetExportDocTD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testGetExportDocTD.html">testGetExportDocTD()</a>
+                — Tests getting an export document (TD)</li>
+            <li id="testGetLabelDD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testGetLabelDD.html">testGetLabelDD()</a>
+                — Tests getting a label (DD)</li>
+            <li id="testGetLabelTD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testGetLabelTD.html">testGetLabelTD()</a>
+                — Tests getting a label (TD)</li>
+            <li id="testGetManifestDD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testGetManifestDD.html">testGetManifestDD()</a>
+                — Tests getting a manifest (DD)</li>
+            <li id="testUpdateShipmentDD"><a title="Wk\DhlApiBundle\Tests\Unit\B2b\ConnectionTest" href="../classes/Wk_DhlApiBundle_Tests_Unit_B2b_ConnectionTest/testUpdateShipmentDD.html">testUpdateShipmentDD()</a>
+                — Tests updating a shipment (DD)</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer xmlns:git="http://xml.phpdox.net/gitlog#">
+      <span>Generated using phpDox 0.6.6 - Copyright (C) 2010 - 2014 by Arne Blankerts</span>
+    </footer>
+  </body>
+</html>
