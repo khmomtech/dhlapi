@@ -87,7 +87,7 @@ wk_dhl_api_b2b_ident_code
 - Requirements: 
     - `_format`: (xml|json)
     - `id`: \d+
-    - `type`: \w+
+    - `account`: \w+
 
 
 wk_dhl_api_b2b_book_pickup

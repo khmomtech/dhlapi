@@ -48,7 +48,7 @@ class B2bController extends SerializerController
      *      name="wk_dhl_api_b2b_ident_code",
      *      requirements={
      *          "id"="\d+",
-     *          "type"="\w+",
+     *          "account"="\w+",
      *          "_format"="(xml|json)"
      *      },
      *      defaults={
