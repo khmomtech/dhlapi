@@ -19,7 +19,7 @@ class PickupOrdererType extends PickupAddressType
      * @var string $Name3
      * @access public
      * @Type("string")
-     * @SerializedName("name")
+     * @SerializedName("addition")
      * @XmlAttribute
      */
     public $Name3 = null;
