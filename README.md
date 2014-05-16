@@ -206,6 +206,72 @@ wk_dhl_api_b2b_create_shipment_dd
 - Requirements: 
     - `_format`: (xml|json)
 
+Sample JSON payload for POST content:
+
+    {
+        sequence:1,
+        shipment:{
+            shipment:{
+                product:'EPN',
+                date:'2014-10-08',
+                ekp:5000000000,
+                attendance:{
+                    id:1
+                },
+                item:{
+                    weight:10,
+                    length:50,
+                    width:30,
+                    height:15,
+                    package_type:'PK'
+                }
+            }
+        },
+        shipper:{
+            name:{
+                company:{
+                    name:'Muster Company'
+                }
+            },
+            address:{
+                street_name:'Leipziger Straße',
+                street_number:47,
+                zip:{
+                    germany:10117
+                },
+                city:'Berlin',
+                country:{
+                    code:'DE'
+                }
+            },
+            communication:{
+                email:'max@muster.de',
+                contact:'Max Muster'
+            }
+        },
+        receiver:{
+            name:{
+                person:{
+                    firstname:'Markus',
+                    lastname:'Meier'
+                }
+            },
+            address:{
+                street_name:'Marktplatz',
+                street_number:1,
+                zip:{
+                    other:70173
+                },
+                city:'Stuttgart',
+                country:{
+                    code:'DE'
+                }
+            },
+            communication:{
+                phone:'0049-30-763291'
+            }
+        }
+    }
 
 wk_dhl_api_b2b_delete_shipment_dd
 ---------------------------------
