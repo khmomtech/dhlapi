@@ -2,9 +2,11 @@
 
 namespace Wk\DhlApiBundle\Controller;
 
+use DateTime;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -470,6 +472,104 @@ class B2bController extends SerializerController
                     array('content-type' => 'application/pdf')
                 );
             }
+
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
+    }
+
+    /**
+     * Do manifest action (day definite)
+     *
+     * @Method ("POST")
+     * @Route (
+     *      "/dd/manifest/{id}.{_format}",
+     *      name="wk_dhl_api_b2b_do_manifest_dd",
+     *      requirements={
+     *          "id"="^\d{12}$",
+     *          "_format"="(xml|json)"
+     *      },
+     *      defaults={
+     *          "_format"="json"
+     *      }
+     * )
+     * @param Request $request
+     * @return Response
+     */
+    public function doManifestDDAction(Request $request)
+    {
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $result = $this->connection->doManifestDD($shipmentNumber);
+
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
+    }
+
+    /**
+     * Do manifest action (time definite)
+     *
+     * @Method ("POST")
+     * @Route (
+     *      "/td/manifest/{id}.{_format}",
+     *      name="wk_dhl_api_b2b_do_manifest_td",
+     *      requirements={
+     *          "id"="^\d{12}$",
+     *          "_format"="(xml|json)"
+     *      },
+     *      defaults={
+     *          "_format"="json"
+     *      }
+     * )
+     * @param Request $request
+     * @return Response
+     */
+    public function doManifestTDAction(Request $request)
+    {
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $result = $this->connection->doManifestTD($shipmentNumber);
+
+            return $this->generateResponse($result);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
+    }
+
+    /**
+     * Get manifest action (day definite)
+     *
+     * @Method ("GET")
+     * @Route (
+     *      "/dd/manifest/{from}/{to}.{_format}",
+     *      name="wk_dhl_api_b2b_get_manifest_dd",
+     *      requirements={
+     *          "_format"="(xml|json)"
+     *      },
+     *      defaults={
+     *          "_format"="json"
+     *      }
+     * )
+     * @ParamConverter("from", options={"format": "Y-m-d"})
+     * @ParamConverter("to", options={"format": "Y-m-d"})
+     *
+     * @param DateTime $from
+     * @param DateTime $to
+     * @return Response
+     */
+    public function getManifestDDAction(DateTime $from, DateTime $to)
+    {
+        try {
+            $result = $this->connection->getManifestDD($from, $to);
 
             return $this->generateResponse($result);
         } catch(\InvalidArgumentException $exception) {

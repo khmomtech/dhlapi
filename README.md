@@ -403,6 +403,53 @@ wk_dhl_api_b2b_get_export_td
     - `_format`: (xml|json|pdf)
     - `id`: \d{12}
 
+
+wk_dhl_api_b2b_do_manifest_dd
+-----------------------------
+
+- Path: /dhl/b2b/dd/manifest/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: POST
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:doManifestDD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+    - `id`: \d{12}
+
+
+wk_dhl_api_b2b_do_manifest_td
+-----------------------------
+
+- Path: /dhl/b2b/td/manifest/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: POST
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:doManifestTD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+    - `id`: \d{12}
+
+
+wk_dhl_api_b2b_get_manifest_dd
+------------------------------
+
+- Path: /dhl/b2b/dd/manifest/{from}/{to}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: GET
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:getManifestDD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+
 TODOS:
 ==========
 
