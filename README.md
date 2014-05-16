@@ -57,10 +57,14 @@ For dev and test environment use your developer account to authenticate with:
 Services
 ==========
 
-You can use two services to connect to Intraship or to create an ident code for shipment independently from the DHL API
+You can use two services:
+
+- connect to Intraship
 
     $connection = $this->get('wk_dhl_api.b2b.connection');
     $connection->cancelPickup('123456789012');
+
+- create an ident code for shipment independently from Intraship 
 
     $identCode = $this->get('wk_dhl_api.b2b.ident_code');
     $identCode->setSerial(1);
@@ -261,3 +265,11 @@ wk_dhl_api_b2b_get_export_td
 - Requirements: 
     - `_format`: (xml|json|pdf)
     - `id`: \d{12}
+
+TODOS:
+==========
+
+- Implement B2C API
+- Implement shipment tracking API
+- Implement location search API
+- Implement market place API
