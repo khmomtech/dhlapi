@@ -29,7 +29,6 @@ use Wk\DhlApiBundle\Model\B2b\ShipmentOrderDDType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentOrderTDType;
 use Wk\DhlApiBundle\Model\B2b\ShipperDDType;
 use Wk\DhlApiBundle\Model\B2b\StatusInformation;
-use Wk\DhlApiBundle\Model\B2b\Version;
 use Wk\DhlApiBundle\Model\B2b\ZipType;
 use Wk\DhlApiBundle\Model\B2b\Response\CreateShipmentResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\BookPickupResponse;
@@ -401,7 +400,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     public function provideCreateShipmentDDData()
     {
         // Create misc
-        $version    = new Version(1, 0);
+        $version    = Connection::getVersion();
         $attendance = new Attendance('01');
         $zip        = new ZipType('08150');
         $tomorrow   = new DateTime('tomorrow');
@@ -455,7 +454,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     public function provideBookPickupData()
     {
         // Misc
-        $version = new Version(1, 0);
+        $version = Connection::getVersion();
 
         // Set up the booking information
         $earliestPickup     = new DateTime('tomorrow 09:00');

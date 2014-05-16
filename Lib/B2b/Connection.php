@@ -53,18 +53,25 @@ use Wk\DhlApiBundle\Model\B2b\Response\UpdateShipmentResponse;
  */
 class Connection
 {
-    const MAX_ATTEMPTS = 10;
-
+    /**
+     * @var Connection
+     */
     protected static $instance = null;
 
-    /** @var \Monolog\Logger */
+    /**
+     * @var \Monolog\Logger
+     */
     private $logger;
 
-    /** @var  SoapClient */
+    /**
+     * @var SoapClient
+     */
     protected $client;
 
-    /** @var  Version */
-    protected $version;
+    /**
+     * @var  Version
+     */
+    protected static $version;
 
     /** params */
     protected $wsdl;
@@ -100,7 +107,8 @@ class Connection
     }
 
     /**
-     * Instance of the Connection
+     * Instance of the Connection needed for service
+     *
      * @return Connection
      */
     public static function getInstance ()
@@ -110,6 +118,20 @@ class Connection
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Static getter for the version because a version will not change dynamically
+     *
+     * @return Version
+     */
+    public static function getVersion()
+    {
+        if(is_null(self::$version)) {
+            self::$version = new Version(1, 0);
+        }
+
+        return self::$version;
     }
 
     /**
@@ -137,20 +159,6 @@ class Connection
     }
 
     /**
-     * Getter for the version
-     *
-     * @return Version
-     */
-    public function getVersion()
-    {
-        if(is_null($this->version)) {
-            $this->version = new Version(1, 0);
-        }
-
-        return $this->version;
-    }
-
-    /**
      * Convenience method to book a pickup, wraps executeCommand
      *
      * @param PickupBookingInformationType $bookingInformation
@@ -162,7 +170,12 @@ class Connection
     {
         $request = new BookPickupRequest($this->getVersion(), $bookingInformation, $address, $orderer);
 
-        return $this->executeCommand('BookPickup', $request);
+        $response = $this->executeCommand('BookPickup', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -175,7 +188,12 @@ class Connection
     {
         $request = new CancelPickupRequest($this->getVersion(), $bookingNumber);
 
-        return $this->executeCommand('CancelPickup', $request);
+        $response = $this->executeCommand('CancelPickup', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -188,7 +206,12 @@ class Connection
     {
         $request = new CreateShipmentDDRequest($this->getVersion(), $shipmentOrder);
 
-        return $this->executeCommand('CreateShipmentDD', $request);
+        $response = $this->executeCommand('CreateShipmentDD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
     /**
      * Convenience method to create a international shipment, wraps executeCommand
@@ -200,7 +223,12 @@ class Connection
     {
         $request = new CreateShipmentTDRequest($this->getVersion(), $shipmentOrder);
 
-        return $this->executeCommand('CreateShipmentTD', $request);
+        $response = $this->executeCommand('CreateShipmentTD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -213,7 +241,12 @@ class Connection
     {
         $request = new DeleteShipmentDDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('DeleteShipmentDD', $request);
+        $response = $this->executeCommand('DeleteShipmentDD', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -226,7 +259,12 @@ class Connection
     {
         $request = new DeleteShipmentTDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('DeleteShipmentTD', $request);
+        $response = $this->executeCommand('DeleteShipmentTD', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -240,7 +278,12 @@ class Connection
     {
         $request = new UpdateShipmentDDRequest($this->getVersion(), $shipmentNumber, $shipmentOrder);
 
-        return $this->executeCommand('UpdateShipmentDD', $request);
+        $response = $this->executeCommand('UpdateShipmentDD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -253,7 +296,12 @@ class Connection
     {
         $request = new GetLabelDDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('GetLabelDD', $request);
+        $response = $this->executeCommand('GetLabelDD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -266,7 +314,12 @@ class Connection
     {
         $request = new GetLabelTDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('GetLabelTD', $request);
+        $response = $this->executeCommand('GetLabelTD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -280,7 +333,12 @@ class Connection
     {
         $request = new GetExportDocDDRequest($this->getVersion(), $shipmentNumber, $docType);
 
-        return $this->executeCommand('GetExportDocDD', $request);
+        $response = $this->executeCommand('GetExportDocDD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -294,7 +352,12 @@ class Connection
     {
         $request = new GetExportDocTDRequest($this->getVersion(), $shipmentNumber, $docType);
 
-        return $this->executeCommand('GetExportDocTD', $request);
+        $response = $this->executeCommand('GetExportDocTD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -307,7 +370,12 @@ class Connection
     {
         $request = new DoManifestDDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('DoManifestDD', $request);
+        $response = $this->executeCommand('DoManifestDD', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -320,7 +388,12 @@ class Connection
     {
         $request = new DoManifestTDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('DoManifestTD', $request);
+        $response = $this->executeCommand('DoManifestTD', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -334,7 +407,12 @@ class Connection
     {
         $request = new GetManifestDDRequest($this->getVersion(), $fromDate, $toDate);
 
-        return $this->executeCommand('GetManifestDD', $request);
+        $response = $this->executeCommand('GetManifestDD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -349,10 +427,7 @@ class Connection
         $client = $this->getClient();
 
         try {
-            $response = $client->__soapCall($commandName, array($request));
-            if($response->Status->StatusCode !== 0) {
-                throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
-            }
+            return $client->__soapCall($commandName, array($request));
         } catch (Exception $exception) {
             $this->logger->debug($exception->getMessage());
             $this->logger->info($client->__getLastRequest());
@@ -360,8 +435,6 @@ class Connection
 
             throw $exception;
         }
-
-        return $response;
     }
 
     /**

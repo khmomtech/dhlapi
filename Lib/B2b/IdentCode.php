@@ -14,7 +14,14 @@ namespace Wk\DhlApiBundle\Lib\B2b;
  */
 class IdentCode {
 
+    /**
+     * @var int
+     */
     private $serial = 1;
+
+    /**
+     * @var array
+     */
     private $accounts = array();
 
     /**

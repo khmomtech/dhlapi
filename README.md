@@ -44,9 +44,24 @@ Required settings for production environment:
     dhl_api_b2b_cig_user: [YOUR_APPLICATION_ID]
     dhl_api_b2b_cig_password: [YOUR_APPLICATION_TOKEN]
     dhl_api_b2b_cig_endpoint_uri: 'https://cig.dhl.de/services/production/soap'
+    dhl_api_b2b_accounts: 
+        account1:   [ACCOUNT_ID_1]
+        account2:   [ACCOUNT_ID_2]
+        ...
 
 For dev and test environment use your developer account to authenticate with:
 
     dhl_api_b2b_cig_user: [YOUR_DEVELOPER_ID]
     dhl_api_b2b_cig_password: [YOUR_DEVELOPER_PASSWORD]
 
+Services
+==========
+
+Your can use two services to connect to Intraship or to create an ident code for shipment independently from the DHL API
+
+    $connection = $this->get('wk_dhl_api.b2b.connection');
+    $connection->cancelPickup('123456789012');
+
+    $identCode = $this->get('wk_dhl_api.b2b.ident_code');
+    $identCode->setSerial(1);
+    $identCode->get('retoure');
