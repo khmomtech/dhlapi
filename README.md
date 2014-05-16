@@ -61,14 +61,18 @@ You can use two services:
 
 1. Connect to Intraship:
 
+    `
     $connection = $this->get('wk_dhl_api.b2b.connection');
     $connection->cancelPickup('123456789012');
+    `
 
-2. Create an ident code for shipment independently from Intraship 
+2. Create an ident code for shipment independently from Intraship:
 
+    `
     $identCode = $this->get('wk_dhl_api.b2b.ident_code');
     $identCode->setSerial(1);
     $identCode->get('retoure');
+    `
 
 Controllers
 ==========
