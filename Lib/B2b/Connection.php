@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: thomas
+ * Date: 12.05.14
+ * Time: 11:01
+ */
 
 namespace Wk\DhlApiBundle\Lib\B2b;
 
@@ -6,7 +12,6 @@ use DateTime;
 use Exception;
 use SoapClient;
 use SoapHeader;
-use SoapFault;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -49,40 +54,91 @@ use Wk\DhlApiBundle\Model\B2b\Response\UpdateShipmentResponse;
 
 /**
  * Class Connection
- * Implements the Singleton pattern
+ *
+ * @package Wk\DhlApiBundle\Lib\B2b
  */
 class Connection
 {
     /**
+     * Service singleton
+     *
      * @var Connection
      */
     protected static $instance = null;
 
     /**
+     * Logger
+     *
      * @var \Monolog\Logger
      */
     private $logger;
 
     /**
+     * SOAP client
+     *
      * @var SoapClient
      */
     protected $client;
 
     /**
+     * DHL API version
+     *
      * @var  Version
      */
     protected static $version;
 
-    /** params */
+    /**
+     * URI of WSDL file
+     *
+     * @var string
+     */
     protected $wsdl;
+
+    /**
+     * URI of cis base file
+     *
+     * @var string
+     */
     protected $cisBase;
+
+    /**
+     * Name of Intraship user
+     *
+     * @var string
+     */
     protected $isUser;
+
+    /**
+     * Password of Intraship user
+     *
+     * @var string
+     */
     protected $isPassword;
+
+    /**
+     * Name of HTTP auth user
+     *
+     * @var string
+     */
     protected $cigUser;
+
+    /**
+     * Password of HTTP auth user
+     *
+     * @var string
+     */
     protected $cigPassword;
+
+    /**
+     * URI of the end point
+     *
+     * @var string
+     */
     protected $cigEndPoint;
 
     /**
+     * Setter for logger
+     *
      * @param Logger $logger
      */
     public function setLogger (Logger $logger)
@@ -416,6 +472,9 @@ class Connection
     }
 
     /**
+     * Main method to execute the command
+     * It's used by all public convenience methods for the specific actions
+     *
      * @param string $commandName
      * @param object $request
      * @return mixed

@@ -1,0 +1,104 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: thomas
+ * Date: 12.05.14
+ * Time: 17:09
+ */
+
+namespace Wk\DhlApiBundle\Tests\Unit\B2b;
+
+use Wk\DhlApiBundle\Lib\B2b\IdentCode;
+
+/**
+ * Class IdentCodeTest
+ * @package Wk\DhlApiBundle\Tests\Unit\B2b
+ */
+class IdentCodeTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * Tests the calculation of a parity number
+     *
+     * @param string $identCode
+     * @param int $parityNumber
+     * @dataProvider provideParityNumberData
+     */
+    public function testParityNumber($identCode, $parityNumber)
+    {
+        $this->assertEquals($parityNumber, IdentCode::getParityNumber($identCode));
+    }
+
+    /**
+     * Data provider to check the parity number calculation
+     *
+     * @return array
+     */
+    public function provideParityNumberData()
+    {
+        return array(
+            array('56.310 243.031', 3),
+            array('80054200001',    5),
+            array('05/480310/621',  0),
+        );
+    }
+
+    /**
+     * Tests formatting an ident code
+     *
+     * @param string $rawCode
+     * @param string $formattedCode
+     * @dataProvider provideFormatData
+     */
+    public function testFormat($rawCode, $formattedCode)
+    {
+        $this->assertEquals($formattedCode, IdentCode::format($rawCode));
+    }
+
+    /**
+     * Data provider to check the formatting of an ident code including parity number
+     *
+     * @return array
+     */
+    public function provideFormatData()
+    {
+        return array(
+            array('563102430313', '56.310 243.031 3'),
+            array('800542000015', '80.054 200.001 5'),
+            array('054803106210', '05.480 310.621 0'),
+        );
+    }
+
+    /**
+     * @param array $accounts
+     * @param string $account
+     * @param int $serial
+     * @param string $code
+     * @dataProvider provideIdentCodeData
+     */
+    public function testIdentCode(array $accounts, $account, $serial, $code)
+    {
+        $identCode = new IdentCode();
+        $identCode->setAccounts($accounts);
+        $identCode->setSerial($serial);
+
+        $this->assertEquals($code, $identCode->get($account));
+    }
+
+    public function provideIdentCodeData()
+    {
+        $accounts = array(
+            'outbound'  => 8150,
+            'retoure'   => 1580,
+        );
+
+        return array(
+            array($accounts, 'outbound', 99999, '815000999999'),
+            array($accounts, 'outbound', 815,   '815000008158'),
+            array($accounts, 'outbound', 3,     '815000000037'),
+            array($accounts, 'retoure',  20,    '158000000201'),
+            array($accounts, 'retoure',  3767,  '158000037672'),
+            array($accounts, 'retoure',  15476, '158000154767'),
+        );
+    }
+}
+ 

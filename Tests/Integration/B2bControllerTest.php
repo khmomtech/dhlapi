@@ -1,6 +1,6 @@
 <?php
 
-namespace Wk\DhlApiBundle\Tests\Integration\B2b;
+namespace Wk\DhlApiBundle\Tests\Integration;
 
 use DOMDocument;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Wk\DhlApiBundle\Model\B2b\Version;
 
 /**
  * Class B2bControllerTest
- * @package Wk\DhlApiBundle\Tests\Integration\B2b
+ * @package Wk\DhlApiBundle\Tests\Integration
  */
 class B2bControllerTest extends WebTestCase
 {

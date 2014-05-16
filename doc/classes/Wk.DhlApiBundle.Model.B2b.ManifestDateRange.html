@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Wk.html">\Wk</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">768</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1503199246"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1503199246" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1598607607"></a>
+                                <a href="../namespaces/Wk.html" style="margin-left: 30px; padding-left: 0">Wk</a>
+            </div>
+            <div id="namespace-1598607607" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1352706022"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.html" style="margin-left: 30px; padding-left: 0">DhlApiBundle</a>
+            </div>
+            <div id="namespace-1352706022" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1937647860"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Controller.html" style="margin-left: 30px; padding-left: 0">Controller</a>
+            </div>
+            <div id="namespace-1937647860" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Controller.B2bController.html">B2bController</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Controller.SerializerController.html">SerializerController</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1410583505"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.DependencyInjection.html" style="margin-left: 30px; padding-left: 0">DependencyInjection</a>
+            </div>
+            <div id="namespace-1410583505" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.DependencyInjection.Configuration.html">Configuration</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.DependencyInjection.WkDhlApiExtension.html">WkDhlApiExtension</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-924080114"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Lib.html" style="margin-left: 30px; padding-left: 0">Lib</a>
+            </div>
+            <div id="namespace-924080114" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1038444557"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Lib.B2b.html" style="margin-left: 30px; padding-left: 0">B2b</a>
+            </div>
+            <div id="namespace-1038444557" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Lib.B2b.Connection.html">Connection</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Lib.B2b.IdentCode.html">IdentCode</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1617848421"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Model.html" style="margin-left: 30px; padding-left: 0">Model</a>
+            </div>
+            <div id="namespace-1617848421" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-496849779"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Model.B2b.html" style="margin-left: 30px; padding-left: 0">B2b</a>
+            </div>
+            <div id="namespace-496849779" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2122734017"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Model.B2b.Request.html" style="margin-left: 30px; padding-left: 0">Request</a>
+            </div>
+            <div id="namespace-2122734017" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.BookPickupRequest.html">BookPickupRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.CancelPickupRequest.html">CancelPickupRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.CreateShipmentDDRequest.html">CreateShipmentDDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.CreateShipmentTDRequest.html">CreateShipmentTDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.DeleteShipmentDDRequest.html">DeleteShipmentDDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.DeleteShipmentTDRequest.html">DeleteShipmentTDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.DoManifestDDRequest.html">DoManifestDDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.DoManifestTDRequest.html">DoManifestTDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.GetExportDocDDRequest.html">GetExportDocDDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.GetExportDocTDRequest.html">GetExportDocTDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.GetLabelDDRequest.html">GetLabelDDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.GetLabelTDRequest.html">GetLabelTDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.GetManifestDDRequest.html">GetManifestDDRequest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Request.UpdateShipmentDDRequest.html">UpdateShipmentDDRequest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-361341346"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Model.B2b.Response.html" style="margin-left: 30px; padding-left: 0">Response</a>
+            </div>
+            <div id="namespace-361341346" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.BookPickupResponse.html">BookPickupResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.CancelPickupResponse.html">CancelPickupResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.CreateShipmentResponse.html">CreateShipmentResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.DeleteShipmentResponse.html">DeleteShipmentResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.DoManifestResponse.html">DoManifestResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.ErrorResponse.html">ErrorResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.GetExportDocResponse.html">GetExportDocResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.GetLabelResponse.html">GetLabelResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.GetManifestDDResponse.html">GetManifestDDResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.GetVersionResponse.html">GetVersionResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.IdentCodeResponse.html">IdentCodeResponse</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Response.UpdateShipmentResponse.html">UpdateShipmentResponse</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Account.html">Account</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.AdvisoryData.html">AdvisoryData</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Attendance.html">Attendance</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.AuthentificationType.html">AuthentificationType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.BankCard.html">BankCard</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.BankType.html">BankType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Bulkfreight.html">Bulkfreight</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.CheckMinimumAge.html">CheckMinimumAge</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.COD.html">COD</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.CommunicationType.html">CommunicationType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Company.html">Company</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ContactType.html">ContactType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ContractSubmission.html">ContractSubmission</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.CountryType.html">CountryType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.CreationState.html">CreationState</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.CustomerType.html">CustomerType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.DangerousGoods.html">DangerousGoods</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.DeletionState.html">DeletionState</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.DeliveryAddress.html">DeliveryAddress</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.DeliveryAddressType.html">DeliveryAddressType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.DeliveryOnTime.html">DeliveryOnTime</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.DeveloperAuthentification.html">DeveloperAuthentification</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Dimension.html">Dimension</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.DrivingLicense.html">DrivingLicense</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Endorsement.html">Endorsement</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.EndorsementServiceconfiguration.html">EndorsementServiceconfiguration</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.EndorsementServiceconfigurationTeZu.html">EndorsementServiceconfigurationTeZu</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ErrorType.html">ErrorType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ExportDocData.html">ExportDocData</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ExportDocPosition.html">ExportDocPosition</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ExportDocumentDDType.html">ExportDocumentDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ExportDocumentTDType.html">ExportDocumentTDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ExpressSaturday.html">ExpressSaturday</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.FurtherAddressesDDType.html">FurtherAddressesDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.HigherInsurance.html">HigherInsurance</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Ident.html">Ident</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.IdentExtra.html">IdentExtra</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.IdentityCard.html">IdentityCard</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.IdentityData.html">IdentityData</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.IdentityType.html">IdentityType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.IdentPremium.html">IdentPremium</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Insurance.html">Insurance</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.LabelData.html">LabelData</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ManifestDateRange.html">ManifestDateRange</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ManifestState.html">ManifestState</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.NameType.html">NameType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.NativeAddressType.html">NativeAddressType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.PackstationType.html">PackstationType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Person.html">Person</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Pickup.html">Pickup</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.PickupAddressType.html">PickupAddressType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.PickupBookingInformationType.html">PickupBookingInformationType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.PickupDetailsType.html">PickupDetailsType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.PickupOrdererType.html">PickupOrdererType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.PieceInformation.html">PieceInformation</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.PostfilialeType.html">PostfilialeType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.PostOfficeType.html">PostOfficeType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ReceiverDDType.html">ReceiverDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ReceiverTDType.html">ReceiverTDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ReceiverType.html">ReceiverType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ServiceGroupBusinessPackInternationalDDType.html">ServiceGroupBusinessPackInternationalDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ServiceGroupDateTimeOptionDDType.html">ServiceGroupDateTimeOptionDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ServiceGroupDateTimeOptionTDType.html">ServiceGroupDateTimeOptionTDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ServiceGroupDHLPaketDDType.html">ServiceGroupDHLPaketDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ServiceGroupIdentDDType.html">ServiceGroupIdentDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ServiceGroupOtherDDType.html">ServiceGroupOtherDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ServiceGroupOtherTDType.html">ServiceGroupOtherTDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ServiceGroupPickupDDType.html">ServiceGroupPickupDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentAdvisory.html">ShipmentAdvisory</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentDDType.html">ShipmentDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentDetailsDDType.html">ShipmentDetailsDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentDetailsTDType.html">ShipmentDetailsTDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentDetailsType.html">ShipmentDetailsType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentItemDDType.html">ShipmentItemDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentItemTDType.html">ShipmentItemTDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentItemType.html">ShipmentItemType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentNotificationType.html">ShipmentNotificationType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentNumberType.html">ShipmentNumberType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentOrderDDType.html">ShipmentOrderDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentOrderTDType.html">ShipmentOrderTDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentServiceDDType.html">ShipmentServiceDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentServiceTDType.html">ShipmentServiceTDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipmentTDType.html">ShipmentTDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipperDDType.html">ShipperDDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipperTDType.html">ShipperTDType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ShipperType.html">ShipperType</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.SMSAviso.html">SMSAviso</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Status.html">Status</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.StatusInformation.html">StatusInformation</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.TimeFrame.html">TimeFrame</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Unfree.html">Unfree</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.Version.html">Version</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Model.B2b.ZipType.html">ZipType</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-741605553"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Tests.html" style="margin-left: 30px; padding-left: 0">Tests</a>
+            </div>
+            <div id="namespace-741605553" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-431442949"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Tests.Integration.html" style="margin-left: 30px; padding-left: 0">Integration</a>
+            </div>
+            <div id="namespace-431442949" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Tests.Integration.B2bControllerTest.html">B2bControllerTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-657768393"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Tests.Unit.html" style="margin-left: 30px; padding-left: 0">Unit</a>
+            </div>
+            <div id="namespace-657768393" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-737349371"></a>
+                                <a href="../namespaces/Wk.DhlApiBundle.Tests.Unit.B2b.html" style="margin-left: 30px; padding-left: 0">B2b</a>
+            </div>
+            <div id="namespace-737349371" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Tests.Unit.B2b.ConnectionTest.html">ConnectionTest</a></li>
+                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.Tests.Unit.B2b.IdentCodeTest.html">IdentCodeTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Wk.DhlApiBundle.WkDhlApiBundle.html">WkDhlApiBundle</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Wk.DhlApiBundle.Model.B2b.html">\Wk\DhlApiBundle\Model\B2b</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Wk\DhlApiBundle\Model\B2b</small>ManifestDateRange</h1>
+                    <p><em></em></p>
+                    
+
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Wk.DhlApiBundle.Model.B2b.ManifestDateRange.html#method___construct" class="">__construct()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Wk.DhlApiBundle.Model.B2b.ManifestDateRange.html#property_fromDate" class="">$fromDate</a><br />
+                                                                    <a href="../classes/Wk.DhlApiBundle.Model.B2b.ManifestDateRange.html#property_toDate" class="">$toDate</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Model.B2b.ManifestDateRange.php.html"><div class="path-wrapper">Model/B2b/ManifestDateRange.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper"></div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Wk\DhlApiBundle\Model\B2b\ManifestDateRange</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                todo
+                            </th>
+                            <td>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_fromDate" name="property_fromDate" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$fromDate</h3>
+                <pre class="signature">$fromDate : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_toDate" name="property_toDate" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$toDate</h3>
+                <pre class="signature">$toDate : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(string <span class="argument">$fromDate</span>, string <span class="argument">$toDate</span>)</pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$fromDate </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$toDate </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">ManifestDateRange.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Model/B2b/ManifestDateRange.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Wk.html">\Wk</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on May 16th, 2014 at 13:47.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

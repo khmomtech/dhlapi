@@ -10,21 +10,28 @@ namespace Wk\DhlApiBundle\Lib\B2b;
 
 /**
  * Class IdentCode
+ *
  * @package Wk\DhlApiBundle\Lib\B2b
  */
 class IdentCode {
 
     /**
+     * Unsigned serial number
+     *
      * @var int
      */
     private $serial = 1;
 
     /**
+     * Array of accounts containing account name as key and account number as value
+     *
      * @var array
      */
     private $accounts = array();
 
     /**
+     * Setter for accounts
+     *
      * @param array $accounts
      * @throws \InvalidArgumentException
      */
@@ -49,6 +56,8 @@ class IdentCode {
     }
 
     /**
+     * Getter for accounts
+     *
      * @return array
      */
     public function getAccounts()
@@ -78,6 +87,8 @@ class IdentCode {
     }
 
     /**
+     * Getter for the unsigned serial number
+     *
      * @return int
      */
     public function getSerial()
@@ -128,6 +139,10 @@ class IdentCode {
     }
 
     /**
+     * Calculates a parity number of the given code
+     *
+     * All non-digits will be removed from the code
+     *
      * @param string $code
      * @return int
      */
