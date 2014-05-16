@@ -73,7 +73,7 @@ You can use two services:
 Controllers
 ==========
 
-Here are all routes to call the API. You can enter the followind command to see the available routes:
+Here are all routes to call the API. You can enter the following command to see the available routes:
     
     php app/console router:debug
 
