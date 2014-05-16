@@ -450,6 +450,11 @@ wk_dhl_api_b2b_get_manifest_dd
 - Requirements: 
     - `_format`: (xml|json)
 
+DOCUMENTATION
+==========
+
+[See here](https://rawgit.com/asgoodasnu/dhlapi/master/doc/index.html)
+
 TODOS:
 ==========
 
