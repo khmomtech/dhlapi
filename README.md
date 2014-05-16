@@ -108,7 +108,7 @@ wk_dhl_api_b2b_book_pickup
 - Requirements: 
     - `_format`: (xml|json)
 
-## Sample JSON payload for POST content:
+Sample JSON payload for POST content:
 
     {
         information:{
@@ -206,7 +206,7 @@ wk_dhl_api_b2b_create_shipment_dd
 - Requirements: 
     - `_format`: (xml|json)
 
-## Sample JSON payload for POST content:
+Sample JSON payload for POST content:
 
     {
         sequence:1,
@@ -304,6 +304,8 @@ wk_dhl_api_b2b_update_shipment_dd
     - `_format`: (xml|json)
     - `id`: \d{12}
 
+Sample JSON payload for POST content:
+[See wk_dhl_api_b2b_create_shipment_dd](#wk_dhl_api_b2b_update_shipment_dd)
 
 wk_dhl_api_b2b_get_label_dd
 ---------------------------
