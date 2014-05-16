@@ -305,7 +305,8 @@ wk_dhl_api_b2b_update_shipment_dd
     - `id`: \d{12}
 
 Sample JSON payload for POST content:
-[See wk_dhl_api_b2b_create_shipment_dd](#wk_dhl_api_b2b_update_shipment_dd)
+
+[See wk_dhl_api_b2b_create_shipment_dd](#user-content-wk_dhl_api_b2b_update_shipment_dd)
 
 wk_dhl_api_b2b_get_label_dd
 ---------------------------
