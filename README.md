@@ -57,22 +57,18 @@ For dev and test environment use your developer account to authenticate with:
 Services
 ==========
 
-You can use two services:
+You can use the two following services.
 
-1. Connect to Intraship:
+Connect to Intraship:
 
-    `
     $connection = $this->get('wk_dhl_api.b2b.connection');
     $connection->cancelPickup('123456789012');
-    `
 
-2. Create an ident code for shipment independently from Intraship:
+Create an ident code for shipment independent of Intraship:
 
-    `
     $identCode = $this->get('wk_dhl_api.b2b.ident_code');
     $identCode->setSerial(1);
     $identCode->get('retoure');
-    `
 
 Controllers
 ==========
