@@ -304,9 +304,8 @@ wk_dhl_api_b2b_update_shipment_dd
     - `_format`: (xml|json)
     - `id`: \d{12}
 
-Sample JSON payload for POST content:
-
-[See wk_dhl_api_b2b_create_shipment_dd](#user-content-wk_dhl_api_b2b_update_shipment_dd)
+Sample JSON payload for POST content: 
+[See wk_dhl_api_b2b_create_shipment_dd](#user-content-wk_dhl_api_b2b_create_shipment_dd)
 
 wk_dhl_api_b2b_get_label_dd
 ---------------------------
@@ -354,6 +353,8 @@ wk_dhl_api_b2b_create_shipment_td
 - Requirements: 
     - `_format`: (xml|json)
 
+Sample JSON payload for POST content:
+[See wk_dhl_api_b2b_create_shipment_dd](#user-content-wk_dhl_api_b2b_create_shipment_dd)
 
 wk_dhl_api_b2b_delete_shipment_td
 ---------------------------------
