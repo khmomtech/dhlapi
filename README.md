@@ -65,3 +65,199 @@ Your can use two services to connect to Intraship or to create an ident code for
     $identCode = $this->get('wk_dhl_api.b2b.ident_code');
     $identCode->setSerial(1);
     $identCode->get('retoure');
+
+Controllers
+==========
+
+Here are all routes to call the API. You can enter the followind command to see the available routes:
+    
+    php app/console router:debug
+
+wk_dhl_api_b2b_ident_code
+-------------------------
+
+- Path: /dhl/b2b/identcode/{account}/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: GET
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:getIdentCode
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+    - `id`: \d+
+    - `type`: \w+
+
+
+wk_dhl_api_b2b_book_pickup
+--------------------------
+
+- Path: /dhl/b2b/pickup.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: POST
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:bookPickup
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+
+
+wk_dhl_api_b2b_cancel_pickup
+----------------------------
+
+- Path: /dhl/b2b/pickup/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: DELETE
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:cancelPickup
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+    - `id`: \d+
+
+
+wk_dhl_api_b2b_create_shipment_dd
+---------------------------------
+
+- Path: /dhl/b2b/dd/shipment.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: POST
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:createShipmentDD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+
+
+wk_dhl_api_b2b_delete_shipment_dd
+---------------------------------
+
+- Path: /dhl/b2b/dd/shipment/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: DELETE
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:deleteShipmentDD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+    - `id`: \d{12}
+
+
+wk_dhl_api_b2b_update_shipment_dd
+---------------------------------
+
+- Path: /dhl/b2b/dd/shipment/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: PUT
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:updateShipmentDD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+    - `id`: \d{12}
+
+
+wk_dhl_api_b2b_get_label_dd
+---------------------------
+
+- Path: /dhl/b2b/dd/label/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: GET
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:getLabelDD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+    - `id`: \d{12}
+
+
+wk_dhl_api_b2b_get_export_dd
+----------------------------
+
+- Path: /dhl/b2b/dd/export/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: GET
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:getExportDocDD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json|pdf)
+    - `id`: \d{12}
+
+
+wk_dhl_api_b2b_create_shipment_td
+---------------------------------
+
+- Path: /dhl/b2b/td/shipment.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: POST
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:createShipmentTD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+
+
+wk_dhl_api_b2b_delete_shipment_td
+---------------------------------
+
+- Path: /dhl/b2b/td/shipment/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: DELETE
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:deleteShipmentTD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+    - `id`: \d{12}
+
+
+wk_dhl_api_b2b_get_label_td
+---------------------------
+
+- Path: /dhl/b2b/td/label/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: GET
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:getLabelTD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json)
+    - `id`: \d{12}
+
+
+wk_dhl_api_b2b_get_export_td
+----------------------------
+
+- Path: /dhl/b2b/td/export/{id}.{_format}
+- Host: ANY
+- Scheme: ANY
+- Method: GET
+- Class: Symfony\Component\Routing\Route
+- Defaults: 
+    - `_controller`: WkDhlApiBundle:B2b:getExportDocTD
+    - `_format`: json
+- Requirements: 
+    - `_format`: (xml|json|pdf)
+    - `id`: \d{12}
