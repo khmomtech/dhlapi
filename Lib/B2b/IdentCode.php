@@ -99,7 +99,7 @@ class IdentCode {
     /**
      * Generates an ident code with the given account or it uses the first configured one
      *
-     * @param null $account
+     * @param string $account
      * @return string
      */
     public function get($account = null)
