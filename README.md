@@ -108,6 +108,73 @@ wk_dhl_api_b2b_book_pickup
 - Requirements: 
     - `_format`: (xml|json)
 
+Sample JSON payload for POST content:
+
+    {
+        information:{
+            product:'DDN',
+            account:5005537481,
+            attendance:1,
+            date:'2011-04-07',
+            ready_by_time:'09:00',
+            closing_time:'16:00',
+            location:'Main Building',
+            pieces:1,
+            pallets:0,
+            weight:4,
+            shipments:1,
+            total_weight:2,
+            max_length:70,
+            max_width:30,
+            max_height:15
+        },
+        address:{
+            name:{
+                company:{
+                    name:'Muster Company'
+                }
+            },
+            address:{
+                street_name:'Leipziger Strasse',
+                street_number:47,
+                zip:{
+                    germany:10117
+                },
+                city:'Berlin',
+                country:{
+                    code:'DE'
+                }
+            },
+            communication:{
+                phone:'+4930-33215-0',
+                email:'max@muster.de',
+                contact:'Max Muster'
+            }
+        },
+        orderer:{
+            name:{
+                company:{
+                    name:'Muster Company'
+                }
+            },
+            address:{
+                street_name:'Leipziger Straße',
+                street_number:47,
+                zip:{
+                    germany:10117
+                },
+                city:'Berlin',
+                country:{
+                    code:'DE'
+                }
+            },
+            communication:{
+                phone:'+ 49 0987654321',
+                email:'max@muster.de',
+                contact:'Max Muster'
+            }
+        }
+    }
 
 wk_dhl_api_b2b_cancel_pickup
 ----------------------------
