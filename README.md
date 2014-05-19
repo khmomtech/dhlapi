@@ -103,70 +103,71 @@ wk_dhl_api_b2b_book_pickup
 Sample JSON payload for POST content:
 
     {
-        information:{
-            product:'DDN',
-            account:5000000000,
-            attendance:'01',
-            date:'2011-04-07',
-            ready_by_time:'09:00',
-            closing_time:'16:00',
-            location:'Main Building',
-            pieces:1,
-            pallets:0,
-            weight:4,
-            shipments:1,
-            total_weight:2,
-            max_length:70,
-            max_width:30,
-            max_height:15
+        "information":{
+            "product":"DDN",
+            "account":5000000000,
+            "attendance":"01",
+            "date":"2011-04-07",
+            "ready_by_time":"09:00",
+            "closing_time":"16:00",
+            "location":"Main Building",
+            "pieces":1,
+            "pallets":0,
+            "weight":4,
+            "shipments":1,
+            "total_weight":2,
+            "max_length":70,
+            "max_width":30,
+            "max_height":15
         },
-        address:{
-            name:{
-                company:{
-                    name:'Muster Company'
+        "address":{
+            "name":{
+                "company":{
+                    "name":"Muster Company"
                 }
             },
-            address:{
-                street_name:'Leipziger Strasse',
-                street_number:'47',
-                zip:{
-                    germany:'10117'
+            "address":{
+                "street_name":"Leipziger Strasse",
+                "street_number":"47",
+                "zip":{
+                    "germany":"10117"
                 },
-                city:'Berlin',
-                country:{
-                    code:'DE'
+                "city":"Berlin",
+                "country":{
+                    "code":"DE"
                 }
             },
-            communication:{
-                phone:'+4930-33215-0',
-                email:'max@muster.de',
-                contact:'Max Muster'
+            "communication":{
+                "phone":"+4930-33215-0",
+                "email":"max@muster.de",
+                "contact":"Max Muster"
             }
         },
-        orderer:{
-            name:{
-                company:{
-                    name:'Muster Company'
+        "orderer":{
+            "name":{
+                "company":{
+                    "name":"Muster Company"
                 }
             },
-            address:{
-                street_name:'Leipziger Straße',
-                street_number:'47',
-                zip:{
-                    germany:'10117'
+            "address":{
+                "street_name":"Leipziger Straße",
+                "street_number":"47",
+                "zip":{
+                    "germany":"10117"
                 },
-                city:'Berlin',
-                country:{
-                    code:'DE'
+                "city":"Berlin",
+                "country":{
+                    "code":"DE"
                 }
             },
-            communication:{
-                phone:'+ 49 0987654321',
-                email:'max@muster.de',
-                contact:'Max Muster'
+            "communication":{
+                "phone":"+ 49 0987654321",
+                "email":"max@muster.de",
+                "contact":"Max Muster"
             }
         }
     }
+
 
 wk_dhl_api_b2b_cancel_pickup
 ----------------------------
@@ -193,66 +194,66 @@ wk_dhl_api_b2b_create_shipment_dd
 Sample JSON payload for POST content:
 
     {
-        sequence:1,
-        shipment:{
-            shipment:{
-                product:'EPN',
-                date:'2014-10-08',
-                ekp:5000000000,
-                attendance:{
-                    id:'01'
+        "sequence":1,
+        "order":{
+            "shipment":{
+                "product":"EPN",
+                "date":"2014-10-08",
+                "ekp":5000000000,
+                "attendance":{
+                    "id":"01"
                 },
-                item:{
-                    weight:10,
-                    length:50,
-                    width:30,
-                    height:15,
-                    package_type:'PK'
+                "item":{
+                    "weight":10,
+                    "length":50,
+                    "width":30,
+                    "height":15,
+                    "package_type":"PK"
                 }
             }
         },
-        shipper:{
-            name:{
-                company:{
-                    name:'Muster Company'
+        "shipper":{
+            "name":{
+                "company":{
+                    "name":"Muster Company"
                 }
             },
-            address:{
-                street_name:'Leipziger Straße',
-                street_number:'47',
-                zip:{
-                    germany:'10117'
+            "address":{
+                "street_name":"Leipziger Straße",
+                "street_number":"47",
+                "zip":{
+                    "germany":"10117"
                 },
-                city:'Berlin',
-                country:{
-                    code:'DE'
+                "city":"Berlin",
+                "country":{
+                    "code":"DE"
                 }
             },
-            communication:{
-                email:'max@muster.de',
-                contact:'Max Muster'
+            "communication":{
+                "email":"max@muster.de",
+                "contact":"Max Muster"
             }
         },
-        receiver:{
-            name:{
-                person:{
-                    firstname:'Markus',
-                    lastname:'Meier'
+        "receiver":{
+            "name":{
+                "person":{
+                    "firstname":"Markus",
+                    "lastname":"Meier"
                 }
             },
-            address:{
-                street_name:'Marktplatz',
-                street_number:'1',
-                zip:{
-                    other:'70173'
+            "address":{
+                "street_name":"Marktplatz",
+                "street_number":"1",
+                "zip":{
+                    "other":"70173"
                 },
-                city:'Stuttgart',
-                country:{
-                    code:'DE'
+                "city":"Stuttgart",
+                "country":{
+                    "code":"DE"
                 }
             },
-            communication:{
-                phone:'0049-30-763291'
+            "communication":{
+                "phone":"0049-30-763291"
             }
         }
     }
