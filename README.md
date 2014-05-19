@@ -70,7 +70,7 @@ Create an ident code for shipment independent of Intraship:
     $identCode->setSerial(1);
     $identCode->get('retoure');
 
-Controllers
+REST API
 ==========
 
 Here are all routes to call the API. You can enter the following command to see the available routes:
@@ -81,12 +81,8 @@ wk_dhl_api_b2b_ident_code
 -------------------------
 
 - Path: /dhl/b2b/identcode/{account}/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: GET
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:getIdentCode
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -98,12 +94,8 @@ wk_dhl_api_b2b_book_pickup
 --------------------------
 
 - Path: /dhl/b2b/pickup.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: POST
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:bookPickup
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -113,8 +105,8 @@ Sample JSON payload for POST content:
     {
         information:{
             product:'DDN',
-            account:5005537481,
-            attendance:1,
+            account:5000000000,
+            attendance:'01',
             date:'2011-04-07',
             ready_by_time:'09:00',
             closing_time:'16:00',
@@ -136,9 +128,9 @@ Sample JSON payload for POST content:
             },
             address:{
                 street_name:'Leipziger Strasse',
-                street_number:47,
+                street_number:'47',
                 zip:{
-                    germany:10117
+                    germany:'10117'
                 },
                 city:'Berlin',
                 country:{
@@ -159,9 +151,9 @@ Sample JSON payload for POST content:
             },
             address:{
                 street_name:'Leipziger Straße',
-                street_number:47,
+                street_number:'47',
                 zip:{
-                    germany:10117
+                    germany:'10117'
                 },
                 city:'Berlin',
                 country:{
@@ -180,12 +172,8 @@ wk_dhl_api_b2b_cancel_pickup
 ----------------------------
 
 - Path: /dhl/b2b/pickup/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: DELETE
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:cancelPickup
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -196,12 +184,8 @@ wk_dhl_api_b2b_create_shipment_dd
 ---------------------------------
 
 - Path: /dhl/b2b/dd/shipment.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: POST
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:createShipmentDD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -216,7 +200,7 @@ Sample JSON payload for POST content:
                 date:'2014-10-08',
                 ekp:5000000000,
                 attendance:{
-                    id:1
+                    id:'01'
                 },
                 item:{
                     weight:10,
@@ -235,9 +219,9 @@ Sample JSON payload for POST content:
             },
             address:{
                 street_name:'Leipziger Straße',
-                street_number:47,
+                street_number:'47',
                 zip:{
-                    germany:10117
+                    germany:'10117'
                 },
                 city:'Berlin',
                 country:{
@@ -258,9 +242,9 @@ Sample JSON payload for POST content:
             },
             address:{
                 street_name:'Marktplatz',
-                street_number:1,
+                street_number:'1',
                 zip:{
-                    other:70173
+                    other:'70173'
                 },
                 city:'Stuttgart',
                 country:{
@@ -277,12 +261,8 @@ wk_dhl_api_b2b_delete_shipment_dd
 ---------------------------------
 
 - Path: /dhl/b2b/dd/shipment/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: DELETE
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:deleteShipmentDD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -293,12 +273,8 @@ wk_dhl_api_b2b_update_shipment_dd
 ---------------------------------
 
 - Path: /dhl/b2b/dd/shipment/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: PUT
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:updateShipmentDD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -311,12 +287,8 @@ wk_dhl_api_b2b_get_label_dd
 ---------------------------
 
 - Path: /dhl/b2b/dd/label/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: GET
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:getLabelDD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -327,12 +299,8 @@ wk_dhl_api_b2b_get_export_dd
 ----------------------------
 
 - Path: /dhl/b2b/dd/export/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: GET
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:getExportDocDD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json|pdf)
@@ -343,12 +311,8 @@ wk_dhl_api_b2b_create_shipment_td
 ---------------------------------
 
 - Path: /dhl/b2b/td/shipment.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: POST
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:createShipmentTD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -360,12 +324,8 @@ wk_dhl_api_b2b_delete_shipment_td
 ---------------------------------
 
 - Path: /dhl/b2b/td/shipment/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: DELETE
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:deleteShipmentTD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -376,12 +336,8 @@ wk_dhl_api_b2b_get_label_td
 ---------------------------
 
 - Path: /dhl/b2b/td/label/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: GET
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:getLabelTD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -392,12 +348,8 @@ wk_dhl_api_b2b_get_export_td
 ----------------------------
 
 - Path: /dhl/b2b/td/export/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: GET
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:getExportDocTD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json|pdf)
@@ -408,12 +360,8 @@ wk_dhl_api_b2b_do_manifest_dd
 -----------------------------
 
 - Path: /dhl/b2b/dd/manifest/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: POST
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:doManifestDD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -424,12 +372,8 @@ wk_dhl_api_b2b_do_manifest_td
 -----------------------------
 
 - Path: /dhl/b2b/td/manifest/{id}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: POST
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:doManifestTD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
@@ -440,12 +384,8 @@ wk_dhl_api_b2b_get_manifest_dd
 ------------------------------
 
 - Path: /dhl/b2b/dd/manifest/{from}/{to}.{_format}
-- Host: ANY
-- Scheme: ANY
 - Method: GET
-- Class: Symfony\Component\Routing\Route
 - Defaults: 
-    - `_controller`: WkDhlApiBundle:B2b:getManifestDD
     - `_format`: json
 - Requirements: 
     - `_format`: (xml|json)
