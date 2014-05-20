@@ -194,9 +194,9 @@ wk_dhl_api_b2b_create_shipment_dd
 Sample JSON payload for POST content:
 
     {
-        "sequence":1,
-        "order":{
-            "shipment":{
+        "sequence":11,
+        "shipment":{
+            "details":{
                 "product":"EPN",
                 "date":"2014-10-08",
                 "ekp":5000000000,
@@ -210,53 +210,54 @@ Sample JSON payload for POST content:
                     "height":15,
                     "package_type":"PK"
                 }
-            }
-        },
-        "shipper":{
-            "name":{
-                "company":{
-                    "name":"Muster Company"
-                }
             },
-            "address":{
-                "street_name":"Leipziger Straße",
-                "street_number":"47",
-                "zip":{
-                    "germany":"10117"
+            "shipper":{
+                "name":{
+                    "company":{
+                        "name":"Muster Company"
+                    }
                 },
-                "city":"Berlin",
-                "country":{
-                    "code":"DE"
-                }
-            },
-            "communication":{
-                "email":"max@muster.de",
-                "contact":"Max Muster"
-            }
-        },
-        "receiver":{
-            "name":{
-                "person":{
-                    "firstname":"Markus",
-                    "lastname":"Meier"
-                }
-            },
-            "address":{
-                "street_name":"Marktplatz",
-                "street_number":"1",
-                "zip":{
-                    "other":"70173"
+                "address":{
+                    "street_name":"Leipziger Straße",
+                    "street_number":"47",
+                    "zip":{
+                        "germany":"10117"
+                    },
+                    "city":"Berlin",
+                    "country":{
+                        "code":"DE"
+                    }
                 },
-                "city":"Stuttgart",
-                "country":{
-                    "code":"DE"
+                "communication":{
+                    "email":"max@muster.de",
+                    "contact":"Max Muster"
                 }
             },
-            "communication":{
-                "phone":"0049-30-763291"
+            "receiver":{
+                "name":{
+                    "person":{
+                        "firstname":"Markus",
+                        "lastname":"Meier"
+                    }
+                },
+                "address":{
+                    "street_name":"Marktplatz",
+                    "street_number":"1",
+                    "zip":{
+                        "other":"70173"
+                    },
+                    "city":"Stuttgart",
+                    "country":{
+                        "code":"DE"
+                    }
+                },
+                "communication":{
+                    "phone":"0049-30-763291"
+                }
             }
         }
     }
+
 
 wk_dhl_api_b2b_delete_shipment_dd
 ---------------------------------
