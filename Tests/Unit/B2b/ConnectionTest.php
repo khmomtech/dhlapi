@@ -25,7 +25,10 @@ use Wk\DhlApiBundle\Model\B2b\ReceiverDDType;
 use Wk\DhlApiBundle\Model\B2b\ReceiverTDType;
 use Wk\DhlApiBundle\Model\B2b\Request\DeleteShipmentDDRequest;
 use Wk\DhlApiBundle\Model\B2b\Response\DeleteShipmentResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\DoManifestResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\GetExportDocResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\GetLabelResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\GetManifestDDResponse;
 use Wk\DhlApiBundle\Model\B2b\ShipmentDDType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentTDType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentDetailsDDType;
@@ -221,16 +224,16 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      * Tests getting a label (TD)
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param string $responseClass
+     * @param GetLabelResponse $expectedResponse
      * @param int $expectedStatusCode
      * @dataProvider provideGetLabelTDData
      */
-    public function testGetLabelTD(ShipmentNumberType $shipmentNumber, $responseClass, $expectedStatusCode)
+    public function testGetLabelTD(ShipmentNumberType $shipmentNumber, GetLabelResponse $expectedResponse, $expectedStatusCode)
     {
         $response = $this->connection->getLabelTD($shipmentNumber);
 
         // check if it's the expected response class
-        $this->assertInstanceOf($responseClass, $response);
+        $this->assertInstanceOf(get_class($expectedResponse), $response);
 
         // check if the response has a status information with the expected status code
         $this->assertObjectHasAttribute('status', $response);
@@ -250,13 +253,10 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testBookPickup(BookPickupResponse $expectedResponse, PickupBookingInformationType $bookingInformation, PickupAddressType $senderAddress, PickupOrdererType $ordererAddress = null)
     {
-        $this->client->expects($this->any())
-            ->method('__soapCall')
-            ->with('BookPickup', array($bookingInformation, $senderAddress, $ordererAddress))
-            ->will($this->returnValue($expectedResponse));
-
-        $this->connection->setClient($this->client);
         $response = $this->connection->bookPickup($bookingInformation, $senderAddress, $ordererAddress);
+
+        // check if it's the expected response class
+        $this->assertInstanceOf(get_class($expectedResponse), $response);
 
         // check if the response has a status information with the expected status code
         $this->assertObjectHasAttribute('Status', $response);
@@ -277,7 +277,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $response = $this->connection->cancelPickup($confirmationNumber);
 
         // check if it's the expected response class
-        $this->assertInstanceOf($responseClass, $response);
+        $this->assertInstanceOf(get_class($expectedResponse), $response);
 
         // check if the response has a status information with the expected status code
         $this->assertObjectHasAttribute('Status', $response);
@@ -291,16 +291,16 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param string $docType
-     * @param string $responseClass
+     * @param GetExportDocResponse $expectedResponse
      * @param int $expectedStatusCode
      * @dataProvider provideGetExportDocDDData
      */
-    public function testGetExportDocDD(ShipmentNumberType $shipmentNumber, $docType, $responseClass, $expectedStatusCode)
+    public function testGetExportDocDD(ShipmentNumberType $shipmentNumber, $docType, GetExportDocResponse $expectedResponse, $expectedStatusCode)
     {
         $response = $this->connection->getExportDocDD($shipmentNumber, $docType);
 
         // check if it's the expected response class
-        $this->assertInstanceOf($responseClass, $response);
+        $this->assertInstanceOf(get_class($expectedResponse), $response);
 
         // check if the response has a status information with the expected status code
         $this->assertObjectHasAttribute('status', $response);
@@ -314,16 +314,16 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param string $docType
-     * @param string $responseClass
+     * @param GetExportDocResponse $expectedResponse
      * @param int $expectedStatusCode
      * @dataProvider provideGetExportDocTDData
      */
-    public function testGetExportDocTD(ShipmentNumberType $shipmentNumber, $docType, $responseClass, $expectedStatusCode)
+    public function testGetExportDocTD(ShipmentNumberType $shipmentNumber, $docType, GetExportDocResponse $expectedResponse, $expectedStatusCode)
     {
         $response = $this->connection->getExportDocTD($shipmentNumber, $docType);
 
         // check if it's the expected response class
-        $this->assertInstanceOf($responseClass, $response);
+        $this->assertInstanceOf(get_class($expectedResponse), $response);
 
         // check if the response has a status information with the expected status code
         $this->assertObjectHasAttribute('status', $response);
@@ -337,16 +337,16 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param DateTime $fromDate
      * @param DateTime $toDate
-     * @param string $responseClass
+     * @param GetManifestDDResponse $expectedResponse
      * @param int $expectedStatusCode
      * @dataProvider provideGetManifestDDData
      */
-    public function testGetManifestDD(DateTime $fromDate, DateTime $toDate, $responseClass, $expectedStatusCode)
+    public function testGetManifestDD(DateTime $fromDate, DateTime $toDate, GetManifestDDResponse $expectedResponse, $expectedStatusCode)
     {
         $response = $this->connection->getManifestDD($fromDate, $toDate);
 
         // check if it's the expected response class
-        $this->assertInstanceOf($responseClass, $response);
+        $this->assertInstanceOf(get_class($expectedResponse), $response);
 
         // check if the response has a status information with the expected status code
         $this->assertObjectHasAttribute('status', $response);
@@ -359,16 +359,16 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      * Tests doing a manifest (DD)
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param string $responseClass
+     * @param DoManifestResponse $expectedResponse
      * @param int $expectedStatusCode
      * @dataProvider provideDoManifestDDData
      */
-    public function testDoManifestDD(ShipmentNumberType $shipmentNumber, $responseClass, $expectedStatusCode)
+    public function testDoManifestDD(ShipmentNumberType $shipmentNumber, DoManifestResponse $expectedResponse, $expectedStatusCode)
     {
         $response = $this->connection->doManifestDD($shipmentNumber);
 
         // check if it's the expected response class
-        $this->assertInstanceOf($responseClass, $response);
+        $this->assertInstanceOf(get_class($expectedResponse), $response);
 
         // check if the response has a status information with the expected status code
         $this->assertObjectHasAttribute('Status', $response);
@@ -381,16 +381,16 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      * Tests doing a manifest (TD)
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param string $responseClass
+     * @param DoManifestResponse $expectedResponse
      * @param int $expectedStatusCode
      * @dataProvider provideDoManifestTDData
      */
-    public function testDoManifestTD(ShipmentNumberType $shipmentNumber, $responseClass, $expectedStatusCode)
+    public function testDoManifestTD(ShipmentNumberType $shipmentNumber, DoManifestResponse $expectedResponse, $expectedStatusCode)
     {
         $response = $this->connection->doManifestTD($shipmentNumber);
 
         // check if it's the expected response class
-        $this->assertInstanceOf($responseClass, $response);
+        $this->assertInstanceOf(get_class($expectedResponse), $response);
 
         // check if the response has a status information with the expected status code
         $this->assertObjectHasAttribute('Status', $response);
@@ -443,8 +443,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         // Create response for error cases
         $errorResponse = new CreateShipmentResponse(
             $version,
-            new StatusInformation(1000, 'General error'),
-            null
+            new StatusInformation(1000, 'General error')
         );
 
         return array(
@@ -561,9 +560,49 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function provideUpdateShipmentDDData()
     {
-        $$this->provideCreateShipmentDDData();
-        return array(
+        // Create misc
+        $version    = Connection::getVersion();
+        $attendance = new Attendance('01');
+        $zip        = new ZipType('08150');
+        $tomorrow   = new DateTime('tomorrow');
+        $yesterday  = new DateTime('yesterday');
 
+        // Create objects for valid requests
+        $validItem      = new ShipmentItemDDType(10, 50, 30, 15);
+        $validPerson    = new Person(null, 'Herr', 'Max', 'Moritz', 'Mustermann');
+        $validCompany   = new Company('Musterfirma GmbH', null);
+        $validName      = new NameType($validPerson, $validCompany);
+        $validCountry   = new CountryType('Germany', 'DE', null);
+        $validAddress   = new NativeAddressType('Musterstraße', '1', null, $zip, 'Musterhausen', null, $validCountry);
+        $validComm      = new CommunicationType('+493012345678', 'max@example.org', null, null, 'example.org', null);
+        $validShipper   = new ShipperDDType($validName, $validAddress, $validComm, '19');
+        $validDetails   = new ShipmentDetailsDDType('EPN', $tomorrow, '5000000000', $attendance, $validItem);
+        $validReceiver  = new ReceiverDDType($validCompany, $validShipper, $validComm);
+        $validShipment  = new ShipmentDDType($validDetails, $validShipper, $validReceiver);
+        $validOrder     = new ShipmentOrderDDType(1, $validShipment);
+
+        // Create objects for invalid requests
+        $invalidDetails     = new ShipmentDetailsDDType('EPN', $yesterday, '5000000000', $attendance, $validItem, 300, 'EUR', '1234567890');
+        $invalidShipment    = new ShipmentDDType($invalidDetails, $validShipper, $validReceiver);
+        $invalidOrder       = new ShipmentOrderDDType(1, $invalidShipment);
+
+        /// Create response for success case
+        $successNumber = new ShipmentNumberType('1234567890987654321');
+        $successResponse = new UpdateShipmentResponse(
+            $version,
+            new StatusInformation(0, 'ok'),
+            new CreationState(0, 'ok', $validOrder->SequenceNumber, $successNumber, new PieceInformation($successNumber))
+        );
+
+        // Create response for error cases
+        $errorResponse = new UpdateShipmentResponse(
+            $version,
+            new StatusInformation(1000, 'General error')
+        );
+
+        return array(
+            array($validOrder,   $successResponse, 200),
+            array($invalidOrder, $errorResponse,   400),
         );
     }
 
