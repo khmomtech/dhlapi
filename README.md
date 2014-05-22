@@ -33,11 +33,75 @@ Enable annotations by entering the following line into autoload.php:
     AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 Configuration
-==========
+=============
 
-to "talk" with DHL you'll need to set following parameters in your parameters.yml
+That's the default configuration, which is using the DHL sandbox:
 
-Required settings for production environment:
+    wk_dhl_api:
+        b2b:
+            accounts: ~
+            connection:
+                wsdl_uri: 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/geschaeftskundenversand-api/1.0/geschaeftskundenversand-api-1.0.wsdl'
+                cis_base_uri: 'http://dhl.de/webservice/cisbase'
+                intraship: 
+                    user: geschaeftskunden_api
+                    password: Dhl_ep_test1
+                cig:
+                    end_point_uri: 'https://cig.dhl.de/services/sandbox/soap''
+                    user: ~
+                    password: ~
+
+Put this into `app/config/config.yml` to be able to set these options via `parameters.yml` in each environments: 
+
+    wk_dhl_api:
+        b2b:
+            accounts: %dhl_api_b2b_accounts%
+            connection:
+                cig:
+                    end_point_uri: %dhl_api_b2b_cig_endpoint_uri%
+                    user: %dhl_api_b2b_cig_user%
+                    password: %dhl_api_b2b_cig_password%
+
+Put this into `app/config/config_prod.yml` to be able to set these options via `parameters.yml` in production environment: 
+
+    wk_dhl_api:
+        b2b:
+            connection:
+                intraship:
+                    user: %dhl_api_b2b_is_user%
+                    password: %dhl_api_b2b_is_password%
+
+For older Intraship accounts you have to overwrite the `wsdl_uri` under `connection` via `config.yml`:
+
+    wk_dhl_api:
+        b2b:
+            connection:
+                ...
+                wsdl_uri: %dhl_api_b2b_wsdl_uri%
+                ...
+
+Development
+-----------
+
+Put these settings into `app/config/parameters.yml`:
+
+    dhl_api_b2b_cig_user: [YOUR_DEVELOPER_ID]
+    dhl_api_b2b_cig_password: [YOUR_DEVELOPER_PASSWORD]
+    dhl_api_b2b_cig_endpoint_uri: 'https://cig.dhl.de/services/sandbox/soap'
+    dhl_api_b2b_accounts: 
+        account1:   [ACCOUNT_ID_1]
+        account2:   [ACCOUNT_ID_2]
+        ...
+
+For older Intraship accounts you have to use the following URIs:
+
+    dhl_api_b2b_wsdl_uri: http://test-intraship.dhl.com/ws/1_0/ISService/DE.wsdl
+    dhl_api_b2b_cig_endpoint_uri: http://test-intraship.dhl.com/ws/1_0/de/ISService
+
+Production
+----------
+
+Put these settings into `app/config/parameters.yml`:
 
     dhl_api_b2b_is_user: [YOUR_INTRASHIP_USER]
     dhl_api_b2b_is_password: [YOUR_INTRASHIP_PASSWORD]
@@ -49,13 +113,13 @@ Required settings for production environment:
         account2:   [ACCOUNT_ID_2]
         ...
 
-For dev and test environment use your developer account to authenticate with:
+For older Intraship accounts you have to use the following URIs:
 
-    dhl_api_b2b_cig_user: [YOUR_DEVELOPER_ID]
-    dhl_api_b2b_cig_password: [YOUR_DEVELOPER_PASSWORD]
+    dhl_api_b2b_wsdl_uri: http://www.intraship.de/ws/1_0/ISService/DE.wsdl
+    dhl_api_b2b_cig_endpoint_uri: http://www.intraship.de/ws/1_0/de/ISService
 
 Services
-==========
+========
 
 You can use the two following services.
 
@@ -71,7 +135,7 @@ Create an ident code for shipment independent of Intraship:
     $identCode->get('retoure');
 
 REST API
-==========
+========
 
 Here are all routes to call the API. You can enter the following command to see the available routes:
     
