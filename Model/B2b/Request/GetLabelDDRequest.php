@@ -2,6 +2,13 @@
 
 namespace Wk\DhlApiBundle\Model\B2b\Request;
 
+use Wk\DhlApiBundle\Model\B2b\Version;
+use Wk\DhlApiBundle\Model\B2b\ShipmentNumberType;
+
+/**
+ * Class GetLabelDDRequest
+ * @package Wk\DhlApiBundle\Model\B2b\Request
+ */
 class GetLabelDDRequest
 {
 

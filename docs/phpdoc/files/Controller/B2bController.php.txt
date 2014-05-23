@@ -3,6 +3,7 @@
 namespace Wk\DhlApiBundle\Controller;
 
 use DateTime;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -74,6 +75,8 @@ class B2bController extends SerializerController
             $response = new IdentCodeResponse($code, IdentCode::format($code));
 
             return $this->generateResponse($response);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -115,6 +118,8 @@ class B2bController extends SerializerController
             );
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -147,6 +152,8 @@ class B2bController extends SerializerController
             $result = $this->connection->cancelPickup($request->query->get('id'));
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -184,6 +191,8 @@ class B2bController extends SerializerController
             $result = $this->connection->createShipmentDD($shipmentOrder);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -217,6 +226,8 @@ class B2bController extends SerializerController
             $result = $this->connection->deleteShipmentDD($shipmentNumber);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -256,6 +267,8 @@ class B2bController extends SerializerController
             $result = $this->connection->updateShipmentDD($shipmentNumber, $shipmentOrder);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -289,6 +302,8 @@ class B2bController extends SerializerController
             $result = $this->connection->getLabelDD($shipmentNumber);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -330,6 +345,8 @@ class B2bController extends SerializerController
             }
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -367,6 +384,8 @@ class B2bController extends SerializerController
             $result = $this->connection->createShipmentTD($shipmentOrder);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -400,6 +419,8 @@ class B2bController extends SerializerController
             $result = $this->connection->deleteShipmentTD($shipmentNumber);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -433,6 +454,8 @@ class B2bController extends SerializerController
             $result = $this->connection->getLabelTD($shipmentNumber);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -474,6 +497,8 @@ class B2bController extends SerializerController
             }
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -506,6 +531,8 @@ class B2bController extends SerializerController
             $result = $this->connection->doManifestDD($shipmentNumber);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -538,6 +565,8 @@ class B2bController extends SerializerController
             $result = $this->connection->doManifestTD($shipmentNumber);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -572,6 +601,8 @@ class B2bController extends SerializerController
             $result = $this->connection->getManifestDD($from, $to);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {

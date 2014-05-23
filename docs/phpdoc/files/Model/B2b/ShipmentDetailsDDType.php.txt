@@ -11,6 +11,7 @@ use JMS\Serializer\Annotation\SerializedName;
 /**
  * Class ShipmentDetailsDDType
  * @package Wk\DhlApiBundle\Model\B2b
+ * @XmlRoot("details")
  */
 class ShipmentDetailsDDType extends ShipmentDetailsType
 {
@@ -97,10 +98,10 @@ class ShipmentDetailsDDType extends ShipmentDetailsType
      * @param string $EKP
      * @param Attendance $Attendance
      * @param ShipmentItemDDType $ShipmentItem
+     * @param string $Description
      * @param float $DeclaredValueOfGood
      * @param string $DeclaredValueOfGoodsCurrency
      * @param string $CustomerReference
-     * @param string $Description
      * @param string $DeliveryRemarks
      * @param ShipmentServiceDDType $Service
      * @param ShipmentNotificationType $Notification
@@ -108,7 +109,7 @@ class ShipmentDetailsDDType extends ShipmentDetailsType
      * @param BankType $BankData
      * @access public
      */
-    public function __construct($ProductCode, DateTime $ShipmentDate, $EKP, Attendance $Attendance, ShipmentItemDDType $ShipmentItem, $DeclaredValueOfGood, $DeclaredValueOfGoodsCurrency, $CustomerReference, $Description = null, $DeliveryRemarks = null, ShipmentServiceDDType $Service = null, ShipmentNotificationType $Notification = null, $NotificationEmailText = null, BankType $BankData = null)
+    public function __construct($ProductCode, DateTime $ShipmentDate, $EKP, Attendance $Attendance, ShipmentItemDDType $ShipmentItem, $Description = null, $DeclaredValueOfGood = null, $DeclaredValueOfGoodsCurrency = null, $CustomerReference = null, $DeliveryRemarks = null, ShipmentServiceDDType $Service = null, ShipmentNotificationType $Notification = null, $NotificationEmailText = null, BankType $BankData = null)
     {
         parent::__construct($ProductCode, $ShipmentDate, $DeclaredValueOfGood, $DeclaredValueOfGoodsCurrency, $Notification, $NotificationEmailText);
 

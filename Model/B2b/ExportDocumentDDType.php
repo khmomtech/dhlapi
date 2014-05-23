@@ -2,6 +2,13 @@
 
 namespace Wk\DhlApiBundle\Model\B2b;
 
+use Invoic
+
+/**
+ * Class ExportDocumentDDType
+ *
+ * @package Wk\DhlApiBundle\Model\B2b
+ */
 class ExportDocumentDDType
 {
 

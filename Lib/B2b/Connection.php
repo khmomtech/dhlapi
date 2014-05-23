@@ -385,9 +385,9 @@ class Connection
      * @param string $docType
      * @return GetExportDocResponse
      */
-    public function getExportDocDD(ShipmentNumberType $shipmentNumber, $docType)
+    public function getExportDocDD(ShipmentNumberType $shipmentNumber)
     {
-        $request = new GetExportDocDDRequest($this->getVersion(), $shipmentNumber, $docType);
+        $request = new GetExportDocDDRequest($this->getVersion(), $shipmentNumber);
 
         $response = $this->executeCommand('GetExportDocDD', $request);
         if($response->status->StatusCode !== 0) {
@@ -404,9 +404,9 @@ class Connection
      * @param string $docType
      * @return GetExportDocResponse
      */
-    public function getExportDocTD(ShipmentNumberType $shipmentNumber, $docType)
+    public function getExportDocTD(ShipmentNumberType $shipmentNumber)
     {
-        $request = new GetExportDocTDRequest($this->getVersion(), $shipmentNumber, $docType);
+        $request = new GetExportDocTDRequest($this->getVersion(), $shipmentNumber);
 
         $response = $this->executeCommand('GetExportDocTD', $request);
         if($response->status->StatusCode !== 0) {
@@ -486,7 +486,12 @@ class Connection
         $client = $this->getClient();
 
         try {
-            return $client->__soapCall($commandName, array($request));
+            $response = $client->__soapCall($commandName, array($request));
+            if(!$response) {
+                throw new Exception('SOAP request has no response');
+            }
+
+            return $response;
         } catch (Exception $exception) {
             $this->logger->debug($exception->getMessage());
             $this->logger->info($client->__getLastRequest());
@@ -509,17 +514,26 @@ class Connection
             'soap_version'  => SOAP_1_2,
             'login'         => $this->cigUser,
             'password'      => $this->cigPassword,
-            'location'      => $this->cigEndPoint,
         );
 
-        $auth   = new AuthentificationType($this->isUser, $this->isPassword);
-        $header = new SoapHeader($this->cisBase, 'Authentification', $auth);
-
         try {
+            $auth   = new AuthentificationType($this->isUser, $this->isPassword);
+            $header = new SoapHeader($this->cisBase, 'Authentification', $auth);
+
             $this->client = new SoapClient($this->wsdl, $options);
             $this->client->__setSoapHeaders(array($header));
-        } catch (Exception $e) {
-            $this->client = null;
+            $this->client->__setLocation($this->cigEndPoint);
+        } catch (Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+            $this->logger->info("Line: " . $exception->getLine());
+            $this->logger->info("File: " . $exception->getFile());
+            $this->logger->info("WSDL: " . $this->wsdl);
+            $this->logger->info("Login: " . $this->cigUser);
+            $this->logger->info("Location: " . $this->cigEndPoint);
+            $this->logger->info("Namespace: " . $this->cisBase);
+            $this->logger->info("Authentification: " . $this->isUser);
+
+            throw new Exception('Initializing a SOAP client has been failed', 0, $exception);
         }
 
         return $this->client;

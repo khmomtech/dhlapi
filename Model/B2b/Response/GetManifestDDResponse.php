@@ -40,7 +40,7 @@ class GetManifestDDResponse
    * @param string $ManifestPDFData
    * @access public
    */
-  public function __construct(Version $Version, StatusInformation $status, $ManifestPDFData)
+  public function __construct(Version $Version, StatusInformation $status, $ManifestPDFData = null)
   {
     $this->Version = $Version;
     $this->status = $status;

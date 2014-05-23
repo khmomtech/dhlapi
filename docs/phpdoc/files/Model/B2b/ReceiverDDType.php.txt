@@ -18,7 +18,7 @@ class ReceiverDDType extends ReceiverType
      * @access public
      * @Type("string")
      * @XmlAttribute
-     * @SerializedName("name")
+     * @SerializedName("addition")
      */
     public $CompanyName3 = null;
 

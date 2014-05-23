@@ -67,31 +67,31 @@
           <code>public function __construct(string
         $ProductCode,
             [<a title="DateTime" href="../../classes/DateTime.html">DateTime</a>
-        $ShipmentDate = false,
+        $ShipmentDate = null,
             [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
-        $DeclaredValueOfGood = false,
-            [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
-        $DeclaredValueOfGoodsCurrency = false,
-            [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
-        $Account = false,
-            [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
-        $Dutiable = false,
-            [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
-        $DescriptionOfContent = null,
-            [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
-        $AccountPaidBy = null,
-            [<a title="Wk\DhlApiBundle\Model\B2b\ShipmentItemTDType" href="../../classes/Wk_DhlApiBundle_Model_B2b_ShipmentItemTDType.html">ShipmentItemTDType</a>
-        $ShipmentReference = null,
-            [<a title="Wk\DhlApiBundle\Model\B2b\ShipmentItemTDType" href="../../classes/Wk_DhlApiBundle_Model_B2b_ShipmentItemTDType.html">ShipmentItemTDType</a>
-        $TermsOfTrade = null,
+        $Account = null,
             [<a title="Wk\DhlApiBundle\Model\B2b\ShipmentItemTDType" href="../../classes/Wk_DhlApiBundle_Model_B2b_ShipmentItemTDType.html">ShipmentItemTDType</a>
         $ShipmentItem = null,
+            [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
+        $Description = null,
+            [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
+        $DeclaredValueOfGood = null,
+            [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
+        $DeclaredValueOfGoodsCurrency = null,
+            [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
+        $ShipmentReference = null,
+            [<a title="Wk\DhlApiBundle\Model\B2b\Account" href="../../classes/Wk_DhlApiBundle_Model_B2b_Account.html">Account</a>
+        $AccountPaidBy = null,
+            [<a title="Wk\DhlApiBundle\Model\B2b\ShipmentServiceTDType" href="../../classes/Wk_DhlApiBundle_Model_B2b_ShipmentServiceTDType.html">ShipmentServiceTDType</a>
+        $TermsOfTrade = null,
             [<a title="Wk\DhlApiBundle\Model\B2b\ShipmentServiceTDType" href="../../classes/Wk_DhlApiBundle_Model_B2b_ShipmentServiceTDType.html">ShipmentServiceTDType</a>
         $Service = null,
             [<a title="Wk\DhlApiBundle\Model\B2b\ShipmentNotificationType" href="../../classes/Wk_DhlApiBundle_Model_B2b_ShipmentNotificationType.html">ShipmentNotificationType</a>
         $Notification = null,
             [string
-        $NotificationEmailText = null]]]]]]]]]]]]] )
+        $NotificationEmailText = null,
+            [boolean
+        $Dutiable = false]]]]]]]]]]]]] )
             </code>
         </div>
         <h2 id="parameterlist">Parameters</h2>
@@ -104,6 +104,18 @@
                 —
                 <a href="#">DateTime</a></dt>
           <dd><br/><br/><br/>      </dd>
+          <dt><code>$Account</code>
+                —
+                <a href="#">Wk\DhlApiBundle\Model\B2b\Account</a></dt>
+          <dd><br/><br/><br/>      </dd>
+          <dt><code>$ShipmentItem</code>
+                —
+                <a href="#">Wk\DhlApiBundle\Model\B2b\ShipmentItemTDType</a></dt>
+          <dd><br/><br/><br/>      </dd>
+          <dt><code>$Description</code>
+                —
+                string</dt>
+          <dd/>
           <dt><code>$DeclaredValueOfGood</code>
                 —
                 float</dt>
@@ -112,15 +124,7 @@
                 —
                 string</dt>
           <dd/>
-          <dt><code>$Account</code>
-                —
-                <a href="#">Wk\DhlApiBundle\Model\B2b\Account</a></dt>
-          <dd><br/><br/><br/>      </dd>
-          <dt><code>$Dutiable</code>
-                —
-                boolean</dt>
-          <dd/>
-          <dt><code>$DescriptionOfContent</code>
+          <dt><code>$ShipmentReference</code>
                 —
                 string</dt>
           <dd/>
@@ -128,18 +132,10 @@
                 —
                 <a href="#">Wk\DhlApiBundle\Model\B2b\Account</a></dt>
           <dd><br/><br/><br/>      </dd>
-          <dt><code>$ShipmentReference</code>
-                —
-                string</dt>
-          <dd/>
           <dt><code>$TermsOfTrade</code>
                 —
                 string</dt>
           <dd/>
-          <dt><code>$ShipmentItem</code>
-                —
-                <a href="#">Wk\DhlApiBundle\Model\B2b\ShipmentItemTDType</a></dt>
-          <dd><br/><br/><br/>      </dd>
           <dt><code>$Service</code>
                 —
                 <a href="#">Wk\DhlApiBundle\Model\B2b\ShipmentServiceTDType</a></dt>
@@ -151,6 +147,10 @@
           <dt><code>$NotificationEmailText</code>
                 —
                 string</dt>
+          <dd/>
+          <dt><code>$Dutiable</code>
+                —
+                boolean</dt>
           <dd/>
         </dl>
       </section>

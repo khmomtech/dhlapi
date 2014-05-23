@@ -41,7 +41,7 @@ class LabelData
    * @param string $XMLLabel
    * @access public
    */
-  public function __construct($ShipmentNumber, $Status, $Labelurl, $XMLLabel)
+  public function __construct($ShipmentNumber, $Status, $Labelurl = null, $XMLLabel = null)
   {
     $this->ShipmentNumber = $ShipmentNumber;
     $this->Status = $Status;

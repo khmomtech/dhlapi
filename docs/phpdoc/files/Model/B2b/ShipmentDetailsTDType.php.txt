@@ -93,27 +93,27 @@ class ShipmentDetailsTDType extends ShipmentDetailsType
      *
      * @param string $ProductCode
      * @param DateTime $ShipmentDate
+     * @param Account $Account
+     * @param ShipmentItemTDType $ShipmentItem
+     * @param string $Description
      * @param float $DeclaredValueOfGood
      * @param string $DeclaredValueOfGoodsCurrency
-     * @param Account $Account
-     * @param boolean $Dutiable
-     * @param string $DescriptionOfContent
-     * @param Account $AccountPaidBy
      * @param string $ShipmentReference
+     * @param Account $AccountPaidBy
      * @param string $TermsOfTrade
-     * @param ShipmentItemTDType $ShipmentItem
      * @param ShipmentServiceTDType $Service
      * @param ShipmentNotificationType $Notification
      * @param string $NotificationEmailText
+     * @param boolean $Dutiable
      * @access public
      */
-    public function __construct($ProductCode, DateTime $ShipmentDate, $DeclaredValueOfGood, $DeclaredValueOfGoodsCurrency, Account $Account, $Dutiable = false, $DescriptionOfContent, Account $AccountPaidBy, $ShipmentReference, $TermsOfTrade, ShipmentItemTDType $ShipmentItem, ShipmentServiceTDType $Service = null, ShipmentNotificationType $Notification = null, $NotificationEmailText = null)
+    public function __construct($ProductCode, DateTime $ShipmentDate, Account $Account, ShipmentItemTDType $ShipmentItem, $Description, $DeclaredValueOfGood = null, $DeclaredValueOfGoodsCurrency = null, $ShipmentReference = null, Account $AccountPaidBy = null, $TermsOfTrade = null, ShipmentServiceTDType $Service = null, ShipmentNotificationType $Notification = null, $NotificationEmailText = null, $Dutiable = false)
     {
         parent::__construct($ProductCode, $ShipmentDate, $DeclaredValueOfGood, $DeclaredValueOfGoodsCurrency, $Notification, $NotificationEmailText);
 
         $this->Account = $Account;
         $this->Dutiable = $Dutiable;
-        $this->DescriptionOfContent = $DescriptionOfContent;
+        $this->DescriptionOfContent = $Description;
         $this->AccountPaidBy = $AccountPaidBy;
         $this->ShipmentReference = $ShipmentReference;
         $this->TermsOfTrade = $TermsOfTrade;

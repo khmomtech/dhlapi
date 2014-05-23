@@ -2,52 +2,61 @@
 
 namespace Wk\DhlApiBundle\Model\B2b;
 
+use Wk\DhlApiBundle\Model\B2b\ShipmentNumberType;
+use Wk\DhlApiBundle\Model\B2b\StatusInformation;
+
+/**
+ * Class ExportDocData
+ *
+ * @package Wk\DhlApiBundle\Model\B2b
+ */
 class ExportDocData
 {
 
-  /**
-   * 
-   * @var ShipmentNumberType $ShipmentNumber
-   * @access public
-   */
-  public $ShipmentNumber = null;
+	/**
+	 *
+	 * @var ShipmentNumberType $ShipmentNumber
+	 * @access public
+	 */
+	public $ShipmentNumber = null;
 
-  /**
-   * 
-   * @var StatusInformation $Status
-   * @access public
-   */
-  public $Status = null;
+	/**
+	 *
+	 * @var StatusInformation $Status
+	 * @access public
+	 */
+	public $Status = null;
 
-  /**
-   * 
-   * @var string $ExportDocPDFData
-   * @access public
-   */
-  public $ExportDocPDFData = null;
+	/**
+	 *
+	 * @var string $ExportDocPDFData
+	 * @access public
+	 */
+	public $ExportDocPDFData = null;
 
-  /**
-   * 
-   * @var string $ExportDocURL
-   * @access public
-   */
-  public $ExportDocURL = null;
+	/**
+	 *
+	 * @var string $ExportDocURL
+	 * @access public
+	 */
+	public $ExportDocURL = null;
 
-  /**
-   * 
-   * @param ShipmentNumberType $ShipmentNumber
-   * @param StatusInformation $Status
-   * @param string $ExportDocPDFData
-   * @param string $ExportDocURL
-   * @access public
-   */
-  public function __construct($ShipmentNumber, $Status, $ExportDocPDFData, $ExportDocURL)
-  {
-    $this->ShipmentNumber = $ShipmentNumber;
-    $this->Status = $Status;
-    $this->ExportDocPDFData = $ExportDocPDFData;
-    $this->ExportDocURL = $ExportDocURL;
-  }
+	/**
+	 *
+	 * @param ShipmentNumberType $ShipmentNumber
+	 * @param StatusInformation $Status
+	 * @param string $ExportDocPDFData
+	 * @param string $ExportDocURL
+	 *
+	 * @access public
+	 */
+	public function __construct(ShipmentNumberType $ShipmentNumber, StatusInformation $Status, $ExportDocPDFData = null, $ExportDocURL = null)
+	{
+		$this->ShipmentNumber = $ShipmentNumber;
+		$this->Status = $Status;
+		$this->ExportDocPDFData = $ExportDocPDFData;
+		$this->ExportDocURL = $ExportDocURL;
+	}
 
 }
 

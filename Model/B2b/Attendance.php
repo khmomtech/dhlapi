@@ -15,24 +15,24 @@ use JMS\Serializer\Annotation\SerializedName;
 class Attendance
 {
 
-  /**
-   * 
-   * @var string $partnerID
-   * @access public
-   * @Type("string")
-   * @SerializedName("id")
-   * @XmlValue
-   */
-  public $partnerID = null;
+	/**
+	 *
+	 * @var string $partnerID
+	 * @access public
+	 * @Type("string")
+	 * @SerializedName("id")
+	 * @XmlValue
+	 */
+	public $partnerID = null;
 
-  /**
-   * 
-   * @param string $partnerID
-   * @access public
-   */
-  public function __construct($partnerID)
-  {
-    $this->partnerID = $partnerID;
-  }
+	/**
+	 *
+	 * @param string $partnerID
+	 * @access public
+	 */
+	public function __construct($partnerID)
+	{
+		$this->partnerID = $partnerID;
+	}
 
 }

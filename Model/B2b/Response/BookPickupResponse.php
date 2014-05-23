@@ -2,7 +2,6 @@
 
 namespace Wk\DhlApiBundle\Model\B2b\Response;
 
-use Wk\DhlApiBundle\Model\B2b\Response\CancelPickupResponse;
 use Wk\DhlApiBundle\Model\B2b\Version;
 use Wk\DhlApiBundle\Model\B2b\StatusInformation;
 use JMS\Serializer\Annotation\Type;

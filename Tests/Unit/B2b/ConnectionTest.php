@@ -7,13 +7,16 @@ use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Wk\DhlApiBundle\Lib\B2b\Connection;
-use Wk\DhlApiBundle\Lib\B2b\IdentCode;
 use Wk\DhlApiBundle\Model\B2b\Account;
 use Wk\DhlApiBundle\Model\B2b\Attendance;
 use Wk\DhlApiBundle\Model\B2b\CommunicationType;
 use Wk\DhlApiBundle\Model\B2b\Company;
 use Wk\DhlApiBundle\Model\B2b\CountryType;
 use Wk\DhlApiBundle\Model\B2b\CreationState;
+use Wk\DhlApiBundle\Model\B2b\DeletionState;
+use Wk\DhlApiBundle\Model\B2b\ExportDocData;
+use Wk\DhlApiBundle\Model\B2b\LabelData;
+use Wk\DhlApiBundle\Model\B2b\ManifestState;
 use Wk\DhlApiBundle\Model\B2b\NameType;
 use Wk\DhlApiBundle\Model\B2b\NativeAddressType;
 use Wk\DhlApiBundle\Model\B2b\Person;
@@ -23,12 +26,15 @@ use Wk\DhlApiBundle\Model\B2b\PickupOrdererType;
 use Wk\DhlApiBundle\Model\B2b\PieceInformation;
 use Wk\DhlApiBundle\Model\B2b\ReceiverDDType;
 use Wk\DhlApiBundle\Model\B2b\ReceiverTDType;
-use Wk\DhlApiBundle\Model\B2b\Request\DeleteShipmentDDRequest;
+use Wk\DhlApiBundle\Model\B2b\Response\CancelPickupResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\DeleteShipmentResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\DoManifestResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\GetExportDocResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\GetLabelResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\GetManifestDDResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\CreateShipmentResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\UpdateShipmentResponse;
+use Wk\DhlApiBundle\Model\B2b\Response\BookPickupResponse;
 use Wk\DhlApiBundle\Model\B2b\ShipmentDDType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentTDType;
 use Wk\DhlApiBundle\Model\B2b\ShipmentDetailsDDType;
@@ -42,9 +48,6 @@ use Wk\DhlApiBundle\Model\B2b\ShipperTDType;
 use Wk\DhlApiBundle\Model\B2b\ShipperDDType;
 use Wk\DhlApiBundle\Model\B2b\StatusInformation;
 use Wk\DhlApiBundle\Model\B2b\ZipType;
-use Wk\DhlApiBundle\Model\B2b\Response\CreateShipmentResponse;
-use Wk\DhlApiBundle\Model\B2b\Response\UpdateShipmentResponse;
-use Wk\DhlApiBundle\Model\B2b\Response\BookPickupResponse;
 
 /**
  * Class ConnectionTest
@@ -79,12 +82,13 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
         // Create mock client from local WSDL file
         $wsdlFile = realpath(__DIR__ . '/../../Resources/geschaeftskundenversand-api-1.0.wsdl');
-        $this->client = $this->getMockFromWsdl($wsdlFile, 'DhlApi', '', array(), true, $options);
+        $this->client = $this->getMockFromWsdl($wsdlFile, 'DhlApi');
 
         $logger = new Logger('DhlApi');
 
         $this->connection = new Connection();
         $this->connection->setLogger($logger);
+        $this->connection->setClient($this->client);
     }
 
     /**
@@ -92,11 +96,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param ShipmentOrderDDType $shipmentOrder
      * @param CreateShipmentResponse $expectedResponse
-     * @param int $expectedStatusCode
+     *
      * @dataProvider provideCreateShipmentDDData
      */
-    public function testCreateShipmentDD(ShipmentOrderDDType $shipmentOrder, CreateShipmentResponse $expectedResponse, $expectedStatusCode)
+    public function testCreateShipmentDD(ShipmentOrderDDType $shipmentOrder, CreateShipmentResponse $expectedResponse)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('createShipmentDD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->createShipmentDD($shipmentOrder);
 
         // check if it's the expected response class
@@ -106,7 +114,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('Status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->status);
-        $this->assertSame($expectedStatusCode, $response->status->StatusCode);
+        $this->assertSame($expectedResponse->status->StatusCode, $response->status->StatusCode);
     }
 
     /**
@@ -114,10 +122,10 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param ShipmentOrderTDType $shipmentOrder
      * @param CreateShipmentResponse $expectedResponse
-     * @param int $expectedStatusCode
+     *
      * @dataProvider provideCreateShipmentTDData
      */
-    public function testCreateShipmentTD(ShipmentOrderTDType $shipmentOrder, CreateShipmentResponse $expectedResponse, $expectedStatusCode)
+    public function testCreateShipmentTD(ShipmentOrderTDType $shipmentOrder, CreateShipmentResponse $expectedResponse)
     {
         $response = $this->connection->createShipmentTD($shipmentOrder);
 
@@ -128,7 +136,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('Status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->status);
-        $this->assertSame($expectedStatusCode, $response->status->StatusCode);
+        $this->assertSame($expectedResponse->status->StatusCode, $response->status->StatusCode);
     }
 
     /**
@@ -137,11 +145,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      * @param ShipmentNumberType $shipmentNumber
      * @param ShipmentOrderDDType $shipmentOrder
      * @param UpdateShipmentResponse $expectedResponse
-     * @param int $expectedStatusCode
+     *
      * @dataProvider provideUpdateShipmentDDData
      */
-    public function testUpdateShipmentDD(ShipmentNumberType $shipmentNumber, ShipmentOrderDDType $shipmentOrder, UpdateShipmentResponse $expectedResponse, $expectedStatusCode)
+    public function testUpdateShipmentDD(ShipmentNumberType $shipmentNumber, ShipmentOrderDDType $shipmentOrder, UpdateShipmentResponse $expectedResponse)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('updateShipmentDD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->updateShipmentDD($shipmentNumber, $shipmentOrder);
 
         // check if it's the expected response class
@@ -151,7 +163,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->status);
-        $this->assertSame($expectedStatusCode, $response->status->StatusCode);
+        $this->assertSame($expectedResponse->status->StatusCode, $response->status->StatusCode);
     }
 
     /**
@@ -159,11 +171,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param DeleteShipmentResponse $expectedResponse
-     * @param int $expectedStatusCode
-     * @dataProvider provideDeleteShipmentDDData
+     *
+     * @dataProvider provideDeleteShipmentData
      */
-    public function testDeleteShipmentDD(ShipmentNumberType $shipmentNumber, DeleteShipmentResponse $expectedResponse, $expectedStatusCode)
+    public function testDeleteShipmentDD(ShipmentNumberType $shipmentNumber, DeleteShipmentResponse $expectedResponse)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('deleteShipmentDD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->deleteShipmentDD($shipmentNumber);
 
         // check if it's the expected response class
@@ -173,7 +189,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('Status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'Status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->Status);
-        $this->assertSame($expectedStatusCode, $response->Status->StatusCode);
+        $this->assertSame($expectedResponse->Status->StatusCode, $response->Status->StatusCode);
     }
 
     /**
@@ -181,11 +197,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param DeleteShipmentResponse $expectedResponse
-     * @param int $expectedStatusCode
-     * @dataProvider provideDeleteShipmentTDData
+     *
+     * @dataProvider provideDeleteShipmentData
      */
-    public function testDeleteShipmentTD(ShipmentNumberType $shipmentNumber, DeleteShipmentResponse $expectedResponse, $expectedStatusCode)
+    public function testDeleteShipmentTD(ShipmentNumberType $shipmentNumber, DeleteShipmentResponse $expectedResponse)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('deleteShipmentTD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->deleteShipmentTD($shipmentNumber);
 
         // check if it's the expected response class
@@ -195,7 +215,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('Status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'Status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->Status);
-        $this->assertSame($expectedStatusCode, $response->Status->StatusCode);
+        $this->assertSame($expectedResponse->Status->StatusCode, $response->Status->StatusCode);
     }
 
     /**
@@ -203,11 +223,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param GetLabelResponse $expectedResponse
-     * @param int $expectedStatusCode
-     * @dataProvider provideGetLabelDDData
+     *
+     * @dataProvider provideGetLabelData
      */
-    public function testGetLabelDD(ShipmentNumberType $shipmentNumber, GetLabelResponse $expectedResponse, $expectedStatusCode)
+    public function testGetLabelDD(ShipmentNumberType $shipmentNumber, GetLabelResponse $expectedResponse)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('getLabelDD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->getLabelDD($shipmentNumber);
 
         // check if it's the expected response class
@@ -217,7 +241,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->status);
-        $this->assertSame($expectedStatusCode, $response->status->StatusCode);
+        $this->assertSame($expectedResponse->status->StatusCode, $response->status->StatusCode);
     }
 
     /**
@@ -225,11 +249,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param GetLabelResponse $expectedResponse
-     * @param int $expectedStatusCode
-     * @dataProvider provideGetLabelTDData
+     *
+     * @dataProvider provideGetLabelData
      */
-    public function testGetLabelTD(ShipmentNumberType $shipmentNumber, GetLabelResponse $expectedResponse, $expectedStatusCode)
+    public function testGetLabelTD(ShipmentNumberType $shipmentNumber, GetLabelResponse $expectedResponse)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('getLabelTD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->getLabelTD($shipmentNumber);
 
         // check if it's the expected response class
@@ -239,7 +267,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->status);
-        $this->assertSame($expectedStatusCode, $response->status->StatusCode);
+        $this->assertSame($expectedResponse->status->StatusCode, $response->status->StatusCode);
     }
 
     /**
@@ -249,10 +277,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      * @param PickupBookingInformationType $bookingInformation
      * @param PickupAddressType $senderAddress
      * @param PickupOrdererType $ordererAddress
+     *
      * @dataProvider provideBookPickupData
      */
     public function testBookPickup(BookPickupResponse $expectedResponse, PickupBookingInformationType $bookingInformation, PickupAddressType $senderAddress, PickupOrdererType $ordererAddress = null)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('bookPickup')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->bookPickup($bookingInformation, $senderAddress, $ordererAddress);
 
         // check if it's the expected response class
@@ -269,11 +302,16 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      * Tests canceling a pickup
      *
      * @param string $confirmationNumber
-     * @param int $expectedStatusCode
+     * @param CancelPickupResponse $expectedResponse
+     *
      * @dataProvider provideCancelPickupData
      */
-    public function testCancelPickup($confirmationNumber, $expectedStatusCode)
+    public function testCancelPickup($confirmationNumber, CancelPickupResponse $expectedResponse)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('cancelPickup')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->cancelPickup($confirmationNumber);
 
         // check if it's the expected response class
@@ -283,21 +321,24 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('Status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'Status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->Status);
-        $this->assertSame($expectedStatusCode, $response->Status->StatusCode);
+        $this->assertSame($expectedResponse->Status->StatusCode, $response->Status->StatusCode);
     }
 
     /**
      * Tests getting an export document (DD)
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param string $docType
      * @param GetExportDocResponse $expectedResponse
-     * @param int $expectedStatusCode
-     * @dataProvider provideGetExportDocDDData
+     *
+     * @dataProvider provideGetExportDocData
      */
-    public function testGetExportDocDD(ShipmentNumberType $shipmentNumber, $docType, GetExportDocResponse $expectedResponse, $expectedStatusCode)
+    public function testGetExportDocDD(ShipmentNumberType $shipmentNumber, GetExportDocResponse $expectedResponse)
     {
-        $response = $this->connection->getExportDocDD($shipmentNumber, $docType);
+        // Stubbing
+        $this->client->expects($this->any())->method('getExportDocDD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
+        $response = $this->connection->getExportDocDD($shipmentNumber);
 
         // check if it's the expected response class
         $this->assertInstanceOf(get_class($expectedResponse), $response);
@@ -306,21 +347,24 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->status);
-        $this->assertSame($expectedStatusCode, $response->status->StatusCode);
+        $this->assertSame($expectedResponse->status->StatusCode, $response->status->StatusCode);
     }
 
     /**
      * Tests getting an export document (TD)
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param string $docType
      * @param GetExportDocResponse $expectedResponse
-     * @param int $expectedStatusCode
-     * @dataProvider provideGetExportDocTDData
+     *
+     * @dataProvider provideGetExportDocData
      */
-    public function testGetExportDocTD(ShipmentNumberType $shipmentNumber, $docType, GetExportDocResponse $expectedResponse, $expectedStatusCode)
+    public function testGetExportDocTD(ShipmentNumberType $shipmentNumber, GetExportDocResponse $expectedResponse)
     {
-        $response = $this->connection->getExportDocTD($shipmentNumber, $docType);
+        // Stubbing
+        $this->client->expects($this->any())->method('getExportDocTD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
+        $response = $this->connection->getExportDocTD($shipmentNumber);
 
         // check if it's the expected response class
         $this->assertInstanceOf(get_class($expectedResponse), $response);
@@ -329,7 +373,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->status);
-        $this->assertSame($expectedStatusCode, $response->status->StatusCode);
+        $this->assertSame($expectedResponse->status->StatusCode, $response->status->StatusCode);
     }
 
     /**
@@ -338,11 +382,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      * @param DateTime $fromDate
      * @param DateTime $toDate
      * @param GetManifestDDResponse $expectedResponse
-     * @param int $expectedStatusCode
+     *
      * @dataProvider provideGetManifestDDData
      */
-    public function testGetManifestDD(DateTime $fromDate, DateTime $toDate, GetManifestDDResponse $expectedResponse, $expectedStatusCode)
+    public function testGetManifestDD(DateTime $fromDate, DateTime $toDate, GetManifestDDResponse $expectedResponse)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('getManifestDD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->getManifestDD($fromDate, $toDate);
 
         // check if it's the expected response class
@@ -352,7 +400,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->status);
-        $this->assertSame($expectedStatusCode, $response->status->StatusCode);
+        $this->assertSame($expectedResponse->status->StatusCode, $response->status->StatusCode);
     }
 
     /**
@@ -360,11 +408,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param DoManifestResponse $expectedResponse
-     * @param int $expectedStatusCode
-     * @dataProvider provideDoManifestDDData
+     *
+     * @dataProvider provideDoManifestData
      */
-    public function testDoManifestDD(ShipmentNumberType $shipmentNumber, DoManifestResponse $expectedResponse, $expectedStatusCode)
+    public function testDoManifestDD(ShipmentNumberType $shipmentNumber, DoManifestResponse $expectedResponse)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('doManifestDD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->doManifestDD($shipmentNumber);
 
         // check if it's the expected response class
@@ -374,7 +426,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('Status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'Status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->Status);
-        $this->assertSame($expectedStatusCode, $response->Status->StatusCode);
+        $this->assertSame($expectedResponse->Status->StatusCode, $response->Status->StatusCode);
     }
 
     /**
@@ -382,11 +434,15 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param DoManifestResponse $expectedResponse
-     * @param int $expectedStatusCode
-     * @dataProvider provideDoManifestTDData
+     *
+     * @dataProvider provideDoManifestData
      */
-    public function testDoManifestTD(ShipmentNumberType $shipmentNumber, DoManifestResponse $expectedResponse, $expectedStatusCode)
+    public function testDoManifestTD(ShipmentNumberType $shipmentNumber, DoManifestResponse $expectedResponse)
     {
+        // Stubbing
+        $this->client->expects($this->any())->method('doManifestTD')->willReturn($expectedResponse);
+
+        // Fire the function which is to be tested
         $response = $this->connection->doManifestTD($shipmentNumber);
 
         // check if it's the expected response class
@@ -396,7 +452,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('Status', $response);
         $this->assertAttributeInstanceOf('StatusInformation', 'Status', $response);
         $this->assertObjectHasAttribute('StatusCode', $response->Status);
-        $this->assertSame($expectedStatusCode, $response->Status->StatusCode);
+        $this->assertSame($expectedResponse->Status->StatusCode, $response->Status->StatusCode);
     }
 
     /**
@@ -447,8 +503,8 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         return array(
-            array($validOrder,   $successResponse, 200),
-            array($invalidOrder, $errorResponse,   400),
+            array($validOrder,   $successResponse),
+            array($invalidOrder, $errorResponse),
         );
     }
 
@@ -501,8 +557,8 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         return array(
-            array($validOrder,   $successResponse, 200),
-            array($invalidOrder, $errorResponse,   400),
+            array($validOrder,   $successResponse),
+            array($invalidOrder, $errorResponse),
         );
     }
 
@@ -554,7 +610,29 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Data provider to provide shipment number to update
+     * Data provider to test canceling pickups
+     *
+     * @return array
+     */
+    public function provideCancelPickupData()
+    {
+        // Misc
+        $version = Connection::getVersion();
+
+        // Create respones for success cases
+        $successResponse = new CancelPickupResponse($version, new StatusInformation(0, 'ok'));
+
+        // Create respones for error cases
+        $errorResponse = new CancelPickupResponse($version, new StatusInformation(1000, 'General error'));
+
+        return array(
+            array('917968580', $successResponse),
+            array('9179685801', $errorResponse),
+        );
+    }
+
+    /**
+     * Data provider to provide shipment number and new data for shipment updates
      *
      * @return array
      */
@@ -601,9 +679,142 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         return array(
-            array($validOrder,   $successResponse, 200),
-            array($invalidOrder, $errorResponse,   400),
+            array($successNumber, $validOrder, $successResponse),
+            array($successNumber, $invalidOrder, $errorResponse),
         );
     }
 
+    /**
+     * Data provider to provide data to test deletion a shipment
+     *
+     * @return array
+     */
+    public function provideDeleteShipmentData()
+    {
+        // Misc
+        $version = Connection::getVersion();
+
+        // Create response for success case
+        $successNumber   = new ShipmentNumberType('00340433836008760131');
+        $successStatus   = new StatusInformation(0, 'ok');
+        $successDeletion = new DeletionState($successNumber, $successStatus);
+        $successResponse = new DeleteShipmentResponse($version, $successStatus, $successDeletion);
+
+        // Create response for error case
+        $errorNumber   = new ShipmentNumberType('00340433836008760132');
+        $errorStatus   = new StatusInformation(1000, 'General error');
+        $errorResponse = new DeleteShipmentResponse($version, $errorStatus);
+
+        return array(
+            array($successNumber, $successResponse),
+            array($errorNumber, $errorResponse),
+        );
+    }
+
+    /**
+     * Data provider to provide data to test getting a label
+     *
+     * @return array
+     */
+    public function provideGetLabelData()
+    {
+        // Misc
+        $version = Connection::getVersion();
+
+        // Create response for success case
+        $successNumber   = new ShipmentNumberType('00340433836008759937');
+        $successStatus   = new StatusInformation(0, 'ok');
+        $successData     = new LabelData($successNumber, $successStatus, 'http://test-intraship.dhl.com:80/cartridge.61/WSPrint?code=03EBF2F0F0383A4E689393267E5098E30314A0F71D32D6E7');
+        $successResponse = new GetLabelResponse($version, $successStatus, $successData);
+
+        // Create response for error case
+        $errorNumber   = new ShipmentNumberType('00340433836008759938');
+        $errorStatus   = new StatusInformation(1000, 'General error');
+        $errorResponse = new GetLabelResponse($version, $errorStatus);
+
+        return array(
+            array($successNumber, $successResponse),
+            array($errorNumber, $errorResponse),
+        );
+    }
+
+    /**
+     * Data provider to provide manifest data to test with
+     *
+     * @return array
+     */
+    public function provideGetManifestDDData()
+    {
+        // Misc
+        $version    = Connection::getVersion();
+        $today      = new DateTime('today');
+        $tomorrow   = new DateTime('tomorrow');
+
+        // Create response for success cases
+        $successResponse = new GetManifestDDResponse(
+            $version,
+            new StatusInformation(0, 'ok'),
+            null // TODO: use a sample PDF content (base64 encoded)
+        );
+
+        // Create response for error cases
+        $errorResponse = new GetManifestDDResponse(
+            $version,
+            new StatusInformation(1000, 'General error')
+        );
+
+        return array(
+            array($today, $tomorrow, $successResponse),
+            array($tomorrow, $tomorrow,  $errorResponse),
+        );
+    }
+
+	/**
+	 * Data provider to test doing manifests
+	 *
+	 * @return array
+	 */
+	public function provideDoManifestData()
+	{
+		// Misc
+		$version = Connection::getVersion();
+
+		// Create response for success case
+		$successNumber   = new ShipmentNumberType('00340433836008824970');
+		$successStatus   = new StatusInformation(0, 'ok');
+		$successManifest = new ManifestState($successNumber, $successStatus);
+		$successResponse = new DoManifestResponse($version, $successStatus, $successManifest);
+
+		// Create response for error case
+		$errorNumber   = new ShipmentNumberType('00340433836008824971');
+		$errorStatus   = new StatusInformation(1000, 'General error');
+		$errorResponse = new DoManifestResponse($version, $errorStatus);
+
+		return array(
+			array($successNumber, $successResponse),
+			array($errorNumber, $errorResponse),
+		);
+	}
+
+	public function provideGetExportDocData()
+	{
+		// Misc
+		$version = Connection::getVersion();
+
+		// Create response for success case
+		$successNumber   = new ShipmentNumberType('960701151320');
+		$successStatus   = new StatusInformation(0, 'ok');
+		$successData     = new ExportDocData($successNumber, $successStatus);
+		$successResponse = new GetExportDocResponse($version, $successStatus, $successData);
+
+		// Create response for error case
+		$errorNumber   = new ShipmentNumberType('960701151321');
+		$errorStatus   = new StatusInformation(1000, 'General error');
+		$errorResponse = new GetExportDocResponse($version, $errorStatus);
+
+		return array(
+			array($successNumber, $successResponse),
+			array($errorNumber, $errorResponse),
+		);
+	}
 }

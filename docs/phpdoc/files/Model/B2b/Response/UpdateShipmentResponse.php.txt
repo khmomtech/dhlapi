@@ -41,7 +41,7 @@ class UpdateShipmentResponse
    * @param CreationState $CreationState
    * @access public
    */
-  public function __construct(Version $Version, StatusInformation $status, CreationState $CreationState)
+  public function __construct(Version $Version, StatusInformation $status, CreationState $CreationState = null)
   {
     $this->Version = $Version;
     $this->status = $status;

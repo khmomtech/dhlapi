@@ -274,7 +274,7 @@ class B2bControllerTest extends WebTestCase
 
         // Create an invalid payload with missing address and orderer
         $dataRows[] = array(
-            400,
+            500,
             array(
                 'information'   => $validPickup,
             ),
@@ -282,7 +282,7 @@ class B2bControllerTest extends WebTestCase
 
         // Create an invalid payload with missing address but an orderer
         $dataRows[] = array(
-            400,
+            500,
             array(
                 'orderer'       => $validAddress,
                 'information'   => $validPickup,
@@ -291,9 +291,19 @@ class B2bControllerTest extends WebTestCase
 
         // Create an invalid payload with missing pickup information
         $dataRows[] = array(
-            400,
+            500,
             array(
                 'address'   => $validAddress,
+            ),
+        );
+
+        // Add an invalid booking information and a valid address for pickup and orderer
+        $dataRows[] = array(
+            400,
+            array(
+                'address'       => $validAddress,
+                'orderer'       => $validAddress,
+                'information'   => array(),
             ),
         );
 

@@ -2,6 +2,14 @@
 
 namespace Wk\DhlApiBundle\Model\B2b\Response;
 
+use Wk\DhlApiBundle\Model\B2b\Version;
+use Wk\DhlApiBundle\Model\B2b\StatusInformation;
+use Wk\DhlApiBundle\Model\B2b\ExportDocData;
+
+/**
+ * Class GetExportDocResponse
+ * @package Wk\DhlApiBundle\Model\B2b\Response
+ */
 class GetExportDocResponse
 {
 
@@ -33,7 +41,7 @@ class GetExportDocResponse
    * @param ExportDocData $ExportDocData
    * @access public
    */
-  public function __construct($Version, $status, $ExportDocData)
+  public function __construct(Version $Version, StatusInformation $status, ExportDocData $ExportDocData = null)
   {
     $this->Version = $Version;
     $this->status = $status;

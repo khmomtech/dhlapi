@@ -14,23 +14,23 @@ use JMS\Serializer\Annotation\SerializedName;
  */
 class Account
 {
-    /**
-     *
-     * @var string $accountNumberExpress
-     * @access public
-     * @Type("string")
-     * @SerializedName("number")
-     * @XmlValue
-     */
-    public $accountNumberExpress = null;
+	/**
+	 *
+	 * @var string $accountNumberExpress
+	 * @access public
+	 * @Type("string")
+	 * @SerializedName("number")
+	 * @XmlValue
+	 */
+	public $accountNumberExpress = null;
 
-    /**
-     *
-     * @param string $accountNumberExpress
-     * @access public
-     */
-    public function __construct($accountNumberExpress)
-    {
-        $this->accountNumberExpress = $accountNumberExpress;
-    }
+	/**
+	 *
+	 * @param string $accountNumberExpress
+	 * @access public
+	 */
+	public function __construct($accountNumberExpress)
+	{
+		$this->accountNumberExpress = $accountNumberExpress;
+	}
 }
