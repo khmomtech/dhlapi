@@ -50,7 +50,7 @@ class GetLabelResponse
    * @param LabelData $LabelData
    * @access public
    */
-  public function __construct(Version $Version, StatusInformation $status, LabelData $LabelData)
+  public function __construct(Version $Version, StatusInformation $status, LabelData $LabelData = null)
   {
     $this->Version = $Version;
     $this->status = $status;

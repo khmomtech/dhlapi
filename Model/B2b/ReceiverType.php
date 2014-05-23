@@ -19,7 +19,7 @@ class ReceiverType
      * @var NameType $Company
      * @access public
      * @Type("Wk\DhlApiBundle\Model\B2b\NameType")
-     * @SerializedName("company")
+     * @SerializedName("name")
      */
     public $Company = null;
 

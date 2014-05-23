@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: thomas
+ * Date: 12.05.14
+ * Time: 11:01
+ */
 
 namespace Wk\DhlApiBundle\Lib\B2b;
 
@@ -6,7 +12,6 @@ use DateTime;
 use Exception;
 use SoapClient;
 use SoapHeader;
-use SoapFault;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -49,33 +54,91 @@ use Wk\DhlApiBundle\Model\B2b\Response\UpdateShipmentResponse;
 
 /**
  * Class Connection
- * Implements the Singleton pattern
+ *
+ * @package Wk\DhlApiBundle\Lib\B2b
  */
 class Connection
 {
-    const MAX_ATTEMPTS = 10;
-
+    /**
+     * Service singleton
+     *
+     * @var Connection
+     */
     protected static $instance = null;
 
-    /** @var \Monolog\Logger */
+    /**
+     * Logger
+     *
+     * @var \Monolog\Logger
+     */
     private $logger;
 
-    /** @var  SoapClient */
+    /**
+     * SOAP client
+     *
+     * @var SoapClient
+     */
     protected $client;
 
-    /** @var  Version */
-    protected $version;
+    /**
+     * DHL API version
+     *
+     * @var  Version
+     */
+    protected static $version;
 
-    /** params */
+    /**
+     * URI of WSDL file
+     *
+     * @var string
+     */
     protected $wsdl;
+
+    /**
+     * URI of cis base file
+     *
+     * @var string
+     */
     protected $cisBase;
+
+    /**
+     * Name of Intraship user
+     *
+     * @var string
+     */
     protected $isUser;
+
+    /**
+     * Password of Intraship user
+     *
+     * @var string
+     */
     protected $isPassword;
+
+    /**
+     * Name of HTTP auth user
+     *
+     * @var string
+     */
     protected $cigUser;
+
+    /**
+     * Password of HTTP auth user
+     *
+     * @var string
+     */
     protected $cigPassword;
+
+    /**
+     * URI of the end point
+     *
+     * @var string
+     */
     protected $cigEndPoint;
 
     /**
+     * Setter for logger
+     *
      * @param Logger $logger
      */
     public function setLogger (Logger $logger)
@@ -100,7 +163,8 @@ class Connection
     }
 
     /**
-     * Instance of the Connection
+     * Instance of the Connection needed for service
+     *
      * @return Connection
      */
     public static function getInstance ()
@@ -110,6 +174,20 @@ class Connection
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Static getter for the version because a version will not change dynamically
+     *
+     * @return Version
+     */
+    public static function getVersion()
+    {
+        if(is_null(self::$version)) {
+            self::$version = new Version(1, 0);
+        }
+
+        return self::$version;
     }
 
     /**
@@ -137,20 +215,6 @@ class Connection
     }
 
     /**
-     * Getter for the version
-     *
-     * @return Version
-     */
-    public function getVersion()
-    {
-        if(is_null($this->version)) {
-            $this->version = new Version(1, 0);
-        }
-
-        return $this->version;
-    }
-
-    /**
      * Convenience method to book a pickup, wraps executeCommand
      *
      * @param PickupBookingInformationType $bookingInformation
@@ -162,7 +226,12 @@ class Connection
     {
         $request = new BookPickupRequest($this->getVersion(), $bookingInformation, $address, $orderer);
 
-        return $this->executeCommand('BookPickup', $request);
+        $response = $this->executeCommand('BookPickup', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -175,7 +244,12 @@ class Connection
     {
         $request = new CancelPickupRequest($this->getVersion(), $bookingNumber);
 
-        return $this->executeCommand('CancelPickup', $request);
+        $response = $this->executeCommand('CancelPickup', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -188,7 +262,12 @@ class Connection
     {
         $request = new CreateShipmentDDRequest($this->getVersion(), $shipmentOrder);
 
-        return $this->executeCommand('CreateShipmentDD', $request);
+        $response = $this->executeCommand('CreateShipmentDD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
     /**
      * Convenience method to create a international shipment, wraps executeCommand
@@ -200,7 +279,12 @@ class Connection
     {
         $request = new CreateShipmentTDRequest($this->getVersion(), $shipmentOrder);
 
-        return $this->executeCommand('CreateShipmentTD', $request);
+        $response = $this->executeCommand('CreateShipmentTD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -213,7 +297,12 @@ class Connection
     {
         $request = new DeleteShipmentDDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('DeleteShipmentDD', $request);
+        $response = $this->executeCommand('DeleteShipmentDD', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -226,7 +315,12 @@ class Connection
     {
         $request = new DeleteShipmentTDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('DeleteShipmentTD', $request);
+        $response = $this->executeCommand('DeleteShipmentTD', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -240,7 +334,12 @@ class Connection
     {
         $request = new UpdateShipmentDDRequest($this->getVersion(), $shipmentNumber, $shipmentOrder);
 
-        return $this->executeCommand('UpdateShipmentDD', $request);
+        $response = $this->executeCommand('UpdateShipmentDD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -253,7 +352,12 @@ class Connection
     {
         $request = new GetLabelDDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('GetLabelDD', $request);
+        $response = $this->executeCommand('GetLabelDD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -266,7 +370,12 @@ class Connection
     {
         $request = new GetLabelTDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('GetLabelTD', $request);
+        $response = $this->executeCommand('GetLabelTD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -276,11 +385,16 @@ class Connection
      * @param string $docType
      * @return GetExportDocResponse
      */
-    public function getExportDocDD(ShipmentNumberType $shipmentNumber, $docType)
+    public function getExportDocDD(ShipmentNumberType $shipmentNumber)
     {
-        $request = new GetExportDocDDRequest($this->getVersion(), $shipmentNumber, $docType);
+        $request = new GetExportDocDDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('GetExportDocDD', $request);
+        $response = $this->executeCommand('GetExportDocDD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -290,11 +404,16 @@ class Connection
      * @param string $docType
      * @return GetExportDocResponse
      */
-    public function getExportDocTD(ShipmentNumberType $shipmentNumber, $docType)
+    public function getExportDocTD(ShipmentNumberType $shipmentNumber)
     {
-        $request = new GetExportDocTDRequest($this->getVersion(), $shipmentNumber, $docType);
+        $request = new GetExportDocTDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('GetExportDocTD', $request);
+        $response = $this->executeCommand('GetExportDocTD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -307,7 +426,12 @@ class Connection
     {
         $request = new DoManifestDDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('DoManifestDD', $request);
+        $response = $this->executeCommand('DoManifestDD', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -320,7 +444,12 @@ class Connection
     {
         $request = new DoManifestTDRequest($this->getVersion(), $shipmentNumber);
 
-        return $this->executeCommand('DoManifestTD', $request);
+        $response = $this->executeCommand('DoManifestTD', $request);
+        if($response->Status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
@@ -334,10 +463,18 @@ class Connection
     {
         $request = new GetManifestDDRequest($this->getVersion(), $fromDate, $toDate);
 
-        return $this->executeCommand('GetManifestDD', $request);
+        $response = $this->executeCommand('GetManifestDD', $request);
+        if($response->status->StatusCode !== 0) {
+            throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
+        }
+
+        return $response;
     }
 
     /**
+     * Main method to execute the command
+     * It's used by all public convenience methods for the specific actions
+     *
      * @param string $commandName
      * @param object $request
      * @return mixed
@@ -350,9 +487,11 @@ class Connection
 
         try {
             $response = $client->__soapCall($commandName, array($request));
-            if($response->Status->StatusCode !== 0) {
-                throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
+            if(!$response) {
+                throw new Exception('SOAP request has no response');
             }
+
+            return $response;
         } catch (Exception $exception) {
             $this->logger->debug($exception->getMessage());
             $this->logger->info($client->__getLastRequest());
@@ -360,8 +499,6 @@ class Connection
 
             throw $exception;
         }
-
-        return $response;
     }
 
     /**
@@ -377,17 +514,26 @@ class Connection
             'soap_version'  => SOAP_1_2,
             'login'         => $this->cigUser,
             'password'      => $this->cigPassword,
-            'location'      => $this->cigEndPoint,
         );
 
-        $auth   = new AuthentificationType($this->isUser, $this->isPassword);
-        $header = new SoapHeader($this->cisBase, 'Authentification', $auth);
-
         try {
+            $auth   = new AuthentificationType($this->isUser, $this->isPassword);
+            $header = new SoapHeader($this->cisBase, 'Authentification', $auth);
+
             $this->client = new SoapClient($this->wsdl, $options);
             $this->client->__setSoapHeaders(array($header));
-        } catch (Exception $e) {
-            $this->client = null;
+            $this->client->__setLocation($this->cigEndPoint);
+        } catch (Exception $exception) {
+            $this->logger->debug($exception->getMessage());
+            $this->logger->info("Line: " . $exception->getLine());
+            $this->logger->info("File: " . $exception->getFile());
+            $this->logger->info("WSDL: " . $this->wsdl);
+            $this->logger->info("Login: " . $this->cigUser);
+            $this->logger->info("Location: " . $this->cigEndPoint);
+            $this->logger->info("Namespace: " . $this->cisBase);
+            $this->logger->info("Authentification: " . $this->isUser);
+
+            throw new Exception('Initializing a SOAP client has been failed', 0, $exception);
         }
 
         return $this->client;

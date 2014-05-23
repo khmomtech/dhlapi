@@ -1,0 +1,65 @@
+<?php
+
+namespace Wk\DhlApiBundle\Model\B2b\Request;
+
+use DateTime;
+use Wk\DhlApiBundle\Model\B2b\Version;
+use Wk\DhlApiBundle\Model\B2b\ManifestDateRange;
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\XmlRoot;
+use JMS\Serializer\Annotation\XmlAttribute;
+use JMS\Serializer\Annotation\SerializedName;
+
+/**
+ * Class GetManifestDDRequest
+ * @package Wk\DhlApiBundle\Model\B2b\Request
+ * @XmlRoot("manifest")
+ */
+class GetManifestDDRequest
+{
+    /**
+     *
+     * @var Version $Version
+     * @access public
+     * @Type("Wk\DhlApiBundle\Model\B2b\Version")
+     * @SerializedName("version")
+     */
+    public $Version = null;
+
+    /**
+     *
+     * @var string $manifestDate
+     * @access public
+     * @Type("string")
+     * @SerializedName("date")
+     * @XmlAttribute
+     */
+    public $manifestDate = null;
+
+    /**
+     *
+     * @var ManifestDateRange $manifestDateRange
+     * @access public
+     * @Type("Wk\DhlApiBundle\Model\B2b\ManifestDateRange")
+     * @SerializedName("range")
+     */
+    public $manifestDateRange = null;
+
+    /**
+     *
+     * @param Version $Version
+     * @param DateTime $fromDate
+     * @param DateTime $toDate
+     * @access public
+     */
+    public function __construct(Version $Version, DateTime $fromDate, DateTime $toDate = null)
+    {
+        $this->Version = $Version;
+        $this->manifestDate = $fromDate->format('Y-m-d');
+
+        if(!is_null($toDate)) {
+            $this->manifestDateRange = new ManifestDateRange($fromDate->format('Y-m-d'), $toDate->format('Y-m-d'));
+        }
+    }
+}
+

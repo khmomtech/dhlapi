@@ -1,6 +1,6 @@
 <?php
 
-namespace Wk\DhlApiBundle\Tests\Integration\B2b;
+namespace Wk\DhlApiBundle\Tests\Integration;
 
 use DOMDocument;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Wk\DhlApiBundle\Model\B2b\Version;
 
 /**
  * Class B2bControllerTest
- * @package Wk\DhlApiBundle\Tests\Integration\B2b
+ * @package Wk\DhlApiBundle\Tests\Integration
  */
 class B2bControllerTest extends WebTestCase
 {
@@ -216,25 +216,18 @@ class B2bControllerTest extends WebTestCase
 
         // Address data for pickup address and orderer contact
         $validAddress = array(
-            'zip'       => '10117',
-            'city'      => 'Musterhausen',
-            'street'    => array(
-                'name'      => 'Musterstraße',
-                'number'    => '999a',
+            'name' => array(
+                'company'   => array(
+                    'name'      => 'Musterfirma',
+                    'addition'  => '999. Stock',
+                ),
             ),
-            'country'   => array(
-                'code'      => 'DE',
-                'name'      => 'Deutschland',
-            ),
-            'person'    => array(
-                'name'      => array(
-                    'first'     => 'Max',
-                    'last'      => 'Mustermann',
-                )
-            ),
-            'company'   => array(
-                'name'      => 'Musterfirma',
-                'addition'  => '999. Stock',
+            'address' => array(
+                'street_name'   => 'Musterstraße',
+                'street_number' => '999a',
+                'city'          => 'Musterhausen',
+                'zip'           => array('germany' => '10117'),
+                'country'       => array('code' => 'DE'),
             ),
             'communication' => array(
                 'phone'         => '+4930-33215-0',
@@ -243,25 +236,21 @@ class B2bControllerTest extends WebTestCase
         );
 
         $validPickup = array(
-            'location'  => 'Hauptgebäude',
-            'count'     => 1,
-            'time'      => array(
-                'start'     => strtotime('09:00 +1day'),
-                'end'       => strtotime('16:00 +1day'),
-            ),
-            'amount'    => array(
-                'pieces'    => 1,
-                'pallets'   => 0,
-            ),
-            'weight'    => array(
-                'piece'     => 4,
-                'total'     => 4,
-            ),
-            'max'       => array(
-                'length'    => 70,
-                'width'     => 30,
-                'height'    => 15,
-            ),
+            'product'       => 'DDN',
+            'account'       => '5000000000',
+            'attendance'    => '01',
+            'date'          => date('Y-m-d', strtotime('tomorrow')),
+            'ready_by_time' => '09:00',
+            'closing_time'  => '16:00',
+            'location'      => 'Hauptgebäude',
+            'pieces'        => 1,
+            'pallets'       => 0,
+            'weight'        => 4,
+            'shipments'     => 1,
+            'weight_total'  => 4,
+            'max_length'    => 70,
+            'max_width'     => 30,
+            'max_height'    => 15,
         );
 
         // Add the booking information and address for pickup
@@ -283,7 +272,7 @@ class B2bControllerTest extends WebTestCase
             ),
         );
 
-        // Create an invalid payload with missing address
+        // Create an invalid payload with missing address and orderer
         $dataRows[] = array(
             500,
             array(
@@ -308,12 +297,13 @@ class B2bControllerTest extends WebTestCase
             ),
         );
 
-        // Create an invalid payload with wrong key
+        // Add an invalid booking information and a valid address for pickup and orderer
         $dataRows[] = array(
-            500,
+            400,
             array(
-                'address'   => $validAddress,
-                'info'      => $validPickup,
+                'address'       => $validAddress,
+                'orderer'       => $validAddress,
+                'information'   => array(),
             ),
         );
 

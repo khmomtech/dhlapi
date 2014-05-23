@@ -2,9 +2,12 @@
 
 namespace Wk\DhlApiBundle\Controller;
 
+use DateTime;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -48,7 +51,7 @@ class B2bController extends SerializerController
      *      name="wk_dhl_api_b2b_ident_code",
      *      requirements={
      *          "id"="\d+",
-     *          "type"="\w+",
+     *          "account"="\w+",
      *          "_format"="(xml|json)"
      *      },
      *      defaults={
@@ -72,6 +75,8 @@ class B2bController extends SerializerController
             $response = new IdentCodeResponse($code, IdentCode::format($code));
 
             return $this->generateResponse($response);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -113,6 +118,8 @@ class B2bController extends SerializerController
             );
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -145,6 +152,8 @@ class B2bController extends SerializerController
             $result = $this->connection->cancelPickup($request->query->get('id'));
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -182,6 +191,8 @@ class B2bController extends SerializerController
             $result = $this->connection->createShipmentDD($shipmentOrder);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -215,6 +226,8 @@ class B2bController extends SerializerController
             $result = $this->connection->deleteShipmentDD($shipmentNumber);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -254,6 +267,8 @@ class B2bController extends SerializerController
             $result = $this->connection->updateShipmentDD($shipmentNumber, $shipmentOrder);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -287,6 +302,8 @@ class B2bController extends SerializerController
             $result = $this->connection->getLabelDD($shipmentNumber);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -328,6 +345,8 @@ class B2bController extends SerializerController
             }
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -365,6 +384,8 @@ class B2bController extends SerializerController
             $result = $this->connection->createShipmentTD($shipmentOrder);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -398,6 +419,8 @@ class B2bController extends SerializerController
             $result = $this->connection->deleteShipmentTD($shipmentNumber);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -431,6 +454,8 @@ class B2bController extends SerializerController
             $result = $this->connection->getLabelTD($shipmentNumber);
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {
@@ -472,6 +497,112 @@ class B2bController extends SerializerController
             }
 
             return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
+    }
+
+    /**
+     * Do manifest action (day definite)
+     *
+     * @Method ("POST")
+     * @Route (
+     *      "/dd/manifest/{id}.{_format}",
+     *      name="wk_dhl_api_b2b_do_manifest_dd",
+     *      requirements={
+     *          "id"="^\d{12}$",
+     *          "_format"="(xml|json)"
+     *      },
+     *      defaults={
+     *          "_format"="json"
+     *      }
+     * )
+     * @param Request $request
+     * @return Response
+     */
+    public function doManifestDDAction(Request $request)
+    {
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $result = $this->connection->doManifestDD($shipmentNumber);
+
+            return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
+    }
+
+    /**
+     * Do manifest action (time definite)
+     *
+     * @Method ("POST")
+     * @Route (
+     *      "/td/manifest/{id}.{_format}",
+     *      name="wk_dhl_api_b2b_do_manifest_td",
+     *      requirements={
+     *          "id"="^\d{12}$",
+     *          "_format"="(xml|json)"
+     *      },
+     *      defaults={
+     *          "_format"="json"
+     *      }
+     * )
+     * @param Request $request
+     * @return Response
+     */
+    public function doManifestTDAction(Request $request)
+    {
+        try {
+            $shipmentNumber = new ShipmentNumberType($request->query->get('id'));
+            $result = $this->connection->doManifestTD($shipmentNumber);
+
+            return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
+        } catch(\InvalidArgumentException $exception) {
+            return $this->generateError($exception->getMessage(), 1001, 400);
+        } catch(\Exception $exception) {
+            return $this->generateError($exception->getMessage(), 1000);
+        }
+    }
+
+    /**
+     * Get manifest action (day definite)
+     *
+     * @Method ("GET")
+     * @Route (
+     *      "/dd/manifest/{from}/{to}.{_format}",
+     *      name="wk_dhl_api_b2b_get_manifest_dd",
+     *      requirements={
+     *          "_format"="(xml|json)"
+     *      },
+     *      defaults={
+     *          "_format"="json"
+     *      }
+     * )
+     * @ParamConverter("from", options={"format": "Y-m-d"})
+     * @ParamConverter("to", options={"format": "Y-m-d"})
+     *
+     * @param DateTime $from
+     * @param DateTime $to
+     * @return Response
+     */
+    public function getManifestDDAction(DateTime $from, DateTime $to)
+    {
+        try {
+            $result = $this->connection->getManifestDD($from, $to);
+
+            return $this->generateResponse($result);
+        } catch(BadRequestHttpException $exception) {
+            return $this->generateError($exception->getMessage(), $exception->getCode(), 400);
         } catch(\InvalidArgumentException $exception) {
             return $this->generateError($exception->getMessage(), 1001, 400);
         } catch(\Exception $exception) {

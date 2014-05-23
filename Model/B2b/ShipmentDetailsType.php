@@ -21,7 +21,7 @@ class ShipmentDetailsType
      * @access public
      * @Type("string")
      * @XmlAttribute
-     * @SerializedName("product_code")
+     * @SerializedName("product")
      */
     public $ProductCode = 'EPN';
 

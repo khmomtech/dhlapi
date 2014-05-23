@@ -1,0 +1,51 @@
+<?php
+
+namespace Wk\DhlApiBundle\Model\B2b;
+
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\XmlRoot;
+use JMS\Serializer\Annotation\XmlAttribute;
+use JMS\Serializer\Annotation\SerializedName;
+
+/**
+ * Class ShipmentNotificationType
+ * @package Wk\DhlApiBundle\Model\B2b
+ * @XmlRoot('notification')
+ */
+class ShipmentNotificationType
+{
+
+  /**
+   * 
+   * @var string $RecipientName
+   * @access public
+   * @Type("string")
+   * @XmlAttribute
+   * @SerializedName("name")
+   */
+  public $RecipientName = null;
+
+  /**
+   * 
+   * @var string $RecipientEmailAddress
+   * @access public
+   * @Type("string")
+   * @XmlAttribute
+   * @SerializedName("email")
+   */
+  public $RecipientEmailAddress = null;
+
+  /**
+   * 
+   * @param string $RecipientName
+   * @param string $RecipientEmailAddress
+   * @access public
+   */
+  public function __construct($RecipientName, $RecipientEmailAddress)
+  {
+    $this->RecipientName = $RecipientName;
+    $this->RecipientEmailAddress = $RecipientEmailAddress;
+  }
+
+}
+

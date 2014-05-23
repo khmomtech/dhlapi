@@ -1,0 +1,93 @@
+<?php
+
+namespace Wk\DhlApiBundle\Model\B2b;
+
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\XmlRoot;
+use JMS\Serializer\Annotation\XmlAttribute;
+use JMS\Serializer\Annotation\SerializedName;
+
+/**
+ * Class ShipmentServiceDDType
+ * @package Wk\DhlApiBundle\Model\B2b
+ * @XmlRoot("service")
+ */
+class ShipmentServiceDDType
+{
+
+  /**
+   * 
+   * @var ServiceGroupDateTimeOptionDDType $ServiceGroupDateTimeOption
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ServiceGroupDateTimeOptionDDType")
+   * @SerializedName("time")
+   */
+  public $ServiceGroupDateTimeOption = null;
+
+  /**
+   * 
+   * @var ServiceGroupIdentDDType $ShipmentServiceGroupIdent
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ServiceGroupIdentDDType")
+   * @SerializedName("ident")
+   */
+  public $ShipmentServiceGroupIdent = null;
+
+  /**
+   * 
+   * @var ServiceGroupPickupDDType $ShipmentServiceGroupPickup
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ServiceGroupPickupDDType")
+   * @SerializedName("pickup")
+   */
+  public $ShipmentServiceGroupPickup = null;
+
+  /**
+   * 
+   * @var ServiceGroupBusinessPackInternationalDDType $ServiceGroupBusinessPackInternational
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ServiceGroupBusinessPackInternationalDDType")
+   * @SerializedName("bpi")
+   */
+  public $ServiceGroupBusinessPackInternational = null;
+
+  /**
+   * 
+   * @var ServiceGroupDHLPaketDDType $ServiceGroupDHLPaket
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ServiceGroupDHLPaketDDType")
+   * @SerializedName("paket")
+   */
+  public $ServiceGroupDHLPaket = null;
+
+  /**
+   * 
+   * @var ServiceGroupOtherDDType $ServiceGroupOther
+   * @access public
+   * @Type("Wk\DhlApiBundle\Model\B2b\ServiceGroupOtherDDType")
+   * @SerializedName("other")
+   */
+  public $ServiceGroupOther = null;
+
+  /**
+   * 
+   * @param ServiceGroupDateTimeOptionDDType $ServiceGroupDateTimeOption
+   * @param ServiceGroupIdentDDType $ShipmentServiceGroupIdent
+   * @param ServiceGroupPickupDDType $ShipmentServiceGroupPickup
+   * @param ServiceGroupBusinessPackInternationalDDType $ServiceGroupBusinessPackInternational
+   * @param ServiceGroupDHLPaketDDType $ServiceGroupDHLPaket
+   * @param ServiceGroupOtherDDType $ServiceGroupOther
+   * @access public
+   */
+  public function __construct($ServiceGroupDateTimeOption, $ShipmentServiceGroupIdent, $ShipmentServiceGroupPickup, $ServiceGroupBusinessPackInternational, $ServiceGroupDHLPaket, $ServiceGroupOther)
+  {
+    $this->ServiceGroupDateTimeOption = $ServiceGroupDateTimeOption;
+    $this->ShipmentServiceGroupIdent = $ShipmentServiceGroupIdent;
+    $this->ShipmentServiceGroupPickup = $ShipmentServiceGroupPickup;
+    $this->ServiceGroupBusinessPackInternational = $ServiceGroupBusinessPackInternational;
+    $this->ServiceGroupDHLPaket = $ServiceGroupDHLPaket;
+    $this->ServiceGroupOther = $ServiceGroupOther;
+  }
+
+}
+

@@ -2,6 +2,10 @@
 
 namespace Wk\DhlApiBundle\Model\B2b\Response;
 
+use Wk\DhlApiBundle\Model\B2b\CreationState;
+use Wk\DhlApiBundle\Model\B2b\StatusInformation;
+use Wk\DhlApiBundle\Model\B2b\Version;
+
 class CreateShipmentResponse
 {
 
@@ -33,7 +37,7 @@ class CreateShipmentResponse
    * @param CreationState $CreationState
    * @access public
    */
-  public function __construct($Version, $status, $CreationState)
+  public function __construct(Version $Version, StatusInformation $status, CreationState $CreationState = null)
   {
     $this->Version = $Version;
     $this->status = $status;

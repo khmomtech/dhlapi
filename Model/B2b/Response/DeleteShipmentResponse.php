@@ -2,6 +2,14 @@
 
 namespace Wk\DhlApiBundle\Model\B2b\Response;
 
+use Wk\DhlApiBundle\Model\B2b\Version;
+use Wk\DhlApiBundle\Model\B2b\DeletionState;
+use Wk\DhlApiBundle\Model\B2b\StatusInformation;
+
+/**
+ * Class DeleteShipmentResponse
+ * @package Wk\DhlApiBundle\Model\B2b\Response
+ */
 class DeleteShipmentResponse
 {
 
@@ -33,7 +41,7 @@ class DeleteShipmentResponse
    * @param DeletionState $DeletionState
    * @access public
    */
-  public function __construct($Version, $Status, $DeletionState)
+  public function __construct(Version $Version, StatusInformation $Status, DeletionState $DeletionState = null)
   {
     $this->Version = $Version;
     $this->Status = $Status;
