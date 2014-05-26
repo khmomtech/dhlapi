@@ -11,13 +11,14 @@ namespace Wk\DhlApiBundle\Model\B2b\Response;
 use JMS\Serializer\Annotation\SerializedName;
 use JMS\Serializer\Annotation\XmlRoot;
 use JMS\Serializer\Annotation\Type;
+use Wk\DhlApiBundle\Lib\Base;
 
 /**
  * Class IdentCodeResponse
  * @package Wk\DhlApiBundle\Model\B2b\Response
  * @XmlRoot("identcode")
  */
-class IdentCodeResponse
+class IdentCodeResponse extends Base
 {
     /**
      * @var string

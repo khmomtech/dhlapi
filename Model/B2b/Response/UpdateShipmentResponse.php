@@ -8,44 +8,39 @@ use Wk\DhlApiBundle\Model\B2b\CreationState;
 
 /**
  * Class UpdateShipmentResponse
+ *
  * @package Wk\DhlApiBundle\Model\B2b\Response
  */
-class UpdateShipmentResponse
+class UpdateShipmentResponse extends GetVersionResponse
 {
+    /**
+     *
+     * @var StatusInformation $status
+     * @access public
+     */
+    public $status = null;
 
-  /**
-   * 
-   * @var Version $Version
-   * @access public
-   */
-  public $Version = null;
+    /**
+     *
+     * @var CreationState $CreationState
+     * @access public
+     */
+    public $CreationState = null;
 
-  /**
-   * 
-   * @var StatusInformation $status
-   * @access public
-   */
-  public $status = null;
-
-  /**
-   * 
-   * @var CreationState $CreationState
-   * @access public
-   */
-  public $CreationState = null;
-
-  /**
-   * 
-   * @param Version $Version
-   * @param StatusInformation $status
-   * @param CreationState $CreationState
-   * @access public
-   */
-  public function __construct(Version $Version, StatusInformation $status, CreationState $CreationState = null)
-  {
-    $this->Version = $Version;
-    $this->status = $status;
-    $this->CreationState = $CreationState;
-  }
+    /**
+     * Class constructor
+     *
+     * @param Version           $version
+     * @param StatusInformation $status
+     * @param CreationState     $creationState
+     *
+     * @access public
+     */
+    public function __construct(Version $version, StatusInformation $status, CreationState $creationState = null)
+    {
+        $this->Version = $version;
+        $this->status = $status;
+        $this->CreationState = $creationState;
+    }
 
 }

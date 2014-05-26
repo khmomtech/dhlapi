@@ -16,6 +16,7 @@ use Monolog\Logger;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+use Wk\DhlApiBundle\Model\B2b\StatusInformation;
 use Wk\DhlApiBundle\Model\B2b\Version;
 use Wk\DhlApiBundle\Model\B2b\AuthentificationType;
 
@@ -220,7 +221,9 @@ class Connection
      * @param PickupBookingInformationType $bookingInformation
      * @param PickupAddressType $address
      * @param PickupOrdererType $orderer
-     * @return BookPickupResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function bookPickup(PickupBookingInformationType $bookingInformation, PickupAddressType $address, PickupOrdererType $orderer = null)
     {
@@ -231,14 +234,17 @@ class Connection
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to cancel a pickup, wraps executeCommand
      *
      * @param string $bookingNumber
-     * @return CancelPickupResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function cancelPickup($bookingNumber)
     {
@@ -249,14 +255,17 @@ class Connection
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to create a national shipment, wraps executeCommand
      *
      * @param ShipmentOrderDDType $shipmentOrder
-     * @return CreateShipmentResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function createShipmentDD(ShipmentOrderDDType $shipmentOrder)
     {
@@ -267,13 +276,16 @@ class Connection
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
     /**
      * Convenience method to create a international shipment, wraps executeCommand
      *
      * @param ShipmentOrderTDType $shipmentOrder
-     * @return CreateShipmentResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function createShipmentTD(ShipmentOrderTDType $shipmentOrder)
     {
@@ -284,14 +296,17 @@ class Connection
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to delete a national shipment, wraps executeCommand
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @return DeleteShipmentResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function deleteShipmentDD(ShipmentNumberType $shipmentNumber)
     {
@@ -302,14 +317,17 @@ class Connection
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to delete a international shipment, wraps executeCommand
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @return DeleteShipmentResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function deleteShipmentTD(ShipmentNumberType $shipmentNumber)
     {
@@ -320,7 +338,8 @@ class Connection
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
@@ -328,7 +347,9 @@ class Connection
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param ShipmentOrderDDType $shipmentOrder
-     * @return UpdateShipmentResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function updateShipmentDD(ShipmentNumberType $shipmentNumber, ShipmentOrderDDType $shipmentOrder)
     {
@@ -339,14 +360,17 @@ class Connection
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to get a national label, wraps executeCommand
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @return GetLabelResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function getLabelDD(ShipmentNumberType $shipmentNumber)
     {
@@ -357,14 +381,17 @@ class Connection
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to get a international label, wraps executeCommand
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @return GetLabelResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function getLabelTD(ShipmentNumberType $shipmentNumber)
     {
@@ -375,7 +402,8 @@ class Connection
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
@@ -383,7 +411,9 @@ class Connection
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param string $docType
-     * @return GetExportDocResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function getExportDocDD(ShipmentNumberType $shipmentNumber)
     {
@@ -394,7 +424,8 @@ class Connection
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
@@ -402,7 +433,9 @@ class Connection
      *
      * @param ShipmentNumberType $shipmentNumber
      * @param string $docType
-     * @return GetExportDocResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function getExportDocTD(ShipmentNumberType $shipmentNumber)
     {
@@ -413,14 +446,17 @@ class Connection
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to do a national manifest, wraps executeCommand
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @return DoManifestResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function doManifestDD(ShipmentNumberType $shipmentNumber)
     {
@@ -431,14 +467,17 @@ class Connection
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to do a international manifest, wraps executeCommand
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @return DoManifestResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function doManifestTD(ShipmentNumberType $shipmentNumber)
     {
@@ -449,7 +488,8 @@ class Connection
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
@@ -457,7 +497,9 @@ class Connection
      *
      * @param DateTime $fromDate
      * @param DateTime $toDate
-     * @return GetManifestDDResponse
+     *
+     * @throws BadRequestHttpException
+     * @return array
      */
     public function getManifestDD(DateTime $fromDate, DateTime $toDate)
     {
@@ -468,7 +510,8 @@ class Connection
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-        return $response;
+	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
+	    return json_decode(json_encode($response), true);
     }
 
     /**
@@ -477,8 +520,9 @@ class Connection
      *
      * @param string $commandName
      * @param object $request
-     * @return mixed
-     * @throws \Exception
+     *
+     * @throws Exception
+     * @return \stdClass
      */
     private function executeCommand ($commandName, $request)
     {
@@ -504,6 +548,7 @@ class Connection
     /**
      * Initialize the SOAP client to perform the different calls
      *
+     * @throws Exception
      * @return null|SoapClient
      */
     private function initClient ()

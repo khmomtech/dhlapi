@@ -10,13 +10,13 @@ use JMS\Serializer\Annotation\XmlRoot;
 
 /**
  * Class BookPickupResponse
+ *
  * @package Wk\DhlApiBundle\Model\B2b
  * @XmlRoot("response")
  */
 class BookPickupResponse extends CancelPickupResponse
 {
     /**
-     *
      * @var string $ConfirmationNumber
      * @access public
      * @Type("string")
@@ -25,7 +25,6 @@ class BookPickupResponse extends CancelPickupResponse
     public $ConfirmationNumber = null;
 
     /**
-     *
      * @var string $ShipmentNumber
      * @access public
      * @Type("string")
@@ -34,18 +33,20 @@ class BookPickupResponse extends CancelPickupResponse
     public $ShipmentNumber = null;
 
     /**
+     * Class constructor
      *
-     * @param Version $Version
-     * @param StatusInformation $Status
-     * @param string $ConfirmationNumber
-     * @param string $ShipmentNumber
+     * @param Version           $version
+     * @param StatusInformation $status
+     * @param string            $confirmationNumber
+     * @param string            $shipmentNumber
+     *
      * @access public
      */
-    public function __construct(Version $Version, StatusInformation $Status, $ConfirmationNumber = null, $ShipmentNumber = null)
+    public function __construct(Version $version, StatusInformation $status, $confirmationNumber = null, $shipmentNumber = null)
     {
-        parent::__construct($Version, $Status);
+        parent::__construct($version, $status);
 
-        $this->ConfirmationNumber = $ConfirmationNumber;
-        $this->ShipmentNumber = $ShipmentNumber;
+        $this->ConfirmationNumber = $confirmationNumber;
+        $this->ShipmentNumber = $shipmentNumber;
     }
 }
