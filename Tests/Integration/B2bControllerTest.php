@@ -124,15 +124,11 @@ class B2bControllerTest extends WebTestCase
      */
     public function provideIdentCodeData()
     {
+        $dataSet = array();
+
         // Start with a test with a likely not configured account name
-        $dataSet = array(
-            array(
-                400,
-                'alikelyneverusedkey',
-                99999,
-                new ErrorResponse(1001, "Account 'alikelyneverusedkey' is not configured")
-            )
-        );
+        $errorResponse = new ErrorResponse(1001, "Account 'alikelyneverusedkey' is not configured");
+        $dataSet[] = array(400, 'alikelyneverusedkey', 99999, $errorResponse);
 
         // Loop and test all configured accounts
         $accounts = $this->createClient()->getKernel()->getContainer()->getParameter('wk_dhl_api.b2b.accounts');
@@ -151,13 +147,11 @@ class B2bControllerTest extends WebTestCase
             $dataSet[] = array(200, $key, 3, new IdentCodeResponse($code, IdentCode::format($code)));
 
             // add data sets with invalid parameters
-            $dataSet[] = array(
-                400,
-                $key,
-                999999,
-                new ErrorResponse(1001, 'Serial number contains more than 5 digits. Start with 1 again or use modulus 100000')
-            );
-            $dataSet[] = array(400, $key, 0, new ErrorResponse(1001, 'Serial number is no unsigned integer'));
+            $errorResponse = new ErrorResponse(1001, 'Serial number contains more than 5 digits. Start with 1 again or use modulus 100000');
+            $dataSet[] = array(400, $key, 999999, $errorResponse);
+
+            $errorResponse = new ErrorResponse(1001, 'Serial number is no unsigned integer');
+            $dataSet[] = array(400, $key, 0, $errorResponse);
         }
 
         return $dataSet;

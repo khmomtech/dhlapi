@@ -11,6 +11,7 @@ namespace Wk\DhlApiBundle\Model\B2b\Response;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\XmlRoot;
 use JMS\Serializer\Annotation\SerializedName;
+use Wk\DhlApiBundle\Lib\Base;
 
 /**
  * Class ErrorResponse
@@ -18,7 +19,7 @@ use JMS\Serializer\Annotation\SerializedName;
  * @package Wk\DhlApiBundle\Lib
  * @XmlRoot("error")
  */
-class ErrorResponse
+class ErrorResponse extends Base
 {
     /**
      * @var int
