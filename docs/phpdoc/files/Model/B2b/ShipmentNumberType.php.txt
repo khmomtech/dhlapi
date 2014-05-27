@@ -2,46 +2,50 @@
 
 namespace Wk\DhlApiBundle\Model\B2b;
 
+/**
+ * Class ShipmentNumberType
+ *
+ * @package Wk\DhlApiBundle\Model\B2b
+ */
 class ShipmentNumberType
 {
-
   /**
    * 
-   * @var identCode $identCode
+   * @var string $identCode
    * @access public
    */
   public $identCode = null;
 
   /**
    * 
-   * @var licensePlate $licensePlate
+   * @var string $licensePlate
    * @access public
    */
   public $licensePlate = null;
 
   /**
    * 
-   * @var airwayBill $airwayBill
+   * @var string $airwayBill
    * @access public
    */
   public $airwayBill = null;
 
   /**
    * 
-   * @var shipmentNumber $shipmentNumber
+   * @var string $shipmentNumber
    * @access public
    */
   public $shipmentNumber = null;
 
   /**
    * 
-   * @param identCode $identCode
-   * @param licensePlate $licensePlate
-   * @param airwayBill $airwayBill
-   * @param shipmentNumber $shipmentNumber
+   * @param string $identCode
+   * @param string $licensePlate
+   * @param string $airwayBill
+   * @param string $shipmentNumber
    * @access public
    */
-  public function __construct($identCode, $licensePlate = null, $airwayBill = null, $shipmentNumber = null)
+  public function __construct($identCode = null, $licensePlate = null, $airwayBill = null, $shipmentNumber = null)
   {
     $this->identCode = $identCode;
     $this->licensePlate = $licensePlate;

@@ -12,6 +12,7 @@ use Wk\DhlApiBundle\Lib\B2b\IdentCode;
 
 /**
  * Class IdentCodeTest
+ *
  * @package Wk\DhlApiBundle\Tests\Unit\B2b
  */
 class IdentCodeTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +21,8 @@ class IdentCodeTest extends \PHPUnit_Framework_TestCase
      * Tests the calculation of a parity number
      *
      * @param string $identCode
-     * @param int $parityNumber
+     * @param int    $parityNumber
+     *
      * @dataProvider provideParityNumberData
      */
     public function testParityNumber($identCode, $parityNumber)
@@ -37,8 +39,8 @@ class IdentCodeTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('56.310 243.031', 3),
-            array('80054200001',    5),
-            array('05/480310/621',  0),
+            array('80054200001', 5),
+            array('05/480310/621', 0),
         );
     }
 
@@ -47,6 +49,7 @@ class IdentCodeTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $rawCode
      * @param string $formattedCode
+     *
      * @dataProvider provideFormatData
      */
     public function testFormat($rawCode, $formattedCode)
@@ -69,10 +72,11 @@ class IdentCodeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $accounts
+     * @param array  $accounts
      * @param string $account
-     * @param int $serial
+     * @param int    $serial
      * @param string $code
+     *
      * @dataProvider provideIdentCodeData
      */
     public function testIdentCode(array $accounts, $account, $serial, $code)
@@ -87,17 +91,17 @@ class IdentCodeTest extends \PHPUnit_Framework_TestCase
     public function provideIdentCodeData()
     {
         $accounts = array(
-            'outbound'  => 8150,
-            'retoure'   => 1580,
+            'outbound' => 8150,
+            'retoure'  => 1580,
         );
 
         return array(
             array($accounts, 'outbound', 99999, '815000999999'),
-            array($accounts, 'outbound', 815,   '815000008158'),
-            array($accounts, 'outbound', 3,     '815000000037'),
-            array($accounts, 'retoure',  20,    '158000000201'),
-            array($accounts, 'retoure',  3767,  '158000037672'),
-            array($accounts, 'retoure',  15476, '158000154767'),
+            array($accounts, 'outbound', 815, '815000008158'),
+            array($accounts, 'outbound', 3, '815000000037'),
+            array($accounts, 'retoure', 20, '158000000201'),
+            array($accounts, 'retoure', 3767, '158000037672'),
+            array($accounts, 'retoure', 15476, '158000154767'),
         );
     }
 }

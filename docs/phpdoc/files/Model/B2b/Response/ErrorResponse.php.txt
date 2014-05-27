@@ -14,6 +14,7 @@ use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Class ErrorResponse
+ *
  * @package Wk\DhlApiBundle\Lib
  * @XmlRoot("error")
  */
@@ -36,8 +37,8 @@ class ErrorResponse
     /**
      * Constructor
      *
-     * @param $code
-     * @param $description
+     * @param int    $code
+     * @param string $description
      */
     public function __construct($code, $description)
     {
