@@ -138,11 +138,21 @@ class Connection
     protected $cigEndPoint;
 
     /**
+     * Class constructor
+     *
+     * @param SoapClient $client
+     */
+    public function __construct(SoapClient $client = null)
+    {
+        $this->setClient($client);
+    }
+
+    /**
      * Setter for logger
      *
      * @param Logger $logger
      */
-    public function setLogger (Logger $logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
     }
@@ -152,15 +162,15 @@ class Connection
      *
      * @param array $params
      */
-    public function setParams (array $params)
+    public function setParams(array $params)
     {
-        $this->wsdl         = $params['wsdl_uri'];
-        $this->cisBase      = $params['cis_base_uri'];
-        $this->isUser       = $params['intraship']['user'];
-        $this->isPassword   = $params['intraship']['password'];
-        $this->cigUser      = $params['cig']['user'];
-        $this->cigPassword  = $params['cig']['password'];
-        $this->cigEndPoint  = $params['cig']['end_point_uri'];
+        $this->wsdl = $params['wsdl_uri'];
+        $this->cisBase = $params['cis_base_uri'];
+        $this->isUser = $params['intraship']['user'];
+        $this->isPassword = $params['intraship']['password'];
+        $this->cigUser = $params['cig']['user'];
+        $this->cigPassword = $params['cig']['password'];
+        $this->cigEndPoint = $params['cig']['end_point_uri'];
     }
 
     /**
@@ -168,7 +178,7 @@ class Connection
      *
      * @return Connection
      */
-    public static function getInstance ()
+    public static function getInstance()
     {
         if (!self::$instance instanceof self) {
             self::$instance = new self;
@@ -184,7 +194,7 @@ class Connection
      */
     public static function getVersion()
     {
-        if(is_null(self::$version)) {
+        if (is_null(self::$version)) {
             self::$version = new Version(1, 0);
         }
 
@@ -198,7 +208,7 @@ class Connection
      */
     public function getClient()
     {
-        if(is_null($this->client)) {
+        if (is_null($this->client)) {
             $this->initClient();
         }
 
@@ -210,7 +220,7 @@ class Connection
      *
      * @param SoapClient $client
      */
-    public function setClient(SoapClient $client)
+    public function setClient(SoapClient $client = null)
     {
         $this->client = $client;
     }
@@ -219,8 +229,8 @@ class Connection
      * Convenience method to book a pickup, wraps executeCommand
      *
      * @param PickupBookingInformationType $bookingInformation
-     * @param PickupAddressType $address
-     * @param PickupOrdererType $orderer
+     * @param PickupAddressType            $address
+     * @param PickupOrdererType            $orderer
      *
      * @throws BadRequestHttpException
      * @return array
@@ -230,12 +240,12 @@ class Connection
         $request = new BookPickupRequest($this->getVersion(), $bookingInformation, $address, $orderer);
 
         $response = $this->executeCommand('BookPickup', $request);
-        if($response->Status->StatusCode !== 0) {
+        if ($response->Status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
@@ -251,12 +261,12 @@ class Connection
         $request = new CancelPickupRequest($this->getVersion(), $bookingNumber);
 
         $response = $this->executeCommand('CancelPickup', $request);
-        if($response->Status->StatusCode !== 0) {
+        if ($response->Status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
@@ -272,13 +282,14 @@ class Connection
         $request = new CreateShipmentDDRequest($this->getVersion(), $shipmentOrder);
 
         $response = $this->executeCommand('CreateShipmentDD', $request);
-        if($response->status->StatusCode !== 0) {
+        if ($response->status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
+
     /**
      * Convenience method to create a international shipment, wraps executeCommand
      *
@@ -292,12 +303,12 @@ class Connection
         $request = new CreateShipmentTDRequest($this->getVersion(), $shipmentOrder);
 
         $response = $this->executeCommand('CreateShipmentTD', $request);
-        if($response->status->StatusCode !== 0) {
+        if ($response->status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
@@ -313,12 +324,12 @@ class Connection
         $request = new DeleteShipmentDDRequest($this->getVersion(), $shipmentNumber);
 
         $response = $this->executeCommand('DeleteShipmentDD', $request);
-        if($response->Status->StatusCode !== 0) {
+        if ($response->Status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
@@ -334,18 +345,18 @@ class Connection
         $request = new DeleteShipmentTDRequest($this->getVersion(), $shipmentNumber);
 
         $response = $this->executeCommand('DeleteShipmentTD', $request);
-        if($response->Status->StatusCode !== 0) {
+        if ($response->Status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to update a national shipment, wraps executeCommand
      *
-     * @param ShipmentNumberType $shipmentNumber
+     * @param ShipmentNumberType  $shipmentNumber
      * @param ShipmentOrderDDType $shipmentOrder
      *
      * @throws BadRequestHttpException
@@ -356,12 +367,12 @@ class Connection
         $request = new UpdateShipmentDDRequest($this->getVersion(), $shipmentNumber, $shipmentOrder);
 
         $response = $this->executeCommand('UpdateShipmentDD', $request);
-        if($response->status->StatusCode !== 0) {
+        if ($response->status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
@@ -377,12 +388,12 @@ class Connection
         $request = new GetLabelDDRequest($this->getVersion(), $shipmentNumber);
 
         $response = $this->executeCommand('GetLabelDD', $request);
-        if($response->status->StatusCode !== 0) {
+        if ($response->status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
@@ -398,19 +409,19 @@ class Connection
         $request = new GetLabelTDRequest($this->getVersion(), $shipmentNumber);
 
         $response = $this->executeCommand('GetLabelTD', $request);
-        if($response->status->StatusCode !== 0) {
+        if ($response->status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to get a national export document, wraps executeCommand
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param string $docType
+     * @param string             $docType
      *
      * @throws BadRequestHttpException
      * @return array
@@ -420,19 +431,19 @@ class Connection
         $request = new GetExportDocDDRequest($this->getVersion(), $shipmentNumber);
 
         $response = $this->executeCommand('GetExportDocDD', $request);
-        if($response->status->StatusCode !== 0) {
+        if ($response->status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
      * Convenience method to get a international export document, wraps executeCommand
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param string $docType
+     * @param string             $docType
      *
      * @throws BadRequestHttpException
      * @return array
@@ -442,12 +453,12 @@ class Connection
         $request = new GetExportDocTDRequest($this->getVersion(), $shipmentNumber);
 
         $response = $this->executeCommand('GetExportDocTD', $request);
-        if($response->status->StatusCode !== 0) {
+        if ($response->status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
@@ -463,12 +474,12 @@ class Connection
         $request = new DoManifestDDRequest($this->getVersion(), $shipmentNumber);
 
         $response = $this->executeCommand('DoManifestDD', $request);
-        if($response->Status->StatusCode !== 0) {
+        if ($response->Status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
@@ -484,12 +495,12 @@ class Connection
         $request = new DoManifestTDRequest($this->getVersion(), $shipmentNumber);
 
         $response = $this->executeCommand('DoManifestTD', $request);
-        if($response->Status->StatusCode !== 0) {
+        if ($response->Status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->Status->StatusMessage, null, $response->Status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
@@ -506,12 +517,12 @@ class Connection
         $request = new GetManifestDDRequest($this->getVersion(), $fromDate, $toDate);
 
         $response = $this->executeCommand('GetManifestDD', $request);
-        if($response->status->StatusCode !== 0) {
+        if ($response->status->StatusCode !== 0) {
             throw new BadRequestHttpException($response->status->StatusMessage, null, $response->status->StatusCode);
         }
 
-	    // It looks a bit hacky but we need to convert it from stdClass to a serializable array
-	    return json_decode(json_encode($response), true);
+        // we need to convert it from stdClass to a serializable array
+        return json_decode(json_encode($response), true);
     }
 
     /**
@@ -524,14 +535,14 @@ class Connection
      * @throws Exception
      * @return \stdClass
      */
-    private function executeCommand ($commandName, $request)
+    private function executeCommand($commandName, $request)
     {
         // Use the getter method instead of the attribute because it initializes the client if not happened yet
         $client = $this->getClient();
 
         try {
             $response = $client->__soapCall($commandName, array($request));
-            if(!$response) {
+            if (!$response) {
                 throw new Exception('SOAP request has no response');
             }
 
@@ -551,18 +562,18 @@ class Connection
      * @throws Exception
      * @return null|SoapClient
      */
-    private function initClient ()
+    private function initClient()
     {
         $options = array(
-            'trace'         => true,
-            'encoding'      => 'UTF-8',
-            'soap_version'  => SOAP_1_2,
-            'login'         => $this->cigUser,
-            'password'      => $this->cigPassword,
+            'trace'        => true,
+            'encoding'     => 'UTF-8',
+            'soap_version' => SOAP_1_2,
+            'login'        => $this->cigUser,
+            'password'     => $this->cigPassword,
         );
 
         try {
-            $auth   = new AuthentificationType($this->isUser, $this->isPassword);
+            $auth = new AuthentificationType($this->isUser, $this->isPassword);
             $header = new SoapHeader($this->cisBase, 'Authentification', $auth);
 
             $this->client = new SoapClient($this->wsdl, $options);

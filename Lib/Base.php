@@ -11,7 +11,7 @@ namespace Wk\DhlApiBundle\Lib;
 /**
  * Class Base
  */
-class Base
+class Base extends \stdClass
 {
     /**
      * Converts the object to an array
@@ -21,5 +21,15 @@ class Base
     public function toArray()
     {
         return json_decode(json_encode($this), true);
+    }
+
+    /**
+     * Converts the object to an object of class stdClass
+     *
+     * @return object
+     */
+    public function toStdClass()
+    {
+        return json_decode(json_encode($this));
     }
 } 

@@ -2,10 +2,13 @@
 
 namespace Wk\DhlApiBundle\Tests\Unit\B2b;
 
+use Exception;
 use DateTime;
+use SoapFault;
 use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Wk\DhlApiBundle\Lib\B2b\Connection;
 use Wk\DhlApiBundle\Model\B2b\Account;
 use Wk\DhlApiBundle\Model\B2b\Attendance;
@@ -83,329 +86,441 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
         // Create mock client from local WSDL file
         $wsdlFile = realpath(__DIR__ . '/../../Resources/geschaeftskundenversand-api-1.0.wsdl');
-        $this->client = $this->getMockFromWsdl($wsdlFile, 'DhlApi');
+        $this->client = $this->getMockFromWsdl($wsdlFile, 'DhlApi', '', array('__soapCall'), false, $options);
 
         $logger = new Logger('DhlApi');
 
-        $this->connection = new Connection();
+        $this->connection = new Connection($this->client);
         $this->connection->setLogger($logger);
-        $this->connection->setClient($this->client);
     }
 
     /**
      * Tests creating a shipment (DD)
      *
-     * @param ShipmentOrderDDType $shipmentOrder
-     * @param array               $expectedResponse
+     * @param ShipmentOrderDDType    $shipmentOrder
+     * @param CreateShipmentResponse $expectedResponse
+     * @param Exception              $expectedException
      *
      * @dataProvider provideCreateShipmentDDData
      */
-    public function testCreateShipmentDD(ShipmentOrderDDType $shipmentOrder, array $expectedResponse)
+    public function testCreateShipmentDD(ShipmentOrderDDType $shipmentOrder, CreateShipmentResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('createShipmentDD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->createShipmentDD($shipmentOrder);
+            // Fire the function which is to be tested
+            $this->connection->createShipmentDD($shipmentOrder);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse->toStdClass());
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['status']);
-        $this->assertSame($expectedResponse['status']['StatusCode'], $response['status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->createShipmentDD($shipmentOrder);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests creating a shipment (TD)
      *
-     * @param ShipmentOrderTDType $shipmentOrder
-     * @param array               $expectedResponse
+     * @param ShipmentOrderTDType    $shipmentOrder
+     * @param CreateShipmentResponse $expectedResponse
+     * @param Exception              $expectedException
      *
      * @dataProvider provideCreateShipmentTDData
      */
-    public function testCreateShipmentTD(ShipmentOrderTDType $shipmentOrder, array $expectedResponse)
+    public function testCreateShipmentTD(ShipmentOrderTDType $shipmentOrder, CreateShipmentResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('createShipmentTD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->createShipmentTD($shipmentOrder);
+            // Fire the function which is to be tested
+            $this->connection->createShipmentTD($shipmentOrder);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse->toStdClass());
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['status']);
-        $this->assertSame($expectedResponse['status']['StatusCode'], $response['status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->createShipmentTD($shipmentOrder);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
+
     }
 
     /**
      * Tests updating a shipment (DD)
      *
-     * @param ShipmentNumberType  $shipmentNumber
-     * @param ShipmentOrderDDType $shipmentOrder
-     * @param array               $expectedResponse
+     * @param ShipmentNumberType     $shipmentNumber
+     * @param ShipmentOrderDDType    $shipmentOrder
+     * @param UpdateShipmentResponse $expectedResponse
+     * @param Exception              $expectedException
      *
      * @dataProvider provideUpdateShipmentDDData
      */
-    public function testUpdateShipmentDD(ShipmentNumberType $shipmentNumber, ShipmentOrderDDType $shipmentOrder, array $expectedResponse)
+    public function testUpdateShipmentDD(ShipmentNumberType $shipmentNumber, ShipmentOrderDDType $shipmentOrder, UpdateShipmentResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('updateShipmentDD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->updateShipmentDD($shipmentNumber, $shipmentOrder);
+            // Fire the function which is to be tested
+            $this->connection->updateShipmentDD($shipmentNumber, $shipmentOrder);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['status']);
-        $this->assertSame($expectedResponse['status']['StatusCode'], $response['status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->updateShipmentDD($shipmentNumber, $shipmentOrder);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests deleting a shipment (DD)
      *
-     * @param ShipmentNumberType $shipmentNumber
-     * @param array              $expectedResponse
+     * @param ShipmentNumberType     $shipmentNumber
+     * @param DeleteShipmentResponse $expectedResponse
+     * @param Exception              $expectedException
      *
      * @dataProvider provideDeleteShipmentData
      */
-    public function testDeleteShipmentDD(ShipmentNumberType $shipmentNumber, array $expectedResponse)
+    public function testDeleteShipmentDD(ShipmentNumberType $shipmentNumber, DeleteShipmentResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('deleteShipmentDD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->deleteShipmentDD($shipmentNumber);
+            // Fire the function which is to be tested
+            $this->connection->deleteShipmentDD($shipmentNumber);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('Status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['Status']);
-        $this->assertSame($expectedResponse['Status']['StatusCode'], $response['Status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->deleteShipmentDD($shipmentNumber);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('Status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['Status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests deleting a shipment (TD)
      *
-     * @param ShipmentNumberType $shipmentNumber
-     * @param array              $expectedResponse
+     * @param ShipmentNumberType     $shipmentNumber
+     * @param DeleteShipmentResponse $expectedResponse
+     * @param Exception              $expectedException
      *
      * @dataProvider provideDeleteShipmentData
      */
-    public function testDeleteShipmentTD(ShipmentNumberType $shipmentNumber, array $expectedResponse)
+    public function testDeleteShipmentTD(ShipmentNumberType $shipmentNumber, DeleteShipmentResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('deleteShipmentTD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->deleteShipmentTD($shipmentNumber);
+            // Fire the function which is to be tested
+            $this->connection->deleteShipmentTD($shipmentNumber);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('Status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['Status']);
-        $this->assertSame($expectedResponse['Status']['StatusCode'], $response['Status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->deleteShipmentTD($shipmentNumber);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('Status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['Status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests getting a label (DD)
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param array              $expectedResponse
+     * @param GetLabelResponse   $expectedResponse
+     * @param Exception          $expectedException
      *
      * @dataProvider provideGetLabelData
      */
-    public function testGetLabelDD(ShipmentNumberType $shipmentNumber, array $expectedResponse)
+    public function testGetLabelDD(ShipmentNumberType $shipmentNumber, GetLabelResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('getLabelDD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->getLabelDD($shipmentNumber);
+            // Fire the function which is to be tested
+            $this->connection->getLabelDD($shipmentNumber);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['status']);
-        $this->assertSame($expectedResponse['status']['StatusCode'], $response['status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->getLabelDD($shipmentNumber);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests getting a label (TD)
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param array              $expectedResponse
+     * @param GetLabelResponse   $expectedResponse
+     * @param Exception          $expectedException
      *
      * @dataProvider provideGetLabelData
      */
-    public function testGetLabelTD(ShipmentNumberType $shipmentNumber, array $expectedResponse)
+    public function testGetLabelTD(ShipmentNumberType $shipmentNumber, GetLabelResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('getLabelTD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->getLabelTD($shipmentNumber);
+            // Fire the function which is to be tested
+            $this->connection->getLabelTD($shipmentNumber);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['status']);
-        $this->assertSame($expectedResponse['status']['StatusCode'], $response['status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->getLabelTD($shipmentNumber);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests booking a pickup
      *
-     * @param array                        $expectedResponse
      * @param PickupBookingInformationType $bookingInformation
      * @param PickupAddressType            $senderAddress
      * @param PickupOrdererType            $ordererAddress
+     * @param BookPickupResponse           $expectedResponse
+     * @param Exception                    $expectedException
      *
      * @dataProvider provideBookPickupData
      */
-    public function testBookPickup(array $expectedResponse, PickupBookingInformationType $bookingInformation, PickupAddressType $senderAddress, PickupOrdererType $ordererAddress = null)
+    public function testBookPickup(PickupBookingInformationType $bookingInformation, PickupAddressType $senderAddress, PickupOrdererType $ordererAddress = null, BookPickupResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('bookPickup')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->bookPickup($bookingInformation, $senderAddress, $ordererAddress);
+            // Fire the function which is to be tested
+            $this->connection->bookPickup($bookingInformation, $senderAddress, $ordererAddress);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('Status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['Status']);
-        $this->assertSame($expectedResponse['Status']['StatusCode'], $response['Status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->bookPickup($bookingInformation, $senderAddress, $ordererAddress);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('Status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['Status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests canceling a pickup
      *
-     * @param string $confirmationNumber
-     * @param array  $expectedResponse
+     * @param string               $confirmationNumber
+     * @param CancelPickupResponse $expectedResponse
+     * @param Exception            $expectedException
      *
      * @dataProvider provideCancelPickupData
      */
-    public function testCancelPickup($confirmationNumber, array $expectedResponse)
+    public function testCancelPickup($confirmationNumber, CancelPickupResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('cancelPickup')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->cancelPickup($confirmationNumber);
+            // Fire the function which is to be tested
+            $this->connection->cancelPickup($confirmationNumber);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('Status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['Status']);
-        $this->assertSame($expectedResponse['Status']['StatusCode'], $response['Status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->cancelPickup($confirmationNumber);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('Status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['Status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests getting an export document (DD)
      *
-     * @param ShipmentNumberType $shipmentNumber
-     * @param array              $expectedResponse
+     * @param ShipmentNumberType   $shipmentNumber
+     * @param GetExportDocResponse $expectedResponse
+     * @param Exception            $expectedException
      *
      * @dataProvider provideGetExportDocData
      */
-    public function testGetExportDocDD(ShipmentNumberType $shipmentNumber, array $expectedResponse)
+    public function testGetExportDocDD(ShipmentNumberType $shipmentNumber, GetExportDocResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('getExportDocDD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->getExportDocDD($shipmentNumber);
+            // Fire the function which is to be tested
+            $this->connection->getExportDocDD($shipmentNumber);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['status']);
-        $this->assertSame($expectedResponse['status']['StatusCode'], $response['status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->getExportDocDD($shipmentNumber);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests getting an export document (TD)
      *
-     * @param ShipmentNumberType $shipmentNumber
-     * @param array              $expectedResponse
+     * @param ShipmentNumberType   $shipmentNumber
+     * @param GetExportDocResponse $expectedResponse
+     * @param Exception            $expectedException
      *
      * @dataProvider provideGetExportDocData
      */
-    public function testGetExportDocTD(ShipmentNumberType $shipmentNumber, array $expectedResponse)
+    public function testGetExportDocTD(ShipmentNumberType $shipmentNumber, GetExportDocResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('getExportDocTD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->getExportDocTD($shipmentNumber);
+            // Fire the function which is to be tested
+            $this->connection->getExportDocTD($shipmentNumber);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['status']);
-        $this->assertSame($expectedResponse['status']['StatusCode'], $response['status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->getExportDocTD($shipmentNumber);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests getting a manifest (DD)
      *
-     * @param DateTime $fromDate
-     * @param DateTime $toDate
-     * @param array    $expectedResponse
+     * @param DateTime              $fromDate
+     * @param DateTime              $toDate
+     * @param GetManifestDDResponse $expectedResponse
+     * @param Exception             $expectedException
      *
      * @dataProvider provideGetManifestDDData
      */
-    public function testGetManifestDD(DateTime $fromDate, DateTime $toDate, array $expectedResponse)
+    public function testGetManifestDD(DateTime $fromDate, DateTime $toDate, GetManifestDDResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('getManifestDD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->getManifestDD($fromDate, $toDate);
+            // Fire the function which is to be tested
+            $this->connection->getManifestDD($fromDate, $toDate);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['status']);
-        $this->assertSame($expectedResponse['status']['StatusCode'], $response['status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->getManifestDD($fromDate, $toDate);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests doing a manifest (DD)
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param array              $expectedResponse
+     * @param DoManifestResponse $expectedResponse
+     * @param Exception          $expectedException
      *
      * @dataProvider provideDoManifestData
      */
-    public function testDoManifestDD(ShipmentNumberType $shipmentNumber, array $expectedResponse)
+    public function testDoManifestDD(ShipmentNumberType $shipmentNumber, DoManifestResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('doManifestDD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->doManifestDD($shipmentNumber);
+            // Fire the function which is to be tested
+            $this->connection->doManifestDD($shipmentNumber);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('Status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['Status']);
-        $this->assertSame($expectedResponse['Status']['StatusCode'], $response['Status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->doManifestDD($shipmentNumber);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('Status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['Status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
      * Tests doing a manifest (TD)
      *
      * @param ShipmentNumberType $shipmentNumber
-     * @param array              $expectedResponse
+     * @param DoManifestResponse $expectedResponse
+     * @param Exception          $expectedException
      *
      * @dataProvider provideDoManifestData
      */
-    public function testDoManifestTD(ShipmentNumberType $shipmentNumber, array $expectedResponse)
+    public function testDoManifestTD(ShipmentNumberType $shipmentNumber, DoManifestResponse $expectedResponse = null, Exception $expectedException = null)
     {
-        // Stubbing
-        $this->client->expects($this->any())->method('doManifestTD')->willReturn($expectedResponse);
+        if ($expectedException) {
+            $this->clientWillThrowException($expectedException);
 
-        // Fire the function which is to be tested
-        $response = $this->connection->doManifestTD($shipmentNumber);
+            // Fire the function which is to be tested
+            $this->connection->doManifestTD($shipmentNumber);
+        } elseif ($expectedResponse) {
+            // Stubbing
+            $this->client->expects($this->any())->method('__soapCall')->willReturn($expectedResponse);
 
-        // check if the response has a status information with the expected status code
-        $this->assertArrayHasKey('Status', $response);
-        $this->assertArrayHasKey('StatusCode', $response['Status']);
-        $this->assertSame($expectedResponse['Status']['StatusCode'], $response['Status']['StatusCode']);
+            // Fire the function which is to be tested
+            $response = $this->connection->doManifestTD($shipmentNumber);
+
+            // check if the response has a status information with the expected status code
+            $this->assertArrayHasKey('Status', $response);
+            $this->assertArrayHasKey('StatusCode', $response['Status']);
+            $this->assertSame($expectedResponse->toArray(), $response);
+        }
     }
 
     /**
-     * Data provider to provide day definite shipment order and the expected response for a shipment creation
+     * Provides data to test day definite shipment order and the expected response for a shipment creation
      *
      * @return array
      */
@@ -438,27 +553,24 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $invalidOrder = new ShipmentOrderDDType(1, $invalidShipment);
 
         /// Create response for success case
-        $successNumber = new ShipmentNumberType('1234567890987654321');
-        $successResponse = new CreateShipmentResponse(
+        $shipmentNumber = new ShipmentNumberType('1234567890987654321');
+        $response = new CreateShipmentResponse(
             $version,
             new StatusInformation(0, 'ok'),
-            new CreationState(0, 'ok', $validOrder->SequenceNumber, $successNumber, new PieceInformation($successNumber))
+            new CreationState(0, 'ok', $validOrder->SequenceNumber, $shipmentNumber, new PieceInformation($shipmentNumber))
         );
 
-        // Create response for error cases
-        $errorResponse = new CreateShipmentResponse(
-            $version,
-            new StatusInformation(1000, 'General error')
-        );
+        // Create an exception for a bad request
+        $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array($validOrder, $successResponse->toArray()),
-            array($invalidOrder, $errorResponse->toArray()),
+            array($validOrder, $response),
+            array($invalidOrder, null, $exception),
         );
     }
 
     /**
-     * Data provider to provide time definite shipment order and the expected response for a shipment creation
+     * Provides data to test time definite shipment order and the expected response for a shipment creation
      *
      * @return array
      */
@@ -491,28 +603,24 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $invalidOrder = new ShipmentOrderTDType(1, $invalidShipment);
 
         /// Create response for success case
-        $successNumber = new ShipmentNumberType('1234567890987654321');
-        $successResponse = new CreateShipmentResponse(
+        $shipmentNumber = new ShipmentNumberType('1234567890987654321');
+        $response = new CreateShipmentResponse(
             $version,
             new StatusInformation(0, 'ok'),
-            new CreationState(0, 'ok', $validOrder->SequenceNumber, $successNumber, new PieceInformation($successNumber))
+            new CreationState(0, 'ok', $validOrder->SequenceNumber, $shipmentNumber, new PieceInformation($shipmentNumber))
         );
 
-        // Create response for error cases
-        $errorResponse = new CreateShipmentResponse(
-            $version,
-            new StatusInformation(1000, 'General error'),
-            null
-        );
+        // Create an exception for a bad request
+        $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array($validOrder, $successResponse->toArray()),
-            array($invalidOrder, $errorResponse->toArray()),
+            array($validOrder, $response),
+            array($invalidOrder, null, $exception),
         );
     }
 
     /**
-     * Data provider to provide booking information, sender address, orderer address and the expected response for a pickup booking
+     * Provides data to test booking a pickup
      *
      * @return array
      */
@@ -544,22 +652,22 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $invalidOrderer = new PickupOrdererType($validName, $invalidAddress, $communication);
 
         // Create response for success case
-        $successResponse = new BookPickupResponse($version, new StatusInformation(0, 'ok'), '1234567890987654321');
+        $response = new BookPickupResponse($version, new StatusInformation(0, 'ok'), '1234567890987654321');
 
-        // Create responses for the error cases
-        $errorResponse = new BookPickupResponse($version, new StatusInformation(1000, 'General error'));
+        // Create an exception for a bad request
+        $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array($successResponse->toArray(), $validInformation, $pickupAddress, null),
-            array($successResponse->toArray(), $validInformation, $pickupAddress, $ordererAddress),
-            array($errorResponse->toArray(), $invalidInformation, $pickupAddress, $ordererAddress),
-            array($errorResponse->toArray(), $validInformation, $invalidPickup, $ordererAddress),
-            array($errorResponse->toArray(), $validInformation, $invalidPickup, $invalidOrderer),
+            array($validInformation, $pickupAddress, null, $response),
+            array($validInformation, $pickupAddress, $ordererAddress, $response),
+            array($invalidInformation, $pickupAddress, $ordererAddress, null, $exception),
+            array($validInformation, $invalidPickup, $ordererAddress, null, $exception),
+            array($validInformation, $invalidPickup, $invalidOrderer, null, $exception),
         );
     }
 
     /**
-     * Data provider to test canceling pickups
+     * Provides data to test canceling pickups
      *
      * @return array
      */
@@ -568,20 +676,20 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         // Misc
         $version = Connection::getVersion();
 
-        // Create respones for success cases
-        $successResponse = new CancelPickupResponse($version, new StatusInformation(0, 'ok'));
+        // Create response for success cases
+        $response = new CancelPickupResponse($version, new StatusInformation(0, 'ok'));
 
-        // Create respones for error cases
-        $errorResponse = new CancelPickupResponse($version, new StatusInformation(1000, 'General error'));
+        // Create an exception for a bad request
+        $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array('917968580', $successResponse->toArray()),
-            array('9179685801', $errorResponse->toArray()),
+            array('917968580', $response),
+            array('9179685801', null, $exception),
         );
     }
 
     /**
-     * Data provider to provide shipment number and new data for shipment updates
+     * Provides data to test shipment updates
      *
      * @return array
      */
@@ -614,24 +722,24 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $invalidOrder = new ShipmentOrderDDType(1, $invalidShipment);
 
         /// Create response for success case
-        $successNumber = new ShipmentNumberType('1234567890987654321');
-        $successResponse = new UpdateShipmentResponse(
+        $shipmentNumber = new ShipmentNumberType('1234567890987654321');
+        $response = new UpdateShipmentResponse(
             $version,
             new StatusInformation(0, 'ok'),
-            new CreationState(0, 'ok', $validOrder->SequenceNumber, $successNumber, new PieceInformation($successNumber))
+            new CreationState(0, 'ok', $validOrder->SequenceNumber, $shipmentNumber, new PieceInformation($shipmentNumber))
         );
 
-        // Create response for error cases
-        $errorResponse = new UpdateShipmentResponse($version, new StatusInformation(1000, 'General error'));
+        // Create an exception for a bad request
+        $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array($successNumber, $validOrder, $successResponse->toArray()),
-            array($successNumber, $invalidOrder, $errorResponse->toArray()),
+            array($shipmentNumber, $validOrder, $response),
+            array($shipmentNumber, $invalidOrder, null, $exception),
         );
     }
 
     /**
-     * Data provider to provide data to test deletion a shipment
+     * Provides data to test deletion a shipment
      *
      * @return array
      */
@@ -641,24 +749,22 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $version = Connection::getVersion();
 
         // Create response for success case
-        $successNumber = new ShipmentNumberType('00340433836008760131');
+        $shipmentNumber = new ShipmentNumberType('00340433836008760131');
         $successStatus = new StatusInformation(0, 'ok');
-        $successDeletion = new DeletionState($successNumber, $successStatus);
+        $successDeletion = new DeletionState($shipmentNumber, $successStatus);
         $successResponse = new DeleteShipmentResponse($version, $successStatus, $successDeletion);
 
-        // Create response for error case
-        $errorNumber = new ShipmentNumberType('00340433836008760132');
-        $errorStatus = new StatusInformation(1000, 'General error');
-        $errorResponse = new DeleteShipmentResponse($version, $errorStatus);
+        // Create an exception for a bad request
+        $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array($successNumber, $successResponse->toArray()),
-            array($errorNumber, $errorResponse->toArray()),
+            array($shipmentNumber, $successResponse),
+            array($shipmentNumber, null, $exception),
         );
     }
 
     /**
-     * Data provider to provide data to test getting a label
+     * Provides data to test getting a label
      *
      * @return array
      */
@@ -668,24 +774,22 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $version = Connection::getVersion();
 
         // Create response for success case
-        $successNumber = new ShipmentNumberType('00340433836008759937');
+        $shipmentNumber = new ShipmentNumberType('00340433836008759937');
         $successStatus = new StatusInformation(0, 'ok');
-        $successData = new LabelData($successNumber, $successStatus, 'http://test-intraship.dhl.com:80/cartridge.61/WSPrint?code=03EBF2F0F0383A4E689393267E5098E30314A0F71D32D6E7');
+        $successData = new LabelData($shipmentNumber, $successStatus, 'http://test-intraship.dhl.com:80/cartridge.61/WSPrint?code=03EBF2F0F0383A4E689393267E5098E30314A0F71D32D6E7');
         $successResponse = new GetLabelResponse($version, $successStatus, $successData);
 
-        // Create response for error case
-        $errorNumber = new ShipmentNumberType('00340433836008759938');
-        $errorStatus = new StatusInformation(1000, 'General error');
-        $errorResponse = new GetLabelResponse($version, $errorStatus);
+        // Create an exception for a bad request
+        $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array($successNumber, $successResponse->toArray()),
-            array($errorNumber, $errorResponse->toArray()),
+            array($shipmentNumber, $successResponse),
+            array($shipmentNumber, null, $exception),
         );
     }
 
     /**
-     * Data provider to provide manifest data to test with
+     * Provides data to test getting manifests
      *
      * @return array
      */
@@ -697,26 +801,23 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $tomorrow = new DateTime('tomorrow');
 
         // Create response for success cases
-        $successResponse = new GetManifestDDResponse(
+        $response = new GetManifestDDResponse(
             $version,
             new StatusInformation(0, 'ok'),
             null // TODO: use a sample PDF content (base64 encoded)
         );
 
-        // Create response for error cases
-        $errorResponse = new GetManifestDDResponse(
-            $version,
-            new StatusInformation(1000, 'General error')
-        );
+        // Create an exception for a bad request
+        $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array($today, $tomorrow, $successResponse->toArray()),
-            array($tomorrow, $tomorrow, $errorResponse->toArray()),
+            array($today, $tomorrow, $response),
+            array($tomorrow, $tomorrow, null, $exception),
         );
     }
 
     /**
-     * Data provider to test doing manifests
+     * Provides data to test doing manifests
      *
      * @return array
      */
@@ -726,41 +827,57 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $version = Connection::getVersion();
 
         // Create response for success case
-        $successNumber = new ShipmentNumberType('00340433836008824970');
+        $shipmentNumber = new ShipmentNumberType('00340433836008824970');
         $successStatus = new StatusInformation(0, 'ok');
-        $successManifest = new ManifestState($successNumber, $successStatus);
-        $successResponse = new DoManifestResponse($version, $successStatus, $successManifest);
+        $successManifest = new ManifestState($shipmentNumber, $successStatus);
+        $response = new DoManifestResponse($version, $successStatus, $successManifest);
 
-        // Create response for error case
-        $errorNumber = new ShipmentNumberType('00340433836008824971');
-        $errorStatus = new StatusInformation(1000, 'General error');
-        $errorResponse = new DoManifestResponse($version, $errorStatus);
+        // Create an exception for a bad request
+        $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array($successNumber, $successResponse->toArray()),
-            array($errorNumber, $errorResponse->toArray()),
+            array($shipmentNumber, $response),
+            array($shipmentNumber, null, $exception),
         );
     }
 
+    /**
+     * Provides data to test getting export documents
+     *
+     * @return array
+     */
     public function provideGetExportDocData()
     {
         // Misc
         $version = Connection::getVersion();
 
         // Create response for success case
-        $successNumber = new ShipmentNumberType('960701151320');
+        $shipmentNumber = new ShipmentNumberType('960701151320');
         $successStatus = new StatusInformation(0, 'ok');
-        $successData = new ExportDocData($successNumber, $successStatus);
-        $successResponse = new GetExportDocResponse($version, $successStatus, $successData);
+        $exportData = new ExportDocData($shipmentNumber, $successStatus);
+        $response = new GetExportDocResponse($version, $successStatus, $exportData);
 
-        // Create response for error case
-        $errorNumber = new ShipmentNumberType('960701151321');
-        $errorStatus = new StatusInformation(1000, 'General error');
-        $errorResponse = new GetExportDocResponse($version, $errorStatus);
+        // Create an exception for a bad request
+        $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array($successNumber, $successResponse->toArray()),
-            array($errorNumber, $errorResponse->toArray()),
+            array($shipmentNumber, $response),
+            array($shipmentNumber, null, $exception),
         );
+    }
+
+    /**
+     * Helper to handle expected exceptions
+     *
+     * @param Exception $exception
+     */
+    private function clientWillThrowException(Exception $exception)
+    {
+        // Stubbing
+        $soapFault = new SoapFault(strval($exception->getCode()), $exception->getMessage());
+        $this->client->expects($this->any())->method('__soapCall')->willThrowException($soapFault);
+
+        // Define the expectation
+        $this->setExpectedException(get_class($exception), $exception->getMessage(), $exception->getCode());
     }
 }
