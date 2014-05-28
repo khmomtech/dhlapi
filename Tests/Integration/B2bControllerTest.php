@@ -127,8 +127,9 @@ class B2bControllerTest extends WebTestCase
         $dataSet = array();
 
         // Start with a test with a likely not configured account name
-        $errorResponse = new ErrorResponse(1001, "Account 'alikelyneverusedkey' is not configured");
-        $dataSet[] = array(400, 'alikelyneverusedkey', 99999, $errorResponse);
+        $errorAccount  = 'alikelyneverusedkey';
+        $errorResponse = new ErrorResponse(1001, "Account '$errorAccount' is not configured");
+        $dataSet[] =  array(400, $errorAccount, 99999, $errorResponse);
 
         // Loop and test all configured accounts
         $accounts = $this->createClient()->getKernel()->getContainer()->getParameter('wk_dhl_api.b2b.accounts');

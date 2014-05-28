@@ -603,18 +603,18 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $invalidOrder = new ShipmentOrderTDType(1, $invalidShipment);
 
         /// Create response for success case
-        $shipmentNumber = new ShipmentNumberType('1234567890987654321');
-        $response = new CreateShipmentResponse(
+        $successNumber = new ShipmentNumberType('1234567890987654321');
+        $successResponse = new CreateShipmentResponse(
             $version,
             new StatusInformation(0, 'ok'),
-            new CreationState(0, 'ok', $validOrder->SequenceNumber, $shipmentNumber, new PieceInformation($shipmentNumber))
+            new CreationState(0, 'ok', $validOrder->SequenceNumber, $successNumber, new PieceInformation($successNumber))
         );
 
         // Create an exception for a bad request
         $exception = new BadRequestHttpException('General error', null, 1000);
 
         return array(
-            array($validOrder, $response),
+            array($validOrder, $successResponse),
             array($invalidOrder, null, $exception),
         );
     }

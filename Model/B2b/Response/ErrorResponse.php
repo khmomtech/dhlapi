@@ -16,7 +16,7 @@ use Wk\DhlApiBundle\Lib\Base;
 /**
  * Class ErrorResponse
  *
- * @package Wk\DhlApiBundle\Lib
+ * @package Wk\DhlApiBundle\Model\B2b\Response
  * @XmlRoot("error")
  */
 class ErrorResponse extends Base
