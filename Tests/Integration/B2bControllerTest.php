@@ -7,11 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Wk\DhlApiBundle\Lib\B2b\IdentCode;
-use Wk\DhlApiBundle\Model\B2b\Response\BookPickupResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\ErrorResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\IdentCodeResponse;
 use JMS\Serializer\Serializer;
-use Wk\DhlApiBundle\Model\B2b\Version;
 
 /**
  * Class B2bControllerTest
