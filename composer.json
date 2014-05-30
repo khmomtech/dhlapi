@@ -19,10 +19,10 @@
     "require": {
 	    "monolog/monolog": "~1.9",
         "sensio/framework-extra-bundle": "~3.0",
-        "jms/serializer-bundle": "dev-master",
-        "symfony/finder": "2.3.*"
+        "jms/serializer-bundle": "dev-master"
     },
     "require-dev": {
+        "symfony/browser-kit": "@stable",
         "phpunit/phpunit": "4.1.*"
     },
     "autoload": {
