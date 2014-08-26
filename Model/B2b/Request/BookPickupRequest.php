@@ -14,12 +14,12 @@ use Wk\DhlApiBundle\Model\B2b\PickupOrdererType;
 
 /**
  * Class BookPickupRequest
+ *
  * @package Wk\DhlApiBundle\Model\B2b\Request
  * @XmlRoot("pickup")
  */
 class BookPickupRequest
 {
-
     /**
      * @Type("Wk\DhlApiBundle\Model\B2b\Version")
      * @SerializedName("version")
@@ -50,10 +50,11 @@ class BookPickupRequest
 
     /**
      *
-     * @param Version $Version
+     * @param Version                      $Version
      * @param PickupBookingInformationType $BookingInformation
-     * @param PickupAddressType $PickupAddress
-     * @param PickupOrdererType $ContactOrderer
+     * @param PickupAddressType            $PickupAddress
+     * @param PickupOrdererType            $ContactOrderer
+     *
      * @access public
      */
     public function __construct(Version $Version, PickupBookingInformationType $BookingInformation, PickupAddressType $PickupAddress, PickupOrdererType $ContactOrderer = null)

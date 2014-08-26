@@ -8,44 +8,38 @@ use Wk\DhlApiBundle\Model\B2b\StatusInformation;
 
 /**
  * Class DoManifestResponse
+ *
  * @package Wk\DhlApiBundle\Model\B2b\Response
  */
-class DoManifestResponse
+class DoManifestResponse extends GetVersionResponse
 {
+    /**
+     * @var StatusInformation $Status
+     * @access public
+     */
+    public $Status = null;
 
-  /**
-   * 
-   * @var Version $Version
-   * @access public
-   */
-  public $Version = null;
+    /**
+     * @var ManifestState $ManifestState
+     * @access public
+     */
+    public $ManifestState = null;
 
-  /**
-   * 
-   * @var Statusinformation $Status
-   * @access public
-   */
-  public $Status = null;
+    /**
+     * Class Constructor
+     *
+     * @param Version           $version
+     * @param StatusInformation $status
+     * @param ManifestState     $manifestState
+     *
+     * @access public
+     */
+    public function __construct(Version $version, StatusInformation $status, ManifestState $manifestState = null)
+    {
+        parent::__construct($version);
 
-  /**
-   * 
-   * @var ManifestState $ManifestState
-   * @access public
-   */
-  public $ManifestState = null;
-
-  /**
-   * 
-   * @param Version $Version
-   * @param Statusinformation $Status
-   * @param ManifestState $ManifestState
-   * @access public
-   */
-  public function __construct(Version $Version, StatusInformation $Status, ManifestState $ManifestState = null)
-  {
-    $this->Version = $Version;
-    $this->Status = $Status;
-    $this->ManifestState = $ManifestState;
-  }
+        $this->Status = $status;
+        $this->ManifestState = $manifestState;
+    }
 
 }

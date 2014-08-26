@@ -8,44 +8,39 @@ use Wk\DhlApiBundle\Model\B2b\StatusInformation;
 
 /**
  * Class DeleteShipmentResponse
+ *
  * @package Wk\DhlApiBundle\Model\B2b\Response
  */
-class DeleteShipmentResponse
+class DeleteShipmentResponse extends GetVersionResponse
 {
+    /**
+     *
+     * @var StatusInformation $Status
+     * @access public
+     */
+    public $Status = null;
 
-  /**
-   * 
-   * @var Version $Version
-   * @access public
-   */
-  public $Version = null;
+    /**
+     *
+     * @var DeletionState $DeletionState
+     * @access public
+     */
+    public $DeletionState = null;
 
-  /**
-   * 
-   * @var Statusinformation $Status
-   * @access public
-   */
-  public $Status = null;
+    /**
+     *
+     * @param Version           $version
+     * @param StatusInformation $status
+     * @param DeletionState     $deletionState
+     *
+     * @access public
+     */
+    public function __construct(Version $version, StatusInformation $status, DeletionState $deletionState = null)
+    {
+        parent::__construct($version);
 
-  /**
-   * 
-   * @var DeletionState $DeletionState
-   * @access public
-   */
-  public $DeletionState = null;
-
-  /**
-   * 
-   * @param Version $Version
-   * @param Statusinformation $Status
-   * @param DeletionState $DeletionState
-   * @access public
-   */
-  public function __construct(Version $Version, StatusInformation $Status, DeletionState $DeletionState = null)
-  {
-    $this->Version = $Version;
-    $this->Status = $Status;
-    $this->DeletionState = $DeletionState;
-  }
+        $this->Status = $status;
+        $this->DeletionState = $deletionState;
+    }
 
 }

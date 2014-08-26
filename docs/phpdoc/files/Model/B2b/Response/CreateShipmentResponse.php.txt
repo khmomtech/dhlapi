@@ -6,43 +6,41 @@ use Wk\DhlApiBundle\Model\B2b\CreationState;
 use Wk\DhlApiBundle\Model\B2b\StatusInformation;
 use Wk\DhlApiBundle\Model\B2b\Version;
 
-class CreateShipmentResponse
+/**
+ * Class CreateShipmentResponse
+ *
+ * @package Wk\DhlApiBundle\Model\B2b\Response
+ */
+class CreateShipmentResponse extends GetVersionResponse
 {
+    /**
+     * @var Statusinformation $status
+     * @access public
+     */
+    public $status = null;
 
-  /**
-   * 
-   * @var Version $Version
-   * @access public
-   */
-  public $Version = null;
+    /**
+     * @var CreationState $CreationState
+     * @access public
+     */
+    public $CreationState = null;
 
-  /**
-   * 
-   * @var Statusinformation $status
-   * @access public
-   */
-  public $status = null;
+    /**
+     * Class constructor
+     *
+     * @param Version           $version
+     * @param StatusInformation $status
+     * @param CreationState     $creationState
+     *
+     * @access public
+     */
+    public function __construct(Version $version, StatusInformation $status, CreationState $creationState = null)
+    {
+        parent::__construct($version);
 
-  /**
-   * 
-   * @var CreationState $CreationState
-   * @access public
-   */
-  public $CreationState = null;
-
-  /**
-   * 
-   * @param Version $Version
-   * @param Statusinformation $status
-   * @param CreationState $CreationState
-   * @access public
-   */
-  public function __construct(Version $Version, StatusInformation $status, CreationState $CreationState = null)
-  {
-    $this->Version = $Version;
-    $this->status = $status;
-    $this->CreationState = $CreationState;
-  }
+        $this->status = $status;
+        $this->CreationState = $creationState;
+    }
 
 }
 

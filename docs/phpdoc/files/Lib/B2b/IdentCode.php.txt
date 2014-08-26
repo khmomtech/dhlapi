@@ -13,7 +13,8 @@ namespace Wk\DhlApiBundle\Lib\B2b;
  *
  * @package Wk\DhlApiBundle\Lib\B2b
  */
-class IdentCode {
+class IdentCode
+{
 
     /**
      * Unsigned serial number
@@ -33,21 +34,22 @@ class IdentCode {
      * Setter for accounts
      *
      * @param array $accounts
+     *
      * @throws \InvalidArgumentException
      */
     public function setAccounts(array $accounts)
     {
         // check the array
-        if(!count($accounts)) {
+        if (!count($accounts)) {
             throw new \InvalidArgumentException('The account array is empty');
         }
 
-        foreach($accounts as $name => $account) {
-            if(!is_string($name)) {
+        foreach ($accounts as $name => $account) {
+            if (!is_string($name)) {
                 throw new \InvalidArgumentException('The name of the account contains no string');
             }
 
-            if(!is_int($account) || !$account) {
+            if (!is_int($account) || !$account) {
                 throw new \InvalidArgumentException('The account id contains no unsigned integer');
             }
         }
@@ -73,12 +75,12 @@ class IdentCode {
     public function setSerial($serial)
     {
         // check if the serial is an unsigned integer
-        if(!is_int($serial) || !$serial) {
+        if (!is_int($serial) || !$serial) {
             throw new \InvalidArgumentException('Serial number is no unsigned integer');
         }
 
         // check the maximum length of 5 for this serial
-        if(strlen(strval($serial)) > 5) {
+        if (strlen(strval($serial)) > 5) {
             throw new \InvalidArgumentException('Serial number contains more than 5 digits. Start with 1 again or use modulus 100000');
         }
 
@@ -100,11 +102,12 @@ class IdentCode {
      * Generates an ident code with the given account or it uses the first configured one
      *
      * @param string $account
+     *
      * @return string
      */
     public function get($account = null)
     {
-        if($account === null) {
+        if ($account === null) {
             $accountId = $this->accounts[0];
         } elseif (array_key_exists($account, $this->accounts)) {
             $accountId = $this->accounts[$account];
@@ -121,6 +124,7 @@ class IdentCode {
      * Gets the formatted ident code
      *
      * @param string $code
+     *
      * @return string
      */
     public static function format($code)
@@ -128,10 +132,14 @@ class IdentCode {
         $buffer = "";
 
         $j = 0;
-        for($i=strlen($code)-1; $i>=0; $i--) {
+        for ($i = strlen($code) - 1; $i >= 0; $i--) {
             $buffer = $code[$i] . $buffer;
-            if(($j % 6) == 0) $buffer = " " . $buffer;
-            if(($j % 6) == 3) $buffer = "." . $buffer;
+            if (($j % 6) == 0) {
+                $buffer = " " . $buffer;
+            }
+            if (($j % 6) == 3) {
+                $buffer = "." . $buffer;
+            }
             $j++;
         }
 
@@ -144,6 +152,7 @@ class IdentCode {
      * All non-digits will be removed from the code
      *
      * @param string $code
+     *
      * @return int
      */
     public static function getParityNumber($code)
@@ -153,14 +162,14 @@ class IdentCode {
         $result = 0;
         $number = (string)$number;
 
-        for($i=strlen($number)-1; $i>=0; $i = $i-2) {
+        for ($i = strlen($number) - 1; $i >= 0; $i = $i - 2) {
             $result += $number[$i];
         }
 
         $result *= 4;
 
         $partRes = 0;
-        for($i=strlen($number)-2; $i>=0; $i = $i-2) {
+        for ($i = strlen($number) - 2; $i >= 0; $i = $i - 2) {
             $partRes += $number[$i];
         }
 

@@ -10,20 +10,12 @@ use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Class CancelPickupResponse
+ *
  * @package Wk\DhlApiBundle\Model\B2b\Response
  * @XmlRoot("response")
  */
-class CancelPickupResponse
+class CancelPickupResponse extends GetVersionResponse
 {
-    /**
-     *
-     * @var Version $Version
-     * @access public
-     * @Type("Wk\DhlApiBundle\Model\B2b\Version")
-     * @SerializedName("version")
-     */
-    public $Version = null;
-
     /**
      *
      * @var StatusInformation $Status
@@ -35,14 +27,16 @@ class CancelPickupResponse
 
     /**
      *
-     * @param Version $Version
-     * @param StatusInformation $Status
+     * @param Version           $version
+     * @param StatusInformation $status
+     *
      * @access public
      */
-    public function __construct(Version $Version, StatusInformation $Status)
+    public function __construct(Version $version, StatusInformation $status)
     {
-        $this->Version = $Version;
-        $this->Status = $Status;
+        parent::__construct($version);
+
+        $this->Status = $status;
     }
 
 }

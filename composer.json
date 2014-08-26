@@ -22,9 +22,10 @@
         "jms/serializer-bundle": "dev-master"
     },
     "require-dev": {
+        "symfony/browser-kit": "@stable",
         "phpunit/phpunit": "4.1.*"
     },
     "autoload": {
-        "psr-4": { "Wk\\DhlApi\\": "" }
+        "psr-4": { "Wk\\DhlApiBundle\\": "" }
     }
 }

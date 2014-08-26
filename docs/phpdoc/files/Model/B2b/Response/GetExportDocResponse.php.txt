@@ -8,45 +8,40 @@ use Wk\DhlApiBundle\Model\B2b\ExportDocData;
 
 /**
  * Class GetExportDocResponse
+ *
  * @package Wk\DhlApiBundle\Model\B2b\Response
  */
-class GetExportDocResponse
+class GetExportDocResponse extends GetVersionResponse
 {
+    /**
+     * @var StatusInformation $status
+     * @access public
+     */
+    public $status = null;
 
-  /**
-   * 
-   * @var Version $Version
-   * @access public
-   */
-  public $Version = null;
+    /**
+     * @var ExportDocData $ExportDocData
+     * @access public
+     */
+    public $ExportDocData = null;
 
-  /**
-   * 
-   * @var Statusinformation $status
-   * @access public
-   */
-  public $status = null;
+    /**
+     * Class constructor
+     *
+     * @param Version           $version
+     * @param StatusInformation $status
+     * @param ExportDocData     $exportDocData
+     *
+     * @access public
+     */
+    public function __construct(Version $version, StatusInformation $status, ExportDocData $exportDocData = null)
+    {
+        parent::__construct($version);
 
-  /**
-   * 
-   * @var ExportDocData $ExportDocData
-   * @access public
-   */
-  public $ExportDocData = null;
-
-  /**
-   * 
-   * @param Version $Version
-   * @param Statusinformation $status
-   * @param ExportDocData $ExportDocData
-   * @access public
-   */
-  public function __construct(Version $Version, StatusInformation $status, ExportDocData $ExportDocData = null)
-  {
-    $this->Version = $Version;
-    $this->status = $status;
-    $this->ExportDocData = $ExportDocData;
-  }
+        $this->Version = $version;
+        $this->status = $status;
+        $this->ExportDocData = $exportDocData;
+    }
 
 }
 

@@ -7,14 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Wk\DhlApiBundle\Lib\B2b\IdentCode;
-use Wk\DhlApiBundle\Model\B2b\Response\BookPickupResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\ErrorResponse;
 use Wk\DhlApiBundle\Model\B2b\Response\IdentCodeResponse;
 use JMS\Serializer\Serializer;
-use Wk\DhlApiBundle\Model\B2b\Version;
 
 /**
  * Class B2bControllerTest
+ *
  * @package Wk\DhlApiBundle\Tests\Integration
  */
 class B2bControllerTest extends WebTestCase
@@ -42,10 +41,11 @@ class B2bControllerTest extends WebTestCase
     /**
      * Tests getting ident codes with JSON response
      *
-     * @param int $expectedStatusCode
+     * @param int    $expectedStatusCode
      * @param string $account
-     * @param int $serial
+     * @param int    $serial
      * @param string $expectedResponse
+     *
      * @dataProvider provideIdentCodeData
      */
     public function testIdentCodeJson($expectedStatusCode, $account, $serial, $expectedResponse)
@@ -79,10 +79,11 @@ class B2bControllerTest extends WebTestCase
     /**
      * Tests getting ident codes with XML response
      *
-     * @param int $expectedStatusCode
+     * @param int    $expectedStatusCode
      * @param string $account
-     * @param int $serial
+     * @param int    $serial
      * @param string $expectedResponse
+     *
      * @dataProvider provideIdentCodeData
      */
     public function testIdentCodeXml($expectedStatusCode, $account, $serial, $expectedResponse)
@@ -121,30 +122,35 @@ class B2bControllerTest extends WebTestCase
      */
     public function provideIdentCodeData()
     {
+        $dataSet = array();
+
         // Start with a test with a likely not configured account name
-        $dataSet = array(
-            array(400, 'alikelyneverusedkey', 99999, new ErrorResponse(1001, "Account 'alikelyneverusedkey' is not configured"))
-        );
+        $errorAccount  = 'alikelyneverusedkey';
+        $errorResponse = new ErrorResponse(1001, "Account '$errorAccount' is not configured");
+        $dataSet[] =  array(400, $errorAccount, 99999, $errorResponse);
 
         // Loop and test all configured accounts
         $accounts = $this->createClient()->getKernel()->getContainer()->getParameter('wk_dhl_api.b2b.accounts');
-        foreach($accounts as $key => $account) {
+        foreach ($accounts as $key => $account) {
             // Add items to data set with valid data
-            $code = $account.'0099999';
+            $code = $account . '0099999';
             $code .= IdentCode::getParityNumber($code);
-            $dataSet[] = array(200, $key, 99999,  new IdentCodeResponse($code, IdentCode::format($code)));
+            $dataSet[] = array(200, $key, 99999, new IdentCodeResponse($code, IdentCode::format($code)));
 
-            $code = $account.'0000815';
+            $code = $account . '0000815';
             $code .= IdentCode::getParityNumber($code);
-            $dataSet[] = array(200, $key, 815,    new IdentCodeResponse($code, IdentCode::format($code)));
+            $dataSet[] = array(200, $key, 815, new IdentCodeResponse($code, IdentCode::format($code)));
 
-            $code = $account.'0000003';
+            $code = $account . '0000003';
             $code .= IdentCode::getParityNumber($code);
-            $dataSet[] = array(200, $key, 3,      new IdentCodeResponse($code, IdentCode::format($code)));
+            $dataSet[] = array(200, $key, 3, new IdentCodeResponse($code, IdentCode::format($code)));
 
             // add data sets with invalid parameters
-            $dataSet[] = array(400, $key, 999999, new ErrorResponse(1001, 'Serial number contains more than 5 digits. Start with 1 again or use modulus 100000'));
-            $dataSet[] = array(400, $key, 0,      new ErrorResponse(1001, 'Serial number is no unsigned integer'));
+            $errorResponse = new ErrorResponse(1001, 'Serial number contains more than 5 digits. Start with 1 again or use modulus 100000');
+            $dataSet[] = array(400, $key, 999999, $errorResponse);
+
+            $errorResponse = new ErrorResponse(1001, 'Serial number is no unsigned integer');
+            $dataSet[] = array(400, $key, 0, $errorResponse);
         }
 
         return $dataSet;
@@ -153,8 +159,9 @@ class B2bControllerTest extends WebTestCase
     /**
      * Integration test for booking and canceling a pickup with JSON response
      *
-     * @param int $expectedStatusCode
+     * @param int   $expectedStatusCode
      * @param array $payload
+     *
      * @dataProvider providePickupData
      */
     public function testPickupJson($expectedStatusCode, array $payload)
@@ -182,8 +189,9 @@ class B2bControllerTest extends WebTestCase
     /**
      * Integration test for booking and canceling a pickup with XML response
      *
-     * @param int $expectedStatusCode
+     * @param int   $expectedStatusCode
      * @param array $payload
+     *
      * @dataProvider providePickupData
      */
     public function testPickupXml($expectedStatusCode, array $payload)
@@ -216,13 +224,13 @@ class B2bControllerTest extends WebTestCase
 
         // Address data for pickup address and orderer contact
         $validAddress = array(
-            'name' => array(
-                'company'   => array(
-                    'name'      => 'Musterfirma',
-                    'addition'  => '999. Stock',
+            'name'          => array(
+                'company' => array(
+                    'name'     => 'Musterfirma',
+                    'addition' => '999. Stock',
                 ),
             ),
-            'address' => array(
+            'address'       => array(
                 'street_name'   => 'Musterstraße',
                 'street_number' => '999a',
                 'city'          => 'Musterhausen',
@@ -230,8 +238,8 @@ class B2bControllerTest extends WebTestCase
                 'country'       => array('code' => 'DE'),
             ),
             'communication' => array(
-                'phone'         => '+4930-33215-0',
-                'email'         => 'max@muster.de',
+                'phone' => '+4930-33215-0',
+                'email' => 'max@muster.de',
             ),
         );
 
@@ -257,8 +265,8 @@ class B2bControllerTest extends WebTestCase
         $dataRows[] = array(
             200,
             array(
-                'address'       => $validAddress,
-                'information'   => $validPickup,
+                'address'     => $validAddress,
+                'information' => $validPickup,
             ),
         );
 
@@ -266,9 +274,9 @@ class B2bControllerTest extends WebTestCase
         $dataRows[] = array(
             200,
             array(
-                'address'       => $validAddress,
-                'orderer'       => $validAddress,
-                'information'   => $validPickup,
+                'address'     => $validAddress,
+                'orderer'     => $validAddress,
+                'information' => $validPickup,
             ),
         );
 
@@ -276,7 +284,7 @@ class B2bControllerTest extends WebTestCase
         $dataRows[] = array(
             500,
             array(
-                'information'   => $validPickup,
+                'information' => $validPickup,
             ),
         );
 
@@ -284,8 +292,8 @@ class B2bControllerTest extends WebTestCase
         $dataRows[] = array(
             500,
             array(
-                'orderer'       => $validAddress,
-                'information'   => $validPickup,
+                'orderer'     => $validAddress,
+                'information' => $validPickup,
             ),
         );
 
@@ -293,7 +301,7 @@ class B2bControllerTest extends WebTestCase
         $dataRows[] = array(
             500,
             array(
-                'address'   => $validAddress,
+                'address' => $validAddress,
             ),
         );
 
@@ -301,9 +309,9 @@ class B2bControllerTest extends WebTestCase
         $dataRows[] = array(
             400,
             array(
-                'address'       => $validAddress,
-                'orderer'       => $validAddress,
-                'information'   => array(),
+                'address'     => $validAddress,
+                'orderer'     => $validAddress,
+                'information' => array(),
             ),
         );
 

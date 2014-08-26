@@ -11,13 +11,15 @@ namespace Wk\DhlApiBundle\Model\B2b\Response;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\XmlRoot;
 use JMS\Serializer\Annotation\SerializedName;
+use Wk\DhlApiBundle\Lib\Base;
 
 /**
  * Class ErrorResponse
- * @package Wk\DhlApiBundle\Lib
+ *
+ * @package Wk\DhlApiBundle\Model\B2b\Response
  * @XmlRoot("error")
  */
-class ErrorResponse
+class ErrorResponse extends Base
 {
     /**
      * @var int
@@ -36,8 +38,8 @@ class ErrorResponse
     /**
      * Constructor
      *
-     * @param $code
-     * @param $description
+     * @param int    $code
+     * @param string $description
      */
     public function __construct($code, $description)
     {
